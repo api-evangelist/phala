@@ -1,0 +1,37 @@
+name: Phala Network Packages
+generated: '2026-10-13'
+method: searched
+source: registry.npmjs.org and pypi.org metadata endpoints (queried 2026-10-13)
+packages:
+- name: phala
+  registry: npm
+  url: https://www.npmjs.com/package/phala
+  language: JavaScript
+  official: true
+  version: 1.1.22
+  published: '2026-09-06'
+  description: Phala Cloud CLI (repository github.com/Phala-Network/phala-cloud, directory cli)
+- name: '@phala/cloud'
+  registry: npm
+  url: https://www.npmjs.com/package/@phala/cloud
+  language: JavaScript
+  official: true
+  version: 0.4.0
+  published: '2026-07-25'
+  description: Phala Cloud JavaScript SDK (repository github.com/Phala-Network/phala-cloud, directory js)
+- name: phala-cloud
+  registry: PyPI
+  url: https://pypi.org/project/phala-cloud/
+  language: Python
+  official: true
+  version: 0.2.0
+  published: '2026-07-26'
+  description: Phala Cloud Python SDK (homepage github.com/Phala-Network/phala-cloud)
+- name: '@phala/dstack-sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@phala/dstack-sdk
+  language: JavaScript
+  official: true
+  version: 0.5.8
+  published: '2026-06-02'
+  description: dstack TEE SDK for JavaScript (repository github.com/Dstack-TEE/dstack, sdk/js), published under the @phala npm scope

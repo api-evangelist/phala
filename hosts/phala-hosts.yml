@@ -1,0 +1,178 @@
+generated: '2026-10-13'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 14
+  own: 5
+  other_domain: 8
+  platform: 1
+  roles:
+  - api
+  - docs
+  - identity
+  - other
+  - source
+  - status
+  - website
+hosts:
+- host: api.phala.network
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: phala.network
+  role: api
+  relation: other-domain
+- host: app.phala.network
+  found_by:
+  - probed
+  - site-links
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: phala.network
+  role: other
+  relation: other-domain
+- host: bridge.phala.network
+  found_by:
+  - probed
+  - site-links
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: phala.network
+  role: other
+  relation: other-domain
+- host: cloud-api.phala.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: phala.com
+  role: other
+  relation: own
+- host: cloud.phala.com
+  found_by:
+  - pointer
+  types:
+  - Login
+  - SignUp
+  serves: []
+  registrable_domain: phala.com
+  role: identity
+  relation: own
+- host: cloud.phala.network
+  found_by:
+  - probed
+  - site-links
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: phala.network
+  role: other
+  relation: other-domain
+- host: docs.phala.com
+  found_by:
+  - pointer
+  - apis[]
+  - docs-index
+  - spec-found
+  types:
+  - Documentation
+  - APIReference
+  - GettingStarted
+  serves:
+  - docs
+  - spec
+  registrable_domain: phala.com
+  role: docs
+  relation: own
+- host: docs.phala.network
+  found_by:
+  - probed
+  - site-links
+  - namespace-probe
+  - well-known
+  types: []
+  serves: []
+  title: Phala Cloud Documentation — Private AI on TEE
+  status: 200
+  registrable_domain: phala.network
+  role: docs
+  relation: other-domain
+- host: explorer.phala.network
+  found_by:
+  - probed
+  - site-links
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: phala.network
+  role: other
+  relation: other-domain
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: inference.phala.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: phala.com
+  role: other
+  relation: own
+- host: phala.com
+  found_by:
+  - pointer
+  - docs-index
+  - vendor-detect
+  types:
+  - Compliance
+  - Security
+  - Newsroom
+  - Website
+  - DeveloperPortal
+  - Blog
+  - Pricing
+  - PrivacyPolicy
+  - TermsOfService
+  serves:
+  - docs
+  - cdn
+  - hosting
+  vendor: cloudflare
+  registrable_domain: phala.com
+  role: website
+  relation: own
+- host: phala.network
+  found_by:
+  - probed
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: phala.network
+  role: other
+  relation: other-domain
+- host: status.phala.network
+  found_by:
+  - probed
+  - site-links
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: phala.network
+  role: status
+  relation: other-domain

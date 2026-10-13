@@ -1,0 +1,1430 @@
+{
+  "@context": {
+    "@vocab": "https://phala.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "phala": "https://phala.com/schema#",
+    "Account": "phala:Account",
+    "id": {
+      "@id": "phala:id",
+      "@type": "xsd:integer"
+    },
+    "provider": {
+      "@id": "phala:provider",
+      "@type": "xsd:string"
+    },
+    "provider_account_id": {
+      "@id": "phala:provider_account_id",
+      "@type": "xsd:string"
+    },
+    "provider_account_email": {
+      "@id": "phala:provider_account_email"
+    },
+    "provider_account_name": {
+      "@id": "phala:provider_account_name"
+    },
+    "provider_account_avatar": {
+      "@id": "phala:provider_account_avatar"
+    },
+    "created_at": {
+      "@id": "phala:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "AccountsResponse": "phala:AccountsResponse",
+    "accounts": {
+      "@id": "phala:accounts",
+      "@container": "@list"
+    },
+    "can_disconnect": {
+      "@id": "phala:can_disconnect",
+      "@type": "xsd:boolean"
+    },
+    "has_password": {
+      "@id": "phala:has_password",
+      "@type": "xsd:boolean"
+    },
+    "AcmeFetchResult": "phala:AcmeFetchResult",
+    "url": {
+      "@id": "phala:url",
+      "@type": "xsd:string"
+    },
+    "http_ok": {
+      "@id": "phala:http_ok",
+      "@type": "xsd:boolean"
+    },
+    "uri": {
+      "@id": "phala:uri"
+    },
+    "status_code": {
+      "@id": "phala:status_code"
+    },
+    "error": {
+      "@id": "phala:error"
+    },
+    "ActiveGpuRentalOverviewResponse": "phala:ActiveGpuRentalOverviewResponse",
+    "total_instances": {
+      "@id": "phala:total_instances",
+      "@type": "xsd:integer"
+    },
+    "total_gpu_units": {
+      "@id": "phala:total_gpu_units",
+      "@type": "xsd:integer"
+    },
+    "regions_served": {
+      "@id": "phala:regions_served",
+      "@type": "xsd:integer"
+    },
+    "items": {
+      "@id": "phala:items",
+      "@container": "@list"
+    },
+    "ActiveGpuRentalResponse": "phala:ActiveGpuRentalResponse",
+    "deployment_name": {
+      "@id": "phala:deployment_name",
+      "@type": "xsd:string"
+    },
+    "gpu_model": {
+      "@id": "phala:gpu_model",
+      "@type": "xsd:string"
+    },
+    "gpu_count": {
+      "@id": "phala:gpu_count",
+      "@type": "xsd:integer"
+    },
+    "region": {
+      "@id": "phala:region",
+      "@type": "xsd:string"
+    },
+    "quantity": {
+      "@id": "phala:quantity",
+      "@type": "xsd:integer"
+    },
+    "hourly_rate": {
+      "@id": "phala:hourly_rate",
+      "@type": "xsd:string"
+    },
+    "plan": {
+      "@id": "phala:plan"
+    },
+    "commitment_days": {
+      "@id": "phala:commitment_days"
+    },
+    "activated_at": {
+      "@id": "phala:activated_at"
+    },
+    "ActivityIpEntry": "phala:ActivityIpEntry",
+    "ip_address": {
+      "@id": "phala:ip_address",
+      "@type": "xsd:string"
+    },
+    "request_count": {
+      "@id": "phala:request_count",
+      "@type": "xsd:integer"
+    },
+    "first_seen": {
+      "@id": "phala:first_seen",
+      "@type": "xsd:dateTime"
+    },
+    "last_seen": {
+      "@id": "phala:last_seen",
+      "@type": "xsd:dateTime"
+    },
+    "AddGpusRequest": "phala:AddGpusRequest",
+    "gpu_ids": {
+      "@id": "phala:gpu_ids",
+      "@container": "@list"
+    },
+    "AddMembersRequest": "phala:AddMembersRequest",
+    "user_ids": {
+      "@id": "phala:user_ids",
+      "@container": "@list"
+    },
+    "role": {
+      "@id": "phala:role",
+      "@type": "xsd:string"
+    },
+    "AddTeepodsRequest": "phala:AddTeepodsRequest",
+    "teepod_ids": {
+      "@id": "phala:teepod_ids",
+      "@container": "@list"
+    },
+    "AdminEmailPreviewRequest": "phala:AdminEmailPreviewRequest",
+    "subject": {
+      "@id": "phala:subject",
+      "@type": "xsd:string"
+    },
+    "content": {
+      "@id": "phala:content",
+      "@type": "xsd:string"
+    },
+    "AdminEmailRequest": "phala:AdminEmailRequest",
+    "recipients": {
+      "@id": "phala:recipients",
+      "@container": "@list"
+    },
+    "reply_to": {
+      "@id": "phala:reply_to"
+    },
+    "attachments": {
+      "@id": "phala:attachments"
+    },
+    "AdminEmailResponse": "phala:AdminEmailResponse",
+    "total": {
+      "@id": "phala:total",
+      "@type": "xsd:integer"
+    },
+    "sent": {
+      "@id": "phala:sent",
+      "@type": "xsd:integer"
+    },
+    "failed": {
+      "@id": "phala:failed",
+      "@type": "xsd:integer"
+    },
+    "results": {
+      "@id": "phala:results",
+      "@container": "@list"
+    },
+    "AdminEmailResult": "phala:AdminEmailResult",
+    "email": {
+      "@id": "phala:email",
+      "@type": "xsd:string"
+    },
+    "success": {
+      "@id": "phala:success",
+      "@type": "xsd:boolean"
+    },
+    "resend_email_id": {
+      "@id": "phala:resend_email_id"
+    },
+    "AdminInstanceEventResponse": "phala:AdminInstanceEventResponse",
+    "event_type": {
+      "@id": "phala:event_type",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "phala:status",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "phala:state"
+    },
+    "instance_type": {
+      "@id": "phala:instance_type"
+    },
+    "old_instance_type": {
+      "@id": "phala:old_instance_type"
+    },
+    "new_instance_type": {
+      "@id": "phala:new_instance_type"
+    },
+    "duration": {
+      "@id": "phala:duration"
+    },
+    "timestamp": {
+      "@id": "phala:timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "instance_id": {
+      "@id": "phala:instance_id",
+      "@type": "xsd:string"
+    },
+    "triggered_by": {
+      "@id": "phala:triggered_by",
+      "@type": "xsd:integer"
+    },
+    "triggered_by_username": {
+      "@id": "phala:triggered_by_username"
+    },
+    "triggered_by_email": {
+      "@id": "phala:triggered_by_email"
+    },
+    "cvm": {
+      "@id": "phala:cvm"
+    },
+    "user": {
+      "@id": "phala:user"
+    },
+    "team": {
+      "@id": "phala:team"
+    },
+    "AdminTeepodDetail": "phala:AdminTeepodDetail",
+    "name": {
+      "@id": "phala:name",
+      "@type": "xsd:string"
+    },
+    "endpoint": {
+      "@id": "phala:endpoint",
+      "@type": "xsd:string"
+    },
+    "kms_url": {
+      "@id": "phala:kms_url",
+      "@type": "xsd:string"
+    },
+    "tproxy_url": {
+      "@id": "phala:tproxy_url",
+      "@type": "xsd:string"
+    },
+    "enabled": {
+      "@id": "phala:enabled",
+      "@type": "xsd:boolean"
+    },
+    "last_ping_at": {
+      "@id": "phala:last_ping_at"
+    },
+    "capacity": {
+      "@id": "phala:capacity",
+      "@type": "@id"
+    },
+    "resource_usage": {
+      "@id": "phala:resource_usage",
+      "@type": "@id"
+    },
+    "node_resource_limits": {
+      "@id": "phala:node_resource_limits"
+    },
+    "node_resource_usage": {
+      "@id": "phala:node_resource_usage"
+    },
+    "teepod_version": {
+      "@id": "phala:teepod_version"
+    },
+    "kms_version": {
+      "@id": "phala:kms_version"
+    },
+    "tproxy_base_domain": {
+      "@id": "phala:tproxy_base_domain"
+    },
+    "tproxy_port": {
+      "@id": "phala:tproxy_port"
+    },
+    "tproxy_tappd_port": {
+      "@id": "phala:tproxy_tappd_port"
+    },
+    "kms_upgrade_callback_url": {
+      "@id": "phala:kms_upgrade_callback_url"
+    },
+    "kms_allow_upgrade": {
+      "@id": "phala:kms_allow_upgrade",
+      "@type": "xsd:boolean"
+    },
+    "syslog_endpoint": {
+      "@id": "phala:syslog_endpoint"
+    },
+    "fmspc": {
+      "@id": "phala:fmspc"
+    },
+    "device_id": {
+      "@id": "phala:device_id"
+    },
+    "ppid": {
+      "@id": "phala:ppid"
+    },
+    "region_identifier": {
+      "@id": "phala:region_identifier"
+    },
+    "AdminUserDetail": "phala:AdminUserDetail",
+    "username": {
+      "@id": "phala:username",
+      "@type": "xsd:string"
+    },
+    "credit": {
+      "@id": "phala:credit"
+    },
+    "hash_id": {
+      "@id": "phala:hash_id",
+      "@type": "xsd:string"
+    },
+    "disabled": {
+      "@id": "phala:disabled",
+      "@type": "xsd:boolean"
+    },
+    "stripe_customer_id": {
+      "@id": "phala:stripe_customer_id"
+    },
+    "account_verified_at": {
+      "@id": "phala:account_verified_at"
+    },
+    "email_verified_at": {
+      "@id": "phala:email_verified_at"
+    },
+    "cvm_count": {
+      "@id": "phala:cvm_count",
+      "@type": "xsd:integer"
+    },
+    "teams": {
+      "@id": "phala:teams",
+      "@container": "@list"
+    },
+    "registered_ip": {
+      "@id": "phala:registered_ip"
+    },
+    "teams_count": {
+      "@id": "phala:teams_count",
+      "@type": "xsd:integer"
+    },
+    "totp_enabled": {
+      "@id": "phala:totp_enabled",
+      "@type": "xsd:boolean"
+    },
+    "last_activity_at": {
+      "@id": "phala:last_activity_at"
+    },
+    "last_auth_method": {
+      "@id": "phala:last_auth_method"
+    },
+    "credits": {
+      "@id": "phala:credits",
+      "@type": "xsd:decimal"
+    },
+    "balance": {
+      "@id": "phala:balance",
+      "@type": "xsd:decimal"
+    },
+    "cvm_credits": {
+      "@id": "phala:cvm_credits",
+      "@type": "xsd:decimal"
+    },
+    "AffectedApp": "phala:AffectedApp",
+    "app_id": {
+      "@id": "phala:app_id",
+      "@type": "xsd:string"
+    },
+    "project_name": {
+      "@id": "phala:project_name",
+      "@type": "xsd:string"
+    },
+    "contract_address": {
+      "@id": "phala:contract_address"
+    },
+    "chain_id": {
+      "@id": "phala:chain_id"
+    },
+    "allow_any_device": {
+      "@id": "phala:allow_any_device",
+      "@type": "xsd:boolean"
+    },
+    "cvms": {
+      "@id": "phala:cvms",
+      "@container": "@list"
+    },
+    "AffectedCvm": "phala:AffectedCvm",
+    "cvm_id": {
+      "@id": "phala:cvm_id",
+      "@type": "xsd:integer"
+    },
+    "vm_uuid": {
+      "@id": "phala:vm_uuid"
+    },
+    "device_allowed": {
+      "@id": "phala:device_allowed"
+    },
+    "node_name": {
+      "@id": "phala:node_name"
+    },
+    "AffectedTeam": "phala:AffectedTeam",
+    "team_id": {
+      "@id": "phala:team_id",
+      "@type": "xsd:integer"
+    },
+    "team_name": {
+      "@id": "phala:team_name",
+      "@type": "xsd:string"
+    },
+    "contact_email": {
+      "@id": "phala:contact_email"
+    },
+    "apps": {
+      "@id": "phala:apps",
+      "@container": "@list"
+    },
+    "AllFamiliesResponse": "phala:AllFamiliesResponse",
+    "result": {
+      "@id": "phala:result",
+      "@container": "@list"
+    },
+    "AllocationDetail": "phala:AllocationDetail",
+    "cvm_app_id": {
+      "@id": "phala:cvm_app_id"
+    },
+    "cvm_vm_uuid": {
+      "@id": "phala:cvm_vm_uuid"
+    },
+    "cvm_status": {
+      "@id": "phala:cvm_status"
+    },
+    "teepod_name": {
+      "@id": "phala:teepod_name"
+    },
+    "gpus": {
+      "@id": "phala:gpus",
+      "@container": "@list"
+    },
+    "allocated_at": {
+      "@id": "phala:allocated_at"
+    },
+    "AllocationGpuDetail": "phala:AllocationGpuDetail",
+    "gpu_id": {
+      "@id": "phala:gpu_id",
+      "@type": "xsd:integer"
+    },
+    "product_id": {
+      "@id": "phala:product_id",
+      "@type": "xsd:string"
+    },
+    "slot": {
+      "@id": "phala:slot",
+      "@type": "xsd:string"
+    },
+    "AllocationHistoryItem": "phala:AllocationHistoryItem",
+    "project_id": {
+      "@id": "phala:project_id"
+    },
+    "released_at": {
+      "@id": "phala:released_at"
+    },
+    "AllocationHistoryResponse": "phala:AllocationHistoryResponse",
+    "AllowedNodeOut": "phala:AllowedNodeOut",
+    "teepod_id": {
+      "@id": "phala:teepod_id",
+      "@type": "xsd:integer"
+    },
+    "on_chain_allowed": {
+      "@id": "phala:on_chain_allowed"
+    },
+    "AllowedNodesResponse": "phala:AllowedNodesResponse",
+    "kms_id": {
+      "@id": "phala:kms_id",
+      "@type": "xsd:string"
+    },
+    "is_onchain": {
+      "@id": "phala:is_onchain",
+      "@type": "xsd:boolean"
+    },
+    "nodes": {
+      "@id": "phala:nodes",
+      "@container": "@list"
+    },
+    "AllowedOsImageOut": "phala:AllowedOsImageOut",
+    "os_image_id": {
+      "@id": "phala:os_image_id",
+      "@type": "xsd:integer"
+    },
+    "version": {
+      "@id": "phala:version",
+      "@type": "xsd:string"
+    },
+    "os_image_hash": {
+      "@id": "phala:os_image_hash"
+    },
+    "db_enabled": {
+      "@id": "phala:db_enabled",
+      "@type": "xsd:boolean"
+    },
+    "AllowedOsImagesResponse": "phala:AllowedOsImagesResponse",
+    "images": {
+      "@id": "phala:images",
+      "@container": "@list"
+    },
+    "ApiToken": "phala:ApiToken",
+    "token": {
+      "@id": "phala:token"
+    },
+    "token_prefix": {
+      "@id": "phala:token_prefix"
+    },
+    "is_active": {
+      "@id": "phala:is_active",
+      "@type": "xsd:boolean"
+    },
+    "last_used_at": {
+      "@id": "phala:last_used_at"
+    },
+    "expires_at": {
+      "@id": "phala:expires_at"
+    },
+    "default_version": {
+      "@id": "phala:default_version"
+    },
+    "team_slug": {
+      "@id": "phala:team_slug"
+    },
+    "ApiTokenCreate": "phala:ApiTokenCreate",
+    "expires_in_days": {
+      "@id": "phala:expires_in_days"
+    },
+    "ApiTokenRefresh": "phala:ApiTokenRefresh",
+    "upgrade_version": {
+      "@id": "phala:upgrade_version",
+      "@type": "xsd:boolean"
+    },
+    "AppComposeV2": "phala:AppComposeV2",
+    "allowed_envs": {
+      "@id": "phala:allowed_envs",
+      "@container": "@list"
+    },
+    "bash_script": {
+      "@id": "phala:bash_script"
+    },
+    "default_gateway_domain": {
+      "@id": "phala:default_gateway_domain"
+    },
+    "docker_compose_file": {
+      "@id": "phala:docker_compose_file"
+    },
+    "init_script": {
+      "@id": "phala:init_script"
+    },
+    "kms_enabled": {
+      "@id": "phala:kms_enabled",
+      "@type": "xsd:boolean"
+    },
+    "local_key_provider_enabled": {
+      "@id": "phala:local_key_provider_enabled",
+      "@type": "xsd:boolean"
+    },
+    "manifest_version": {
+      "@id": "phala:manifest_version",
+      "@type": "xsd:integer"
+    },
+    "no_instance_id": {
+      "@id": "phala:no_instance_id",
+      "@type": "xsd:boolean"
+    },
+    "pre_launch_script": {
+      "@id": "phala:pre_launch_script"
+    },
+    "public_logs": {
+      "@id": "phala:public_logs",
+      "@type": "xsd:boolean"
+    },
+    "public_sysinfo": {
+      "@id": "phala:public_sysinfo",
+      "@type": "xsd:boolean"
+    },
+    "public_tcbinfo": {
+      "@id": "phala:public_tcbinfo",
+      "@type": "xsd:boolean"
+    },
+    "runner": {
+      "@id": "phala:runner",
+      "@type": "xsd:string"
+    },
+    "gateway_enabled": {
+      "@id": "phala:gateway_enabled",
+      "@type": "xsd:boolean"
+    },
+    "features": {
+      "@id": "phala:features",
+      "@container": "@list"
+    },
+    "salt": {
+      "@id": "phala:salt"
+    },
+    "secure_time": {
+      "@id": "phala:secure_time",
+      "@type": "xsd:boolean"
+    },
+    "storage_fs": {
+      "@id": "phala:storage_fs"
+    },
+    "tproxy_enabled": {
+      "@id": "phala:tproxy_enabled",
+      "@type": "xsd:boolean"
+    },
+    "AppCvmsBatchIsAllowedResponse": "phala:AppCvmsBatchIsAllowedResponse",
+    "allowed_count": {
+      "@id": "phala:allowed_count",
+      "@type": "xsd:integer"
+    },
+    "denied_count": {
+      "@id": "phala:denied_count",
+      "@type": "xsd:integer"
+    },
+    "error_count": {
+      "@id": "phala:error_count",
+      "@type": "xsd:integer"
+    },
+    "skipped_cvm_ids": {
+      "@id": "phala:skipped_cvm_ids",
+      "@container": "@list"
+    },
+    "AppEventsResponse": "phala:AppEventsResponse",
+    "events": {
+      "@id": "phala:events",
+      "@container": "@list"
+    },
+    "AppIsAllowedRequest": "phala:AppIsAllowedRequest",
+    "compose_hash": {
+      "@id": "phala:compose_hash",
+      "@type": "xsd:string"
+    },
+    "node_id": {
+      "@id": "phala:node_id"
+    },
+    "AppIsAllowedResponse": "phala:AppIsAllowedResponse",
+    "app_contract_address": {
+      "@id": "phala:app_contract_address",
+      "@type": "xsd:string"
+    },
+    "compose_hash_allowed": {
+      "@id": "phala:compose_hash_allowed",
+      "@type": "xsd:boolean"
+    },
+    "device_id_allowed": {
+      "@id": "phala:device_id_allowed"
+    },
+    "is_allowed": {
+      "@id": "phala:is_allowed",
+      "@type": "xsd:boolean"
+    },
+    "AppKmsInfoResponse": "phala:AppKmsInfoResponse",
+    "is_onchain_kms": {
+      "@id": "phala:is_onchain_kms",
+      "@type": "xsd:boolean"
+    },
+    "kms_contract_address": {
+      "@id": "phala:kms_contract_address"
+    },
+    "deployer_address": {
+      "@id": "phala:deployer_address"
+    },
+    "deployer_type": {
+      "@id": "phala:deployer_type"
+    },
+    "is_contract": {
+      "@id": "phala:is_contract",
+      "@type": "xsd:boolean"
+    },
+    "safe_app_url": {
+      "@id": "phala:safe_app_url"
+    },
+    "AppRevisionDetailResponse": "phala:AppRevisionDetailResponse",
+    "revision_id": {
+      "@id": "phala:revision_id",
+      "@type": "xsd:string"
+    },
+    "compose_file": {
+      "@id": "phala:compose_file"
+    },
+    "encrypted_env": {
+      "@id": "phala:encrypted_env",
+      "@type": "xsd:string"
+    },
+    "user_config": {
+      "@id": "phala:user_config",
+      "@type": "xsd:string"
+    },
+    "trace_id": {
+      "@id": "phala:trace_id"
+    },
+    "operation_type": {
+      "@id": "phala:operation_type",
+      "@type": "xsd:string"
+    },
+    "workspace": {
+      "@id": "phala:workspace"
+    },
+    "AppRevisionResponse": "phala:AppRevisionResponse",
+    "AppRevisionsResponse": "phala:AppRevisionsResponse",
+    "revisions": {
+      "@id": "phala:revisions",
+      "@container": "@list"
+    },
+    "page": {
+      "@id": "phala:page",
+      "@type": "xsd:integer"
+    },
+    "page_size": {
+      "@id": "phala:page_size",
+      "@type": "xsd:integer"
+    },
+    "total_pages": {
+      "@id": "phala:total_pages",
+      "@type": "xsd:integer"
+    },
+    "AppUsageResponse": "phala:AppUsageResponse",
+    "usage": {
+      "@id": "phala:usage",
+      "@container": "@list"
+    },
+    "total_cost": {
+      "@id": "phala:total_cost",
+      "@type": "xsd:decimal"
+    },
+    "AttachmentRequest": "phala:AttachmentRequest",
+    "filename": {
+      "@id": "phala:filename",
+      "@type": "xsd:string"
+    },
+    "content_type": {
+      "@id": "phala:content_type",
+      "@type": "xsd:string"
+    },
+    "AttestationKeyType": "phala:AttestationKeyType",
+    "AuditCvmDetail": "phala:AuditCvmDetail",
+    "instance_type_name": {
+      "@id": "phala:instance_type_name",
+      "@type": "xsd:string"
+    },
+    "vcpu": {
+      "@id": "phala:vcpu",
+      "@type": "xsd:integer"
+    },
+    "memory_gb": {
+      "@id": "phala:memory_gb",
+      "@type": "xsd:integer"
+    },
+    "disk_size_gb": {
+      "@id": "phala:disk_size_gb",
+      "@type": "xsd:integer"
+    },
+    "is_running": {
+      "@id": "phala:is_running",
+      "@type": "xsd:boolean"
+    },
+    "is_deleted": {
+      "@id": "phala:is_deleted",
+      "@type": "xsd:boolean"
+    },
+    "deleted_at": {
+      "@id": "phala:deleted_at"
+    },
+    "compute_rate_per_hour": {
+      "@id": "phala:compute_rate_per_hour",
+      "@type": "xsd:string"
+    },
+    "disk_rate_per_hour": {
+      "@id": "phala:disk_rate_per_hour",
+      "@type": "xsd:string"
+    },
+    "running_hours": {
+      "@id": "phala:running_hours",
+      "@type": "xsd:string"
+    },
+    "compute_estimated": {
+      "@id": "phala:compute_estimated",
+      "@type": "xsd:string"
+    },
+    "storage_estimated": {
+      "@id": "phala:storage_estimated",
+      "@type": "xsd:string"
+    },
+    "total_estimated": {
+      "@id": "phala:total_estimated",
+      "@type": "xsd:string"
+    },
+    "segments": {
+      "@id": "phala:segments",
+      "@container": "@list"
+    },
+    "AuditSegment": "phala:AuditSegment",
+    "start": {
+      "@id": "phala:start",
+      "@type": "xsd:dateTime"
+    },
+    "end": {
+      "@id": "phala:end",
+      "@type": "xsd:dateTime"
+    },
+    "end_reason": {
+      "@id": "phala:end_reason",
+      "@type": "xsd:string"
+    },
+    "duration_hours": {
+      "@id": "phala:duration_hours",
+      "@type": "xsd:string"
+    },
+    "compute_cost": {
+      "@id": "phala:compute_cost",
+      "@type": "xsd:string"
+    },
+    "storage_cost": {
+      "@id": "phala:storage_cost",
+      "@type": "xsd:string"
+    },
+    "AuditSummary": "phala:AuditSummary",
+    "total_cvms": {
+      "@id": "phala:total_cvms",
+      "@type": "xsd:integer"
+    },
+    "total_running_hours": {
+      "@id": "phala:total_running_hours",
+      "@type": "xsd:string"
+    },
+    "total_compute": {
+      "@id": "phala:total_compute",
+      "@type": "xsd:string"
+    },
+    "total_storage": {
+      "@id": "phala:total_storage",
+      "@type": "xsd:string"
+    },
+    "AutoSettleRequest": "phala:AutoSettleRequest",
+    "reason": {
+      "@id": "phala:reason",
+      "@type": "xsd:string"
+    },
+    "AutoSettleResponse": "phala:AutoSettleResponse",
+    "invoice_id": {
+      "@id": "phala:invoice_id",
+      "@type": "xsd:string"
+    },
+    "original_amount_due": {
+      "@id": "phala:original_amount_due",
+      "@type": "xsd:string"
+    },
+    "write_off_amount": {
+      "@id": "phala:write_off_amount",
+      "@type": "xsd:string"
+    },
+    "adjustment_item_id": {
+      "@id": "phala:adjustment_item_id",
+      "@type": "xsd:string"
+    },
+    "AvailableGpuItem": "phala:AvailableGpuItem",
+    "node_region": {
+      "@id": "phala:node_region"
+    },
+    "allocation_status": {
+      "@id": "phala:allocation_status",
+      "@type": "xsd:string"
+    },
+    "is_reserved": {
+      "@id": "phala:is_reserved",
+      "@type": "xsd:boolean"
+    },
+    "reserved_by_team_id": {
+      "@id": "phala:reserved_by_team_id"
+    },
+    "reserved_by_team_name": {
+      "@id": "phala:reserved_by_team_name"
+    },
+    "added_at": {
+      "@id": "phala:added_at"
+    },
+    "allocated_to_cvm_id": {
+      "@id": "phala:allocated_to_cvm_id"
+    },
+    "allocated_to_cvm_instance_id": {
+      "@id": "phala:allocated_to_cvm_instance_id"
+    },
+    "allocated_to_team_id": {
+      "@id": "phala:allocated_to_team_id"
+    },
+    "allocated_to_team_name": {
+      "@id": "phala:allocated_to_team_name"
+    },
+    "AvailableGpusResponse": "phala:AvailableGpusResponse",
+    "AvailableImageOut": "phala:AvailableImageOut",
+    "is_dev": {
+      "@id": "phala:is_dev",
+      "@type": "xsd:boolean"
+    },
+    "in_database": {
+      "@id": "phala:in_database",
+      "@type": "xsd:boolean"
+    },
+    "AvailableOSImageOut": "phala:AvailableOSImageOut",
+    "slug": {
+      "@id": "phala:slug",
+      "@type": "xsd:string"
+    },
+    "is_associated": {
+      "@id": "phala:is_associated",
+      "@type": "xsd:boolean"
+    },
+    "AvailableTeepodItem": "phala:AvailableTeepodItem",
+    "AvailableTeepodsResponse": "phala:AvailableTeepodsResponse",
+    "BackfillEnvPubkeyItem": "phala:BackfillEnvPubkeyItem",
+    "pubkey": {
+      "@id": "phala:pubkey"
+    },
+    "BackfillEnvPubkeyRequest": "phala:BackfillEnvPubkeyRequest",
+    "cvm_ids": {
+      "@id": "phala:cvm_ids"
+    },
+    "dry_run": {
+      "@id": "phala:dry_run",
+      "@type": "xsd:boolean"
+    },
+    "BackfillEnvPubkeyResponse": "phala:BackfillEnvPubkeyResponse",
+    "updated": {
+      "@id": "phala:updated",
+      "@type": "xsd:integer"
+    },
+    "BalanceResponse": "phala:BalanceResponse",
+    "external_id": {
+      "@id": "phala:external_id",
+      "@type": "xsd:string"
+    },
+    "credits_line": {
+      "@id": "phala:credits_line",
+      "@type": "xsd:decimal"
+    },
+    "needs_recharge": {
+      "@id": "phala:needs_recharge",
+      "@type": "xsd:boolean"
+    },
+    "recharge_amount": {
+      "@id": "phala:recharge_amount",
+      "@type": "xsd:decimal"
+    },
+    "BatchDeleteKmsOSImagesRequest": "phala:BatchDeleteKmsOSImagesRequest",
+    "os_image_ids": {
+      "@id": "phala:os_image_ids",
+      "@container": "@list"
+    },
+    "BatchDisableRequest": "phala:BatchDisableRequest",
+    "BatchDisableResponse": "phala:BatchDisableResponse",
+    "skipped": {
+      "@id": "phala:skipped",
+      "@type": "xsd:integer"
+    },
+    "errors": {
+      "@id": "phala:errors",
+      "@container": "@list"
+    },
+    "BatchInstanceIdRefreshRequest": "phala:BatchInstanceIdRefreshRequest",
+    "running_only": {
+      "@id": "phala:running_only",
+      "@type": "xsd:boolean"
+    },
+    "missing_only": {
+      "@id": "phala:missing_only",
+      "@type": "xsd:boolean"
+    },
+    "overwrite": {
+      "@id": "phala:overwrite",
+      "@type": "xsd:boolean"
+    },
+    "limit": {
+      "@id": "phala:limit",
+      "@type": "xsd:integer"
+    },
+    "BatchInstanceIdRefreshResponse": "phala:BatchInstanceIdRefreshResponse",
+    "scanned": {
+      "@id": "phala:scanned",
+      "@type": "xsd:integer"
+    },
+    "unchanged": {
+      "@id": "phala:unchanged",
+      "@type": "xsd:integer"
+    },
+    "conflicts": {
+      "@id": "phala:conflicts",
+      "@type": "xsd:integer"
+    },
+    "BatchIsAllowedRequest": "phala:BatchIsAllowedRequest",
+    "BatchIsAllowedResponse": "phala:BatchIsAllowedResponse",
+    "BatchItemResult": "phala:BatchItemResult",
+    "BatchKmsOSImageRelationRequest": "phala:BatchKmsOSImageRelationRequest",
+    "BatchStatusRequest": "phala:BatchStatusRequest",
+    "vm_uuids": {
+      "@id": "phala:vm_uuids",
+      "@container": "@list"
+    },
+    "BatchStopErrorEntry": "phala:BatchStopErrorEntry",
+    "BatchStopRequest": "phala:BatchStopRequest",
+    "BatchStopResponse": "phala:BatchStopResponse",
+    "stopped": {
+      "@id": "phala:stopped",
+      "@type": "xsd:integer"
+    },
+    "BatchSyncMetadataResponse": "phala:BatchSyncMetadataResponse",
+    "synced": {
+      "@id": "phala:synced",
+      "@type": "xsd:integer"
+    },
+    "BatchTeepodKmsRelationRequest": "phala:BatchTeepodKmsRelationRequest",
+    "kms_ids": {
+      "@id": "phala:kms_ids",
+      "@container": "@list"
+    },
+    "BatchTeepodOSImageRelationRequest": "phala:BatchTeepodOSImageRelationRequest",
+    "BatchTeepodTeamAccessRequest": "phala:BatchTeepodTeamAccessRequest",
+    "team_ids": {
+      "@id": "phala:team_ids",
+      "@container": "@list"
+    },
+    "BatchUpdateItemRequest": "phala:BatchUpdateItemRequest",
+    "item_id": {
+      "@id": "phala:item_id",
+      "@type": "xsd:string"
+    },
+    "cost": {
+      "@id": "phala:cost"
+    },
+    "BatchUpdateItemsRequest": "phala:BatchUpdateItemsRequest",
+    "BatchUpdateItemsResponse": "phala:BatchUpdateItemsResponse",
+    "updated_count": {
+      "@id": "phala:updated_count",
+      "@type": "xsd:integer"
+    },
+    "total_amount": {
+      "@id": "phala:total_amount",
+      "@type": "xsd:string"
+    },
+    "BatchUpdateResult": "phala:BatchUpdateResult",
+    "success_count": {
+      "@id": "phala:success_count",
+      "@type": "xsd:integer"
+    },
+    "failed_count": {
+      "@id": "phala:failed_count",
+      "@type": "xsd:integer"
+    },
+    "failed_ids": {
+      "@id": "phala:failed_ids",
+      "@container": "@list"
+    },
+    "message": {
+      "@id": "phala:message",
+      "@type": "xsd:string"
+    },
+    "BatchUpdateStatusRequest": "phala:BatchUpdateStatusRequest",
+    "BillingBalanceResponse": "phala:BillingBalanceResponse",
+    "granted_balance": {
+      "@id": "phala:granted_balance",
+      "@type": "xsd:string"
+    },
+    "is_post_paid": {
+      "@id": "phala:is_post_paid",
+      "@type": "xsd:boolean"
+    },
+    "outstanding_amount": {
+      "@id": "phala:outstanding_amount",
+      "@type": "xsd:string"
+    },
+    "tier": {
+      "@id": "phala:tier",
+      "@type": "@id"
+    },
+    "BillingPeriod": "phala:BillingPeriod",
+    "BillingPeriodResourceItem": "phala:BillingPeriodResourceItem",
+    "billing_period": {
+      "@id": "phala:billing_period"
+    },
+    "total_count": {
+      "@id": "phala:total_count",
+      "@type": "xsd:integer"
+    },
+    "running_count": {
+      "@id": "phala:running_count",
+      "@type": "xsd:integer"
+    },
+    "total_vcpu": {
+      "@id": "phala:total_vcpu",
+      "@type": "xsd:integer"
+    },
+    "running_vcpu": {
+      "@id": "phala:running_vcpu",
+      "@type": "xsd:integer"
+    },
+    "total_memory_mb": {
+      "@id": "phala:total_memory_mb",
+      "@type": "xsd:integer"
+    },
+    "running_memory_mb": {
+      "@id": "phala:running_memory_mb",
+      "@type": "xsd:integer"
+    },
+    "total_disk_gb": {
+      "@id": "phala:total_disk_gb",
+      "@type": "xsd:integer"
+    },
+    "running_disk_gb": {
+      "@id": "phala:running_disk_gb",
+      "@type": "xsd:integer"
+    },
+    "BillingRecordDetail": "phala:BillingRecordDetail",
+    "details": {
+      "@id": "phala:details",
+      "@type": "xsd:string"
+    },
+    "vm": {
+      "@id": "phala:vm"
+    },
+    "billing_start": {
+      "@id": "phala:billing_start"
+    },
+    "billing_end": {
+      "@id": "phala:billing_end"
+    },
+    "BillingSettingsResponse": "phala:BillingSettingsResponse",
+    "billing_email": {
+      "@id": "phala:billing_email"
+    },
+    "stripe_customer_email": {
+      "@id": "phala:stripe_customer_email"
+    },
+    "billing_mode": {
+      "@id": "phala:billing_mode",
+      "@type": "xsd:string"
+    },
+    "flag_billing_v2_enabled": {
+      "@id": "phala:flag_billing_v2_enabled",
+      "@type": "xsd:boolean"
+    },
+    "auto_topup_enabled": {
+      "@id": "phala:auto_topup_enabled",
+      "@type": "xsd:boolean"
+    },
+    "auto_topup_amount": {
+      "@id": "phala:auto_topup_amount",
+      "@type": "xsd:string"
+    },
+    "auto_topup_threshold": {
+      "@id": "phala:auto_topup_threshold",
+      "@type": "xsd:string"
+    },
+    "post_paid_available": {
+      "@id": "phala:post_paid_available",
+      "@type": "xsd:boolean"
+    },
+    "post_paid_charge_cap": {
+      "@id": "phala:post_paid_charge_cap",
+      "@type": "xsd:string"
+    },
+    "post_paid_grace_deadline": {
+      "@id": "phala:post_paid_grace_deadline"
+    },
+    "has_saved_card": {
+      "@id": "phala:has_saved_card",
+      "@type": "xsd:boolean"
+    },
+    "outstanding_debt": {
+      "@id": "phala:outstanding_debt",
+      "@type": "xsd:string"
+    },
+    "BlacklistRequest": "phala:BlacklistRequest",
+    "Body_api_verify_email_token_api_v1_auth_verify_email_token_post": "phala:Body_api_verify_email_token_api_v1_auth_verify_email_token_post",
+    "request": {
+      "@id": "phala:request",
+      "@type": "@id"
+    },
+    "site_key": {
+      "@id": "phala:site_key",
+      "@type": "xsd:string"
+    },
+    "Body_handle_restart_cvm_api_v1_cvms__cvm_id__restart_post": "phala:Body_handle_restart_cvm_api_v1_cvms__cvm_id__restart_post",
+    "force": {
+      "@id": "phala:force",
+      "@type": "xsd:boolean"
+    },
+    "Body_handle_save_intent_api_v1_setup_billing_save_intent_post": "phala:Body_handle_save_intent_api_v1_setup_billing_save_intent_post",
+    "payment_intent_id": {
+      "@id": "phala:payment_intent_id",
+      "@type": "xsd:string"
+    },
+    "payment_method_id": {
+      "@id": "phala:payment_method_id",
+      "@type": "xsd:string"
+    },
+    "Body_handle_update_cvm_listed_api_v1_cvms__cvm_id__listed_patch": "phala:Body_handle_update_cvm_listed_api_v1_cvms__cvm_id__listed_patch",
+    "listed": {
+      "@id": "phala:listed",
+      "@type": "xsd:boolean"
+    },
+    "Body_handle_update_cvm_name_api_v1_cvms__cvm_id__name_patch": "phala:Body_handle_update_cvm_name_api_v1_cvms__cvm_id__name_patch",
+    "Body_handle_update_cvm_scheduled_delete_api_v1_cvms__cvm_id__scheduled_delete_patch": "phala:Body_handle_update_cvm_scheduled_delete_api_v1_cvms__cvm_id__scheduled_delete_patch",
+    "scheduled_delete_at": {
+      "@id": "phala:scheduled_delete_at"
+    },
+    "Body_handle_update_cvm_visibility_api_v1_cvms__cvm_id__visibility_patch": "phala:Body_handle_update_cvm_visibility_api_v1_cvms__cvm_id__visibility_patch",
+    "Body_handle_upload_and_verify_api_v1_attestations_verify_post": "phala:Body_handle_upload_and_verify_api_v1_attestations_verify_post",
+    "file": {
+      "@id": "phala:file"
+    },
+    "hex": {
+      "@id": "phala:hex"
+    },
+    "Body_login_for_access_token_api_v1_auth_token_post": "phala:Body_login_for_access_token_api_v1_auth_token_post",
+    "grant_type": {
+      "@id": "phala:grant_type"
+    },
+    "password": {
+      "@id": "phala:password",
+      "@type": "xsd:string"
+    },
+    "scope": {
+      "@id": "phala:scope",
+      "@type": "xsd:string"
+    },
+    "client_id": {
+      "@id": "phala:client_id"
+    },
+    "client_secret": {
+      "@id": "phala:client_secret"
+    },
+    "Body_login_with_cookie_api_v1_auth_login_post": "phala:Body_login_with_cookie_api_v1_auth_login_post",
+    "Body_setup_2fa_endpoint_api_v1_auth_2fa_setup_post": "phala:Body_setup_2fa_endpoint_api_v1_auth_2fa_setup_post",
+    "Body_trigger_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_patch": "phala:Body_trigger_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_patch",
+    "env_keys": {
+      "@id": "phala:env_keys"
+    },
+    "update_env_vars": {
+      "@id": "phala:update_env_vars"
+    },
+    "Body_update_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_patch": "phala:Body_update_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_patch",
+    "Body_update_cvm_envs_api_v1_cvms__cvm_id__envs_patch": "phala:Body_update_cvm_envs_api_v1_cvms__cvm_id__envs_patch",
+    "transaction_hash": {
+      "@id": "phala:transaction_hash"
+    },
+    "Body_update_cvm_os_image_api_v1_cvms__cvm_id__os_image_patch": "phala:Body_update_cvm_os_image_api_v1_cvms__cvm_id__os_image_patch",
+    "os_image_name": {
+      "@id": "phala:os_image_name",
+      "@type": "xsd:string"
+    },
+    "Body_update_cvm_pre_launch_script_api_v1_cvms__cvm_id__pre_launch_script_patch": "phala:Body_update_cvm_pre_launch_script_api_v1_cvms__cvm_id__pre_launch_script_patch",
+    "Body_upload_avatar_api_v1_profiles__entity_type___entity_id__avatar_put": "phala:Body_upload_avatar_api_v1_profiles__entity_type___entity_id__avatar_put",
+    "avatar": {
+      "@id": "phala:avatar",
+      "@type": "xsd:string"
+    },
+    "Body_upload_my_avatar_api_v1_profiles_me_avatar_put": "phala:Body_upload_my_avatar_api_v1_profiles_me_avatar_put",
+    "BootInfo": "phala:BootInfo",
+    "mrAggregated": {
+      "@id": "phala:mrAggregated"
+    },
+    "osImageHash": {
+      "@id": "phala:osImageHash"
+    },
+    "appId": {
+      "@id": "phala:appId",
+      "@type": "xsd:string"
+    },
+    "composeHash": {
+      "@id": "phala:composeHash",
+      "@type": "xsd:string"
+    },
+    "instanceId": {
+      "@id": "phala:instanceId"
+    },
+    "deviceId": {
+      "@id": "phala:deviceId"
+    },
+    "tcbStatus": {
+      "@id": "phala:tcbStatus"
+    },
+    "advisoryIds": {
+      "@id": "phala:advisoryIds"
+    },
+    "mrSystem": {
+      "@id": "phala:mrSystem"
+    },
+    "attestationMode": {
+      "@id": "phala:attestationMode"
+    },
+    "keyProviderInfo": {
+      "@id": "phala:keyProviderInfo"
+    },
+    "BootResponse": "phala:BootResponse",
+    "isAllowed": {
+      "@id": "phala:isAllowed",
+      "@type": "xsd:boolean"
+    },
+    "gatewayAppId": {
+      "@id": "phala:gatewayAppId",
+      "@type": "xsd:string"
+    },
+    "BootstrapInfoOut": "phala:BootstrapInfoOut",
+    "k256_pubkey": {
+      "@id": "phala:k256_pubkey",
+      "@type": "xsd:string"
+    },
+    "ca_pubkey": {
+      "@id": "phala:ca_pubkey",
+      "@type": "xsd:string"
+    },
+    "quote_length": {
+      "@id": "phala:quote_length",
+      "@type": "xsd:integer"
+    },
+    "eventlog_length": {
+      "@id": "phala:eventlog_length",
+      "@type": "xsd:integer"
+    },
+    "CIOAuditMismatch": "phala:CIOAuditMismatch",
+    "user_id": {
+      "@id": "phala:user_id",
+      "@type": "xsd:string"
+    },
+    "db_email": {
+      "@id": "phala:db_email",
+      "@type": "xsd:string"
+    },
+    "cio_email": {
+      "@id": "phala:cio_email"
+    },
+    "cio_id": {
+      "@id": "phala:cio_id"
+    },
+    "CIOAuditResponse": "phala:CIOAuditResponse",
+    "total_checked": {
+      "@id": "phala:total_checked",
+      "@type": "xsd:integer"
+    },
+    "mismatches": {
+      "@id": "phala:mismatches",
+      "@container": "@list"
+    },
+    "CIODeleteRequest": "phala:CIODeleteRequest",
+    "CIODeleteResponse": "phala:CIODeleteResponse",
+    "CIOEmailRecipient": "phala:CIOEmailRecipient",
+    "customer_id": {
+      "@id": "phala:customer_id",
+      "@type": "xsd:string"
+    },
+    "message_data": {
+      "@id": "phala:message_data"
+    },
+    "CIOFixEmailRequest": "phala:CIOFixEmailRequest",
+    "strategy": {
+      "@id": "phala:strategy",
+      "@type": "@id"
+    },
+    "CIOFixEmailResponse": "phala:CIOFixEmailResponse",
+    "CIOFixEmailStrategy": "phala:CIOFixEmailStrategy",
+    "CIOIdType": "phala:CIOIdType",
+    "CIOPersonResponse": "phala:CIOPersonResponse",
+    "found": {
+      "@id": "phala:found",
+      "@type": "xsd:boolean"
+    },
+    "identifiers": {
+      "@id": "phala:identifiers"
+    },
+    "attributes": {
+      "@id": "phala:attributes"
+    },
+    "CIOSendEmailAdminRequest": "phala:CIOSendEmailAdminRequest",
+    "transactional_message_id": {
+      "@id": "phala:transactional_message_id"
+    },
+    "body": {
+      "@id": "phala:body"
+    },
+    "from_email": {
+      "@id": "phala:from_email",
+      "@type": "xsd:string"
+    },
+    "send_to_unsubscribed": {
+      "@id": "phala:send_to_unsubscribed",
+      "@type": "xsd:boolean"
+    },
+    "CIOSendEmailAdminResponse": "phala:CIOSendEmailAdminResponse",
+    "CIOSendEmailResult": "phala:CIOSendEmailResult",
+    "delivery_id": {
+      "@id": "phala:delivery_id"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Phala Network API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Phala Network's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-13) from openapi/phala-cloud-api-openapi.yml.",
+  "dcterms:created": "2026-10-13",
+  "dcterms:source": [
+    "openapi/phala-cloud-api-openapi.yml"
+  ]
+}

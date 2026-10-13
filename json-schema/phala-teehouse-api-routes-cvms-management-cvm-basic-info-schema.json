@@ -1,0 +1,428 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/phala/main/json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json",
+  "title": "CvmBasicInfo",
+  "description": "Detailed CVM information returned by GET /cvms/{cvm_id}.",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/phala-cloud-api-openapi.yml#/components/schemas/teehouse__api__routes__cvms__management__CvmBasicInfo",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "title": "Id",
+      "description": "Internal CVM database ID"
+    },
+    "teepod_id": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Teepod Id",
+      "description": "Node ID (admin only)"
+    },
+    "teepod": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CvmNode"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Node metadata"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "RFC 1123 compliant CVM name"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "description": "Current status: running, stopped, starting, etc."
+    },
+    "in_progress": {
+      "type": "boolean",
+      "title": "In Progress",
+      "description": "True if an operation is currently executing",
+      "default": false
+    },
+    "app_id": {
+      "type": "string",
+      "title": "App Id",
+      "description": "Unique application identifier"
+    },
+    "vm_uuid": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Vm Uuid",
+      "description": "VM instance UUID on the node"
+    },
+    "instance_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Instance Id",
+      "description": "Public instance identifier"
+    },
+    "vcpu": {
+      "type": "integer",
+      "title": "Vcpu",
+      "description": "Allocated vCPU count"
+    },
+    "memory": {
+      "type": "integer",
+      "title": "Memory",
+      "description": "Allocated memory in MB"
+    },
+    "disk_size": {
+      "type": "integer",
+      "title": "Disk Size",
+      "description": "Allocated disk size in GB"
+    },
+    "base_image": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Base Image",
+      "description": "OS image name"
+    },
+    "encrypted_env_pubkey": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Encrypted Env Pubkey",
+      "description": "Public key for encrypting env vars"
+    },
+    "listed": {
+      "type": "boolean",
+      "title": "Listed",
+      "description": "True if publicly listed",
+      "default": false
+    },
+    "project_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "hashid",
+          "description": "A hashed identifier that maps to an internal database ID"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Project Id",
+      "description": "Associated project ID"
+    },
+    "project_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Project Type",
+      "description": "Project provision type"
+    },
+    "instance_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Instance Type",
+      "description": "Instance type identifier"
+    },
+    "public_sysinfo": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Public Sysinfo",
+      "description": "Expose system info publicly"
+    },
+    "public_logs": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Public Logs",
+      "description": "Expose logs publicly"
+    },
+    "dapp_dashboard_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Dapp Dashboard Url",
+      "description": "DApp dashboard URL if applicable"
+    },
+    "syslog_endpoint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Syslog Endpoint",
+      "description": "Syslog streaming endpoint"
+    },
+    "kms_info": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KMSInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "KMS configuration"
+    },
+    "contract_address": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Contract Address",
+      "description": "On-chain contract address"
+    },
+    "deployer_address": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Deployer Address",
+      "description": "Deployer wallet address"
+    },
+    "scheduled_delete_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Scheduled Delete At",
+      "description": "Auto-delete timestamp (UTC)"
+    },
+    "public_urls": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/CvmNetworkUrls"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Public Urls",
+      "description": "Exposed service URLs"
+    },
+    "gateway_domain": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Gateway Domain",
+      "description": "Gateway base domain"
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "status",
+    "app_id",
+    "vcpu",
+    "memory",
+    "disk_size"
+  ],
+  "$defs": {
+    "CvmNetworkUrls": {
+      "properties": {
+        "app": {
+          "type": "string",
+          "title": "App"
+        },
+        "instance": {
+          "type": "string",
+          "title": "Instance"
+        }
+      },
+      "type": "object",
+      "required": [
+        "app",
+        "instance"
+      ],
+      "title": "CvmNetworkUrls",
+      "description": "Model representing public URLs for a CVM port"
+    },
+    "CvmNode": {
+      "properties": {
+        "id": {
+          "type": "integer",
+          "title": "Id"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "region_identifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Region Identifier"
+        }
+      },
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "CvmNode"
+    },
+    "KMSInfo": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^kms_.+",
+          "format": "hashid",
+          "title": "HashedId[kms]",
+          "description": "Hashed KMS identifier (kms_xxxxx)"
+        },
+        "slug": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Slug",
+          "description": "Human-readable KMS name"
+        },
+        "url": {
+          "type": "string",
+          "title": "Url",
+          "description": "KMS endpoint URL"
+        },
+        "version": {
+          "type": "string",
+          "title": "Version",
+          "description": "KMS software version"
+        },
+        "chain_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Chain Id",
+          "description": "Blockchain chain ID if onchain"
+        },
+        "kms_contract_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Kms Contract Address",
+          "description": "Smart contract address if onchain"
+        },
+        "gateway_app_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Gateway App Id",
+          "description": "Gateway application ID"
+        }
+      },
+      "type": "object",
+      "required": [
+        "id",
+        "url",
+        "version"
+      ],
+      "title": "KMSInfo",
+      "description": "KMS instance information."
+    }
+  }
+}

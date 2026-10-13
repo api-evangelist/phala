@@ -1,0 +1,2371 @@
+generated: '2026-10-13'
+method: derived
+generator: derive-data-model.py
+source:
+- openapi/phala-cloud-api-openapi.yml
+notation: has_one = property $ref; has_many = array of $ref; belongs_to = <entity>_id field
+summary:
+  entities: 400
+  entities_in_spec: 694
+  relationships: 328
+entities:
+- name: Account
+  fields: 7
+  description: OAuth account linked to a user.
+- name: AccountsResponse
+  fields: 3
+  description: Response for getting user's connected accounts.
+- name: AcmeFetchResult
+  fields: 5
+  description: Result of an ACME account fetch attempt.
+- name: ActiveGpuRentalOverviewResponse
+  fields: 4
+  description: Overview payload combining active rental metrics and featured items.
+- name: ActiveGpuRentalResponse
+  fields: 10
+  description: Summary of an active GPU rental instance.
+- name: AddMembersRequest
+  fields: 2
+  description: Request to add members to a team.
+- name: AddTeepodsRequest
+  fields: 1
+  description: Request to add teepods to a workspace.
+- name: AdminEmailResponse
+  fields: 4
+- name: AdminEmailResult
+  fields: 4
+- name: AdminInstanceEventResponse
+  fields: 15
+  description: Instance lifecycle event with CVM, user, and team context.
+- name: AdminTeepodDetail
+  fields: 25
+  description: Teepod with admin-specific metadata.
+- name: AdminUserDetail
+  fields: 22
+  description: Extended user information for admin interface.
+- name: AffectedApp
+  fields: 6
+- name: AffectedCvm
+  fields: 6
+- name: AffectedTeam
+  fields: 4
+- name: AllFamiliesResponse
+  fields: 1
+  description: All instance type families with their types.
+- name: AllocationDetail
+  fields: 8
+  description: CVM allocation detail for an order.
+- name: AllocationGpuDetail
+  fields: 3
+  description: GPU details for an allocation.
+- name: AllocationHistoryItem
+  fields: 7
+  description: GPU allocation history record.
+- name: AllocationHistoryResponse
+  fields: 3
+  description: GPU allocation history response.
+- name: AllowedNodeOut
+  fields: 4
+- name: AllowedNodesResponse
+  fields: 3
+- name: AllowedOsImageOut
+  fields: 6
+- name: AllowedOsImagesResponse
+  fields: 3
+- name: AppComposeV2
+  fields: 21
+- name: AppCvmsBatchIsAllowedResponse
+  fields: 7
+- name: AppEventsResponse
+  fields: 2
+  description: Instance event list response.
+- name: AppRevisionDetailResponse
+  fields: 13
+  description: Full revision detail with configuration data.
+- name: AppRevisionResponse
+  fields: 10
+  description: App deployment revision summary.
+- name: AppRevisionsResponse
+  fields: 5
+  description: Paginated revision list.
+- name: AppUsageResponse
+  fields: 3
+  description: App usage response with cost summary.
+- name: AuditCvmDetail
+  fields: 20
+- name: AuditSegment
+  fields: 6
+- name: AuditSummary
+  fields: 5
+- name: AvailableGpuItem
+  fields: 17
+  description: GPU information for available GPUs (reserved + available).
+- name: AvailableGpusResponse
+  fields: 1
+  description: Response for available GPUs list.
+- name: AvailableImageOut
+  fields: 5
+  description: Available OS image from teepod RPC.
+- name: AvailableTeepodItem
+  fields: 8
+  description: Teepod information for available teepods (reserved + enabled).
+- name: AvailableTeepodsResponse
+  fields: 1
+  description: Response for available teepods list.
+- name: BackfillEnvPubkeyItem
+  fields: 5
+- name: BackfillEnvPubkeyResponse
+  fields: 3
+- name: BatchDisableRequest
+  fields: 1
+  description: Request to batch disable multiple users.
+- name: BatchDisableResponse
+  fields: 4
+  description: Summary of batch disable operation.
+- name: BatchInstanceIdRefreshResponse
+  fields: 8
+- name: BatchIsAllowedResponse
+  fields: 6
+- name: BatchItemResult
+  fields: 9
+- name: BatchStopErrorEntry
+  fields: 2
+  description: Error detail for a single CVM in batch stop.
+- name: BatchStopResponse
+  fields: 4
+  description: Summary of batch stop operation.
+- name: BatchSyncMetadataResponse
+  fields: 5
+  description: Result of batch KMS metadata sync.
+- name: BatchUpdateItemRequest
+  fields: 2
+  description: Single item update in a batch request.
+- name: BatchUpdateItemsRequest
+  fields: 1
+  description: Request to batch update invoice items.
+- name: BillingPeriodResourceItem
+  fields: 9
+  description: Resource usage breakdown by billing period.
+- name: BillingRecordDetail
+  fields: 8
+  description: Single metered usage event.
+- name: Body_api_verify_email_token_api_v1_auth_verify_email_token_post
+  fields: 2
+- name: BootstrapInfoOut
+  fields: 4
+- name: CIOAuditMismatch
+  fields: 5
+- name: CIOAuditResponse
+  fields: 3
+- name: CIODeleteRequest
+  fields: 1
+- name: CIODeleteResponse
+  fields: 4
+- name: CIOEmailRecipient
+  fields: 3
+- name: CIOFixEmailRequest
+  fields: 2
+- name: CIOFixEmailResponse
+  fields: 5
+- name: CIOPersonResponse
+  fields: 4
+- name: CIOSendEmailAdminRequest
+  fields: 7
+- name: CIOSendEmailAdminResponse
+  fields: 4
+- name: CIOSendEmailResult
+  fields: 4
+- name: CVMDetail
+  fields: 19
+  description: CVM detail with usage and cost breakdown.
+- name: CVMGatewayInfo
+  fields: 2
+- name: CVMInfoDetail
+  fields: 33
+- name: CVMItem
+  fields: 10
+  description: CVM item for team CVMs list.
+- name: CVMKmsInfo
+  fields: 6
+- name: CVMLogUrls
+  fields: 4
+- name: CVMOSInfo
+  fields: 4
+- name: CVMPreview
+  fields: 8
+  description: CVM information for team preview.
+- name: CVMProgressInfo
+  fields: 3
+- name: CVMResourceInfo
+  fields: 7
+- name: CaaCheckResult
+  fields: 6
+  description: CAA record check result (informational, not required for validation).
+- name: CardFingerprintDetailOut
+  fields: 10
+  description: Card fingerprint with full verification attempt history.
+- name: CardFingerprintListResponse
+  fields: 2
+  description: Paginated list of card fingerprints.
+- name: CardFingerprintOut
+  fields: 9
+  description: Card fingerprint record with verification count.
+- name: Certificate
+  fields: 14
+- name: CertificateIssuer
+  fields: 3
+- name: CertificateSubject
+  fields: 5
+- name: ChangeEmailPayload
+  fields: 4
+  description: Request payload for changing email address
+- name: CheckEmailMXInfo
+  fields: 2
+- name: CheckEmailMisc
+  fields: 5
+- name: CheckEmailResult
+  fields: 6
+- name: CheckEmailSMTPInfo
+  fields: 5
+- name: CheckEmailSyntax
+  fields: 6
+- name: ComposeFilePatchRequest
+  fields: 3
+  description: API request model for partially updating CVM compose files - matches CvmUpgradePayload structure
+- name: ComposeFileProvisionResponse
+  fields: 5
+  description: API response model for compose file provision
+- name: ComposeFileUpdateRequest
+  fields: 4
+  description: API request model for updating CVM compose files
+- name: ComposeManifest
+  fields: 15
+  description: '@see https://github.com/Dstack-TEE/dstack/blob/master/tdxctl/src/utils.rs#L77'
+- name: ComposeManifestPatchRequest
+  fields: 2
+  description: Partial update for compose_manifest fields
+- name: ComputeMetrics
+  fields: 2
+  description: Compute usage metrics.
+- name: ConnectionItem
+  fields: 15
+- name: ConnectionListResponse
+  fields: 5
+- name: ContractDeviceOut
+  fields: 3
+- name: ContractDevicesResponse
+  fields: 4
+- name: ContractOsImageOut
+  fields: 5
+- name: ContractOsImagesResponse
+  fields: 4
+- name: CoreMetrics
+  fields: 7
+  description: Core usage metrics.
+- name: CreateAppInstanceRequest
+  fields: 8
+  description: Request model for creating a new instance under an existing app.
+- name: CreateConnectionRequest
+  fields: 3
+- name: CreatorInfo
+  fields: 5
+  description: Basic creator information embedded in team responses.
+- name: CreditTransaction
+  fields: 6
+- name: CreditTransactionItem
+  fields: 11
+  description: Credit transaction item for workspace transactions list.
+- name: CvmAllocationResponse
+  fields: 5
+  description: CVM allocation info for a GPU rental order.
+- name: CvmAttestation
+  fields: 7
+  description: Model representing CVM attestation information
+- name: CvmComposeFile
+  fields: 3
+  description: Model representing CVM compose file information
+- name: CvmIsAllowedItem
+  fields: 9
+- name: CvmNetworkUrls
+  fields: 2
+  description: Model representing public URLs for a CVM port
+- name: CvmNode
+  fields: 3
+- name: CvmOperationResponse
+  fields: 15
+  description: Aggregated operation record grouped by correlation_id.
+- name: CvmRef
+  fields: 4
+  description: Minimal CVM reference for embedding in responses.
+- name: CvmStatus
+  fields: 11
+  description: CVM status information for API response.
+- name: CvmSystemInfo
+  fields: 8
+- name: CvmTeescopeEgress
+  fields: 4
+- name: CvmTeescopeInfo
+  fields: 5
+- name: CvmTeescopeIngress
+  fields: 4
+- name: CvmTeescopeQemu
+  fields: 15
+- name: CvmTeescopeStorage
+  fields: 2
+- name: CvmUpgradePayload
+  fields: 8
+- name: DailyStats
+  fields: 12
+  description: Platform metrics for a single day.
+- name: DailyTrend
+  fields: 5
+  description: Daily usage trend data.
+- name: DailyUptimeItem
+  fields: 5
+- name: DailyUptimeResponse
+  fields: 2
+- name: DailyUsageItem
+  fields: 5
+  description: Daily usage item with compute and disk costs.
+- name: DecoupleOrderResponse
+  fields: 6
+- name: DecoupledCvmChangeOut
+  fields: 3
+- name: DeviceAllowlistItem
+  fields: 5
+- name: DeviceAllowlistResponse
+  fields: 5
+- name: DeviceIdAuditResponse
+  fields: 4
+- name: DeviceTeepodInfo
+  fields: 3
+- name: DiagnoseDomainsRequest
+  fields: 1
+  description: Request for diagnosing custom domain DNS configuration.
+- name: DiagnosisResponse
+  fields: 1
+  description: Response containing diagnosis results for all requested domains.
+- name: DisableErrorEntry
+  fields: 2
+  description: Error detail for a single user in batch disable.
+- name: DiskInfo
+  fields: 4
+- name: DisputeOperation
+  fields: 8
+- name: DisputeTimelineResponse
+  fields: 5
+- name: DnsRecordResult
+  fields: 7
+  description: DNS record check result.
+- name: DockerConfig
+  fields: 3
+- name: DomainCheckRequest
+  fields: 2
+  description: Single domain check entry.
+- name: DomainDiagnosisResult
+  fields: 5
+  description: Diagnosis result for a single domain.
+- name: DstackAppItem
+  fields: 8
+  description: Dstack app item for team dstack apps list.
+- name: DstackAppMinimalResponse
+  fields: 11
+- name: DstackAppPreview
+  fields: 6
+  description: Dstack app information for team preview.
+- name: EmailTokenVerificationRequest
+  fields: 1
+- name: EmailVerificationPayload
+  fields: 2
+  description: Request payload for email verification
+- name: EventLog
+  fields: 5
+- name: ExtendedCreditTransaction
+  fields: 11
+  description: Credit transaction with associated user and team data.
+- name: ExternalSettlementResponse
+  fields: 8
+  description: Response model for external payment settlement.
+- name: FamilyGroup
+  fields: 3
+  description: Instance types grouped by family.
+- name: FamilyInstanceTypesResponse
+  fields: 3
+  description: Instance types for one family.
+- name: FinalizeBatchItemRequest
+  fields: 3
+- name: FinalizeBatchItemResult
+  fields: 4
+- name: FinalizeBatchRequest
+  fields: 1
+- name: FinalizeBatchResponse
+  fields: 4
+- name: GpuAllocationStatusOut
+  fields: 4
+  description: Combined inventory and device state.
+- name: GpuAvailability
+  fields: 4
+  description: GPU availability information for the current team
+- name: GpuAvailabilityCheckResponse
+  fields: 7
+  description: GPU availability check result.
+- name: GpuConfig
+  fields: 2
+- name: GpuCurrentAllocation
+  fields: 6
+  description: Current CVM allocation for GPU.
+- name: GpuDeviceState
+  fields: 10
+  description: Real-time device state from Teescope.
+- name: GpuDeviceStateOut
+  fields: 14
+  description: GPU device state from Teescope.
+- name: GpuInventoryStateOut
+  fields: 10
+  description: GPU inventory state from database.
+- name: GpuItem
+  fields: 9
+  description: GPU information for workspace GPUs list.
+- name: GpuNodeInfo
+  fields: 2
+  description: Node context for GPU.
+- name: GpuRentalOrderHistoryItem
+  fields: 10
+  description: User-facing order history item. Does not expose admin-only decouple metadata.
+- name: GpuRentalOrderHistoryResponse
+  fields: 5
+  description: Paginated order history response.
+- name: GpuRentalOrderItem
+  fields: 35
+  description: GPU rental order with related metadata.
+- name: GpuRentalOrderListResponse
+  fields: 9
+  description: Response payload for GPU rental order list.
+- name: GpuRentalOrderSummaryOut
+  fields: 7
+- name: GpuReservedTeamInfo
+  fields: 2
+  description: Team with reserved access to GPU.
+- name: GpuSkuHistoryResponse
+  fields: 3
+  description: Minimal SKU info for order history.
+- name: GpuSkuOut
+  fields: 22
+  description: GPU SKU with hardware specs and pricing tiers.
+- name: GpuSkuPriceOut
+  fields: 6
+  description: GPU SKU pricing tier for a specific plan.
+- name: GpuSkuPriceResponse
+  fields: 4
+- name: GpuSkuResponse
+  fields: 16
+- name: GpuSpec
+  fields: 2
+- name: GpuSyncStatus
+  fields: 2
+  description: Sync status between inventory and device.
+- name: GpuTeepodInfo
+  fields: 3
+  description: Teepod context for GPU.
+- name: GuestAgentInfo
+  fields: 7
+- name: GuestEvent
+  fields: 3
+  description: Structured lifecycle event emitted by the guest or runtime. Since VMM v0.5.7.
+- name: HTTPValidationError
+  fields: 1
+- name: HostedCvm
+  fields: 21
+- name: HourlyBillingResponse
+  fields: 3
+  description: Hourly billing summary with detailed events.
+- name: InstanceIdRefreshResult
+  fields: 8
+- name: InstanceSpendingResponse
+  fields: 2
+  description: Cost breakdown for a single CVM instance.
+- name: InstanceTypeBreakdown
+  fields: 10
+  description: Instance type breakdown with compute and storage costs.
+- name: InstanceTypePublic
+  fields: 9
+  description: Public instance type specification.
+- name: InstanceTypeResourceItem
+  fields: 12
+  description: Resource usage breakdown by instance type.
+- name: InvitationResponse
+  fields: 9
+  description: Response model for invitation.
+- name: InvoiceItem
+  fields: 18
+  description: Invoice item for workspace invoices list.
+- name: InvoiceListItem
+  fields: 11
+  description: Invoice summary for list view.
+- name: InvoiceListResponse
+  fields: 2
+  description: Paginated invoice list.
+- name: InvoiceWithRelations
+  fields: 24
+- name: KMSInfo
+  fields: 7
+  description: KMS instance information.
+- name: KmsContractOut
+  fields: 6
+  description: KMS contract configuration for on-chain key management.
+- name: KmsContractWithNodesOut
+  fields: 8
+  description: KMS contract with associated KMS nodes.
+- name: KmsGroupedData
+  fields: 5
+  description: KMS data grouped by contract association and type.
+- name: KmsInspectResponse
+  fields: 11
+- name: KmsListResponse
+  fields: 5
+  description: Paginated KMS list response.
+- name: KmsNodeOut
+  fields: 12
+  description: KMS node configuration with gateway settings.
+- name: KmsOut
+  fields: 18
+  description: KMS node with contract association and gateway configuration.
+- name: KmsRpcInfo
+  fields: 7
+- name: KmsSearchResult
+  fields: 6
+  description: KMS search result for relationship management.
+- name: KmsSyncResult
+  fields: 6
+  description: Result of syncing metadata for a single KMS node.
+- name: KmsWithSupportedOSImage
+  fields: 8
+- name: ListReservedGpusResponse
+  fields: 2
+  description: List of GPUs reserved for the workspace.
+- name: LongRunningTask
+  fields: 5
+  description: Task running longer than 5 minutes.
+- name: MachineInfo
+  fields: 4
+  description: CVM hardware configuration.
+- name: ManagedUser
+  fields: 2
+- name: MatchedResourceInfo
+  fields: 10
+  description: Matched GPU resource details.
+- name: MemberPreview
+  fields: 5
+  description: Member information for team preview.
+- name: MeteredUsageResponse
+  fields: 14
+  description: Single metered usage record.
+- name: MonthlyInvoiceSummaryItem
+  fields: 3
+  description: Monthly invoice summary item for reconciliation.
+- name: MonthlySpending
+  fields: 5
+  description: Monthly spending breakdown.
+- name: MonthlyTransactionSummaryItem
+  fields: 4
+  description: Monthly transaction summary item for reconciliation.
+- name: MonthlyUsageItem
+  fields: 5
+  description: Monthly usage item with breakdown.
+- name: MonthlyUsageResponse
+  fields: 1
+  description: Monthly usage response with list of monthly items.
+- name: MonthlyUsageSummaryItem
+  fields: 3
+  description: Monthly usage summary item for reconciliation.
+- name: NetworkConfigPortMappingEntry
+  fields: 4
+  description: Single port mapping rule returned from VMM network config.
+- name: NetworkConfigResponse
+  fields: 3
+  description: Real-time network configuration from VMM.
+- name: NodeFirewallRuleOut
+  fields: 13
+  description: Single firewall rule on a node with parsed CVM association.
+- name: NodeFirewallRulesResponse
+  fields: 2
+  description: Node firewall rules list response.
+- name: NodeNetworkDeviceOut
+  fields: 6
+  description: Single host network device stat.
+- name: NodeNetworkDevicesResponse
+  fields: 3
+  description: Host network devices stats for a node.
+- name: NodeOut
+  fields: 18
+  description: Physical TDX node with hardware specs and teepod assignments.
+- name: NodeOutagesResponse
+  fields: 5
+- name: NodeProvider
+  fields: 3
+  description: TEE node provider info.
+- name: NodeRef
+  fields: 9
+  description: Minimal node/teepod reference for embedding in responses.
+- name: NodeResourceLimits
+  fields: 4
+  description: Node hardware capacity limits.
+- name: NodeSNITrafficItem
+  fields: 4
+  description: Traffic stats for a single SNI.
+- name: NodeStorageInfo
+  fields: 6
+  description: Filesystem storage stats.
+- name: NodeStorageListResponse
+  fields: 3
+  description: Per-VM storage list for a node, sorted by size desc.
+- name: NodeStorageVMItem
+  fields: 3
+  description: Storage usage for a single VM from agent.
+- name: NodeSystemInfoResponse
+  fields: 15
+  description: System info from node agent including MKTME and storage.
+- name: NodeTeescopeCapabilities
+  fields: 2
+- name: NodeTeescopeInfoResponse
+  fields: 6
+  description: Teescope agent info for a node.
+- name: NodeTopSNIsResponse
+  fields: 4
+  description: Top SNIs by traffic for a node.
+- name: NodeVMEgressInfo
+  fields: 6
+  description: Egress traffic stats for a VM.
+- name: NodeVMIngressInfo
+  fields: 5
+  description: Ingress traffic stats for a VM (via HAProxy SNI).
+- name: NodeVMItem
+  fields: 15
+  description: 'Combined VM info: DB metadata + live agent data.'
+- name: NodeVMQemuInfo
+  fields: 17
+  description: QEMU process resource usage for a VM.
+- name: NodeVMStorageInfo
+  fields: 2
+  description: Storage usage for a VM data directory.
+- name: NodeVMsResponse
+  fields: 7
+  description: Combined VM data for a node.
+- name: OSImageListResponse
+  fields: 5
+  description: Paginated OS image list response.
+- name: OSImageOut
+  fields: 10
+  description: OS image with usage counts.
+- name: OSImagePublicOut
+  fields: 6
+  description: Public OS image info.
+- name: OSImageSearchResult
+  fields: 9
+  description: OS image search result.
+- name: OSImageVariant
+  fields: 4
+  description: Single OS image variant (production or development build).
+- name: OnChainDeviceOut
+  fields: 3
+- name: OnChainInfo
+  fields: 5
+- name: OnChainKmsContractOut
+  fields: 5
+- name: OnChainKmsInfo
+  fields: 4
+- name: OnChainKmsResponse
+  fields: 3
+- name: OnChainOsImageOut
+  fields: 4
+- name: OnChainVerification
+  fields: 6
+- name: OperationEventDetail
+  fields: 3
+  description: Single atomic event within an operation.
+- name: OrderFinancialSummaryOut
+  fields: 6
+- name: OrderMinimumPeriodOut
+  fields: 4
+- name: OrderResponse
+  fields: 10
+  description: Single order in the orders list response.
+- name: OrderRunwayOut
+  fields: 5
+- name: OrderWithRelations
+  fields: 16
+  description: Order with user and team context.
+- name: OrdersListResponse
+  fields: 2
+  description: Paginated list of orders.
+- name: OutageItem
+  fields: 4
+  description: A single outage incident (continuous period of failures).
+- name: OutagesResponse
+  fields: 5
+- name: PaginatedAdminInstanceEventsResponse
+  fields: 3
+  description: Paginated instance events with cursor-based pagination.
+- name: PaginatedAdminTeepodDetail
+  fields: 5
+  description: Paginated teepod list response.
+- name: PaginatedBillingItemsResponse
+  fields: 3
+  description: Paginated hourly billing records.
+- name: PaginatedCVMs
+  fields: 5
+  description: Paginated response for CVMs list.
+- name: PaginatedCvmInfos
+  fields: 5
+- name: PaginatedCvmOperationsResponse
+  fields: 3
+  description: Cursor-paginated list of CVM operations.
+- name: PaginatedDstackApps
+  fields: 5
+  description: Paginated response for dstack apps list.
+- name: PaginatedGpuRentalOrders
+  fields: 3
+  description: Paginated GPU rental orders response.
+- name: PaginatedHostedCvms
+  fields: 5
+  description: Paginated response for CVM list endpoints
+- name: PaginatedInstanceEventsResponse
+  fields: 3
+  description: Paginated list of CVM events.
+- name: PaginatedInvitations
+  fields: 5
+  description: Paginated list of invitations.
+- name: PaginatedKms
+  fields: 2
+  description: Paginated KMS node list.
+- name: PaginatedKmsContracts
+  fields: 2
+  description: Paginated KMS contract list.
+- name: PaginatedKmsSearchResult
+  fields: 5
+  description: Paginated KMS search results.
+- name: PaginatedNodes
+  fields: 5
+  description: Paginated physical node list.
+- name: PaginatedOSImageSearchResult
+  fields: 5
+  description: Paginated OS image search response.
+- name: PaginatedOSImages
+  fields: 2
+  description: Paginated OS images response.
+- name: PaginatedOrders
+  fields: 2
+  description: Paginated orders response.
+- name: PaginatedSyncLogs
+  fields: 5
+- name: PaginatedTeamList
+  fields: 5
+  description: Paginated response for team list endpoint.
+- name: PaginatedTeamSearchResult
+  fields: 5
+  description: Paginated response for team search endpoints.
+- name: PaginatedTeepodGpus
+  fields: 5
+  description: Paginated GPUs response.
+- name: PaginatedTeepods
+  fields: 5
+  description: Paginated teepod list.
+- name: PaginatedUsers
+  fields: 2
+  description: Paginated users response.
+- name: PaginatedWorkspaceGpus
+  fields: 5
+  description: Paginated response for workspace GPUs list.
+- name: PaginatedWorkspaceNodesResponse
+  fields: 5
+- name: PaginatedWorkspaceTeepods
+  fields: 5
+  description: Paginated response for workspace teepods list.
+- name: PendingUpdateItem
+  fields: 4
+- name: PendingUpdatesResponse
+  fields: 1
+- name: PeriodInfo
+  fields: 3
+  description: Time period information.
+- name: PersonIdentifiers
+  fields: 3
+  description: Identifiers for person operations - one of id, email, or cio_id.
+- name: PoolHealthInfo
+  fields: 4
+  description: Worker process pool health.
+- name: PortMappingEntry
+  fields: 2
+  description: Single requested port mapping rule.
+- name: PrepaidBreakdownOut
+  fields: 4
+- name: ProfileGetResponse
+  fields: 4
+  description: Response model for entity profile - only public display data.
+- name: ProjectWithCvmResponse
+  fields: 7
+  description: Project with current CVM summary.
+- name: PromotionCode
+  fields: 9
+- name: PromotionCodesResponse
+  fields: 2
+  description: Paginated promotion codes response.
+- name: PromotionRedemptionItem
+  fields: 6
+  description: Promotion code redemption item for workspace.
+- name: PromotionRedemptionsResponse
+  fields: 2
+  description: Response for promotion redemptions list.
+- name: ProvisionDstackAppRequestV2
+  fields: 25
+  description: Request for provisioning a DStack app with automatic resource matching.
+- name: ProvisionElizaRequest
+  fields: 6
+- name: QueueHealth
+  fields: 5
+  description: Queue health metrics.
+- name: QueueHealthCheckResult
+  fields: 12
+  description: Comprehensive queue health check result.
+- name: QuotaMetric
+  fields: 2
+  description: Quota metric for resource limits and availability.
+- name: Quote
+  fields: 4
+- name: QuoteBody
+  fields: 15
+- name: QuoteCollateralV3
+  fields: 9
+- name: QuoteHeader
+  fields: 5
+- name: RecalculateBillingDetailItem
+  fields: 5
+  description: Detail of a single CVM billing update.
+- name: RecalculateBillingResponse
+  fields: 3
+  description: Response for recalculate billing endpoint.
+- name: RefreshAttestationVerifiedItem
+  fields: 5
+- name: RefreshAttestationVerifiedResponse
+  fields: 7
+- name: RelatedTransactionOut
+  fields: 5
+- name: ReplicateRequest
+  fields: 4
+  description: Request model for CVM replication.
+- name: ReservedGpuItem
+  fields: 4
+  description: Reserved GPU item.
+- name: ReservedGpuOut
+  fields: 8
+  description: GPU reserved for the workspace.
+- name: ReservedResourcesResponse
+  fields: 4
+  description: Response model for reserved resources.
+- name: ReservedTeepodItem
+  fields: 4
+  description: Reserved teepod item.
+- name: ResourceMetrics
+  fields: 3
+  description: Resource metrics for CPU, memory, and disk.
+- name: ResourceSummaryResponse
+  fields: 7
+  description: Workspace resource summary response.
+- name: ResourceThreshold
+  fields: 6
+  description: Resource threshold for VM creation.
+- name: ReviewQueueItem
+  fields: 21
+  description: Admin review queue row for draft invoices.
+- name: ReviewQueueResponse
+  fields: 4
+- name: SessionResponse
+  fields: 12
+  description: API response model for user sessions with sanitized device info.
+- name: SessionsListResponse
+  fields: 2
+  description: Response for listing user sessions.
+- name: ShutdownAllCvmsResponse
+  fields: 4
+  description: Summary of batch shutdown operation.
+- name: ShutdownCvmErrorEntry
+  fields: 3
+  description: Error detail for a single CVM in batch shutdown.
+- name: ShutdownDeleteAllCvmsResponse
+  fields: 4
+  description: Summary of shutdown+delete operation.
+- name: SpendingComparisonResponse
+  fields: 3
+  description: Spending comparison response.
+- name: SshKeyResponse
+  fields: 11
+  description: SSH key details returned by API.
+- name: StatsResponse
+  fields: 1
+  description: Wrapper for daily stats list.
+- name: StatusConnectionItem
+  fields: 12
+- name: StatusResponse
+  fields: 5
+- name: StorageMetrics
+  fields: 2
+  description: Storage usage metrics.
+- name: SwitchGpuModeResponse
+  fields: 8
+  description: GPU mode switch operation result.
+- name: SwitchGpusModeResponse
+  fields: 6
+  description: Result of GPU mode switch operation.
+- name: SyncLogEntry
+  fields: 5
+- name: SyncMetadataResponse
+  fields: 13
+  description: Result of syncing teepod metadata from RPC.
+- name: SyncedImageOut
+  fields: 4
+  description: OS image sync result item.
+- name: SystemInfo
+  fields: 17
+- name: TcbEvaluationInstance
+  fields: 11
+- name: TcbEvaluationResponse
+  fields: 3
+- name: TcbInfo
+  fields: 8
+- name: TeamBase
+  fields: 4
+- name: TeamDetail
+  fields: 41
+  description: Comprehensive team information for detail view.
+- name: TeamInfo
+  fields: 2
+  description: Team metadata for billing records.
+- name: TeamListItem
+  fields: 23
+  description: Comprehensive team information for list view.
+- name: TeamSearchResult
+  fields: 7
+  description: Team search result for admin operations.
+- name: Teepod
+  fields: 15
+- name: TeepodAvailableImagesResponse
+  fields: 5
+  description: Available OS images query result.
+- name: TeepodGpuCreate
+  fields: 5
+  description: Create GPU request.
+- name: TeepodGpuDetail
+  fields: 15
+  description: GPU with full context and device state.
+- name: TeepodGpuUpdate
+  fields: 4
+  description: Update GPU request.
+- name: TeepodInfo
+  fields: 8
+- name: TeepodItem
+  fields: 5
+  description: Teepod information for workspace teepods list.
+- name: TierCapacity
+  fields: 5
+- name: UnifiedKmsOut
+  fields: 4
+  description: Unified view of KMS contracts and nodes.
+- name: UsageAuditResponse
+  fields: 7
+- name: UsageDataResponse
+  fields: 7
+  description: Complete usage data response.
+- name: User
+  fields: 5
+- name: UserInfo
+  fields: 16
+- name: UserRef
+  fields: 4
+  description: Minimal user reference for embedding in responses.
+- name: VM
+  fields: 21
+- name: VMCreateWithTeepod
+  fields: 14
+- name: VerificationAttemptOut
+  fields: 11
+  description: Single Stripe card verification attempt.
+- name: VerificationResponse
+  fields: 10
+  description: Quote verification result.
+- name: VmConfiguration
+  fields: 15
+  description: Mapping from Teepod RPC's VmConfiguration.
+- name: VmInfo
+  fields: 14
+  description: Mapping from Teepod RPC's VmInfo.
+- name: WorkspaceQuotas
+  fields: 4
+- name: WorkspaceQuotasResponse
+  fields: 6
+- name: WorkspaceRef
+  fields: 5
+  description: Minimal workspace reference for embedding in responses.
+- name: WorkspaceReservedGpuQuota
+  fields: 3
+- name: WorkspaceUsageItem
+  fields: 17
+- name: WorkspacesListResponse
+  fields: 2
+  description: Paginated list of user workspaces.
+- name: teehouse__api__routes__admin__workspaces__BillingSummaryResponse
+  fields: 7
+  description: Billing summary for reconciliation.
+- name: teehouse__api__routes__admin__workspaces__TeamMemberInfo
+  fields: 5
+  description: Team member information.
+- name: teehouse__api__routes__apps__schemas__InstanceEventResponse
+  fields: 16
+  description: CVM instance lifecycle event.
+- name: teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo
+  fields: 19
+- name: teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse
+  fields: 13
+- name: teehouse__api__routes__apps__v20251028__schemas__DstackAppListResponse
+  fields: 5
+- name: teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse
+  fields: 11
+- name: teehouse__api__routes__apps__v20260121__schemas__DstackAppListResponse
+  fields: 5
+- name: teehouse__api__routes__billing__usage__BillingSummaryResponse
+  fields: 4
+  description: Billing summary with totals and breakdowns.
+- name: teehouse__api__routes__billing__usage__DailyUsageResponse
+  fields: 3
+  description: Daily usage summary with per-instance breakdown.
+- name: teehouse__api__routes__cvms__management__CvmBasicInfo
+  fields: 28
+  description: Detailed CVM information returned by GET /cvms/{cvm_id}.
+- name: teehouse__api__routes__cvms__patch_compose_file__AvailableOSImage
+  fields: 3
+  description: OS image version with production and development variants.
+- name: teehouse__api__routes__cvms__preflight__TeepodCapacity
+  fields: 16
+  description: Represents a teepod (remain) capacity
+- name: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  fields: 32
+- name: teehouse__api__routes__projects__CvmBasicInfo
+  fields: 10
+  description: CVM summary from database (not real-time status).
+- name: teehouse__api__routes__workspace_members__TeamMemberInfo
+  fields: 6
+  description: Workspace member details.
+- name: teehouse__models__schemas__users__Credit
+  fields: 3
+relationships:
+- from: AccountsResponse
+  to: Account
+  type: has_many
+  via: accounts
+- from: ActiveGpuRentalOverviewResponse
+  to: ActiveGpuRentalResponse
+  type: has_many
+  via: items
+- from: AddMembersRequest
+  to: User
+  type: belongs_to
+  via: user_ids
+- from: AddTeepodsRequest
+  to: Teepod
+  type: belongs_to
+  via: teepod_ids
+- from: AdminEmailResponse
+  to: AdminEmailResult
+  type: has_many
+  via: results
+- from: AdminTeepodDetail
+  to: NodeResourceLimits
+  type: has_one
+  via: node_resource_limits
+- from: AdminUserDetail
+  to: teehouse__models__schemas__users__Credit
+  type: has_one
+  via: credit
+- from: AdminUserDetail
+  to: TeamBase
+  type: has_many
+  via: teams
+- from: AdminUserDetail
+  to: Account
+  type: has_many
+  via: accounts
+- from: AffectedApp
+  to: AffectedCvm
+  type: has_many
+  via: cvms
+- from: AffectedTeam
+  to: AffectedApp
+  type: has_many
+  via: apps
+- from: AllFamiliesResponse
+  to: FamilyGroup
+  type: has_many
+  via: result
+- from: AllocationDetail
+  to: AllocationGpuDetail
+  type: has_many
+  via: gpus
+- from: AllocationHistoryResponse
+  to: AllocationHistoryItem
+  type: has_many
+  via: items
+- from: AllowedNodeOut
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: AllowedNodesResponse
+  to: AllowedNodeOut
+  type: has_many
+  via: nodes
+- from: AllowedOsImagesResponse
+  to: AllowedOsImageOut
+  type: has_many
+  via: images
+- from: AppCvmsBatchIsAllowedResponse
+  to: CvmIsAllowedItem
+  type: has_many
+  via: results
+- from: AppEventsResponse
+  to: teehouse__api__routes__apps__schemas__InstanceEventResponse
+  type: has_many
+  via: events
+- from: AppRevisionDetailResponse
+  to: UserRef
+  type: has_one
+  via: triggered_by
+- from: AppRevisionDetailResponse
+  to: CvmRef
+  type: has_one
+  via: cvm
+- from: AppRevisionDetailResponse
+  to: WorkspaceRef
+  type: has_one
+  via: workspace
+- from: AppRevisionResponse
+  to: UserRef
+  type: has_one
+  via: triggered_by
+- from: AppRevisionResponse
+  to: CvmRef
+  type: has_one
+  via: cvm
+- from: AppRevisionResponse
+  to: WorkspaceRef
+  type: has_one
+  via: workspace
+- from: AppRevisionsResponse
+  to: AppRevisionResponse
+  type: has_many
+  via: revisions
+- from: AppUsageResponse
+  to: MeteredUsageResponse
+  type: has_many
+  via: usage
+- from: AuditCvmDetail
+  to: AuditSegment
+  type: has_many
+  via: segments
+- from: AvailableGpuItem
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: AvailableGpusResponse
+  to: AvailableGpuItem
+  type: has_many
+  via: items
+- from: AvailableTeepodItem
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: AvailableTeepodsResponse
+  to: AvailableTeepodItem
+  type: has_many
+  via: items
+- from: BackfillEnvPubkeyResponse
+  to: BackfillEnvPubkeyItem
+  type: has_many
+  via: items
+- from: BatchDisableRequest
+  to: User
+  type: belongs_to
+  via: user_ids
+- from: BatchDisableResponse
+  to: DisableErrorEntry
+  type: has_many
+  via: errors
+- from: BatchInstanceIdRefreshResponse
+  to: InstanceIdRefreshResult
+  type: has_many
+  via: items
+- from: BatchIsAllowedResponse
+  to: BatchItemResult
+  type: has_many
+  via: results
+- from: BatchStopResponse
+  to: BatchStopErrorEntry
+  type: has_many
+  via: errors
+- from: BatchSyncMetadataResponse
+  to: KmsSyncResult
+  type: has_many
+  via: results
+- from: BatchUpdateItemsRequest
+  to: BatchUpdateItemRequest
+  type: has_many
+  via: items
+- from: BillingRecordDetail
+  to: TeamInfo
+  type: has_one
+  via: team
+- from: Body_api_verify_email_token_api_v1_auth_verify_email_token_post
+  to: EmailTokenVerificationRequest
+  type: has_one
+  via: request
+- from: CIOAuditMismatch
+  to: User
+  type: belongs_to
+  via: user_id
+- from: CIOAuditResponse
+  to: CIOAuditMismatch
+  type: has_many
+  via: mismatches
+- from: CIODeleteRequest
+  to: User
+  type: belongs_to
+  via: user_id
+- from: CIODeleteResponse
+  to: User
+  type: belongs_to
+  via: user_id
+- from: CIOFixEmailRequest
+  to: User
+  type: belongs_to
+  via: user_id
+- from: CIOFixEmailResponse
+  to: User
+  type: belongs_to
+  via: user_id
+- from: CIOPersonResponse
+  to: PersonIdentifiers
+  type: has_one
+  via: identifiers
+- from: CIOSendEmailAdminRequest
+  to: CIOEmailRecipient
+  type: has_many
+  via: recipients
+- from: CIOSendEmailAdminResponse
+  to: CIOSendEmailResult
+  type: has_many
+  via: results
+- from: CVMInfoDetail
+  to: CVMResourceInfo
+  type: has_one
+  via: resource
+- from: CVMInfoDetail
+  to: NodeRef
+  type: has_one
+  via: node_info
+- from: CVMInfoDetail
+  to: CVMOSInfo
+  type: has_one
+  via: os
+- from: CVMInfoDetail
+  to: CVMKmsInfo
+  type: has_one
+  via: kms_info
+- from: CVMInfoDetail
+  to: CVMProgressInfo
+  type: has_one
+  via: progress
+- from: CVMInfoDetail
+  to: CVMGatewayInfo
+  type: has_one
+  via: gateway
+- from: CVMInfoDetail
+  to: CVMLogUrls
+  type: has_one
+  via: logs
+- from: CVMInfoDetail
+  to: WorkspaceRef
+  type: has_one
+  via: workspace
+- from: CVMInfoDetail
+  to: UserRef
+  type: has_one
+  via: creator
+- from: CaaCheckResult
+  to: AcmeFetchResult
+  type: has_many
+  via: acme_fetches
+- from: CardFingerprintDetailOut
+  to: VerificationAttemptOut
+  type: has_many
+  via: verification_attempts
+- from: CardFingerprintListResponse
+  to: CardFingerprintOut
+  type: has_many
+  via: items
+- from: Certificate
+  to: CertificateSubject
+  type: has_one
+  via: subject
+- from: Certificate
+  to: CertificateIssuer
+  type: has_one
+  via: issuer
+- from: CheckEmailResult
+  to: CheckEmailMisc
+  type: has_one
+  via: misc
+- from: CheckEmailResult
+  to: CheckEmailMXInfo
+  type: has_one
+  via: mx
+- from: CheckEmailResult
+  to: CheckEmailSMTPInfo
+  type: has_one
+  via: smtp
+- from: CheckEmailResult
+  to: CheckEmailSyntax
+  type: has_one
+  via: syntax
+- from: ComposeFilePatchRequest
+  to: ComposeManifestPatchRequest
+  type: has_one
+  via: compose_manifest
+- from: ComposeFileProvisionResponse
+  to: KMSInfo
+  type: has_one
+  via: kms_info
+- from: ComposeFileUpdateRequest
+  to: AppComposeV2
+  type: has_one
+  via: compose_file
+- from: ComposeManifest
+  to: DockerConfig
+  type: has_one
+  via: docker_config
+- from: ConnectionItem
+  to: User
+  type: belongs_to
+  via: user_id
+- from: ConnectionListResponse
+  to: ConnectionItem
+  type: has_many
+  via: items
+- from: ContractDeviceOut
+  to: DeviceTeepodInfo
+  type: has_many
+  via: teepods
+- from: ContractDevicesResponse
+  to: ContractDeviceOut
+  type: has_many
+  via: devices
+- from: ContractOsImagesResponse
+  to: ContractOsImageOut
+  type: has_many
+  via: images
+- from: CoreMetrics
+  to: ComputeMetrics
+  type: has_one
+  via: compute
+- from: CoreMetrics
+  to: StorageMetrics
+  type: has_one
+  via: storage
+- from: CreateAppInstanceRequest
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: CreateConnectionRequest
+  to: User
+  type: belongs_to
+  via: user_id
+- from: CvmAttestation
+  to: TcbInfo
+  type: has_one
+  via: tcb_info
+- from: CvmComposeFile
+  to: ComposeManifest
+  type: has_one
+  via: compose_file
+- from: CvmOperationResponse
+  to: OperationEventDetail
+  type: has_many
+  via: events
+- from: CvmStatus
+  to: GuestEvent
+  type: has_many
+  via: events
+- from: CvmSystemInfo
+  to: SystemInfo
+  type: has_one
+  via: sysinfo
+- from: CvmTeescopeInfo
+  to: CvmTeescopeQemu
+  type: has_one
+  via: qemu
+- from: CvmTeescopeInfo
+  to: CvmTeescopeStorage
+  type: has_one
+  via: storage
+- from: CvmTeescopeInfo
+  to: CvmTeescopeEgress
+  type: has_one
+  via: egress
+- from: CvmTeescopeInfo
+  to: CvmTeescopeIngress
+  type: has_one
+  via: ingress
+- from: CvmUpgradePayload
+  to: AppComposeV2
+  type: has_one
+  via: compose_manifest
+- from: DailyUptimeResponse
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: DailyUptimeResponse
+  to: DailyUptimeItem
+  type: has_many
+  via: items
+- from: DecoupleOrderResponse
+  to: DecoupledCvmChangeOut
+  type: has_many
+  via: affected_cvms
+- from: DeviceAllowlistResponse
+  to: DeviceAllowlistItem
+  type: has_many
+  via: devices
+- from: DeviceIdAuditResponse
+  to: AffectedTeam
+  type: has_many
+  via: affected_teams
+- from: DeviceTeepodInfo
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: DiagnoseDomainsRequest
+  to: DomainCheckRequest
+  type: has_many
+  via: domains
+- from: DiagnosisResponse
+  to: DomainDiagnosisResult
+  type: has_many
+  via: results
+- from: DisableErrorEntry
+  to: User
+  type: belongs_to
+  via: user_id
+- from: DisputeTimelineResponse
+  to: DisputeOperation
+  type: has_many
+  via: operations
+- from: DomainDiagnosisResult
+  to: DnsRecordResult
+  type: has_many
+  via: records
+- from: DomainDiagnosisResult
+  to: CaaCheckResult
+  type: has_one
+  via: caa_check
+- from: ExternalSettlementResponse
+  to: CreditTransaction
+  type: belongs_to
+  via: credit_transaction_id
+- from: FamilyGroup
+  to: InstanceTypePublic
+  type: has_many
+  via: items
+- from: FamilyInstanceTypesResponse
+  to: InstanceTypePublic
+  type: has_many
+  via: items
+- from: FinalizeBatchRequest
+  to: FinalizeBatchItemRequest
+  type: has_many
+  via: items
+- from: FinalizeBatchResponse
+  to: FinalizeBatchItemResult
+  type: has_many
+  via: results
+- from: GpuAllocationStatusOut
+  to: GpuInventoryStateOut
+  type: has_one
+  via: inventory
+- from: GpuAllocationStatusOut
+  to: GpuDeviceStateOut
+  type: has_one
+  via: device
+- from: GpuAvailabilityCheckResponse
+  to: MatchedResourceInfo
+  type: has_one
+  via: matched_resource
+- from: GpuConfig
+  to: GpuSpec
+  type: has_many
+  via: gpus
+- from: GpuInventoryStateOut
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: GpuItem
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: GpuRentalOrderHistoryItem
+  to: GpuSkuHistoryResponse
+  type: has_one
+  via: sku
+- from: GpuRentalOrderHistoryResponse
+  to: GpuRentalOrderHistoryItem
+  type: has_many
+  via: items
+- from: GpuRentalOrderItem
+  to: User
+  type: belongs_to
+  via: user_id
+- from: GpuRentalOrderItem
+  to: AllocationDetail
+  type: has_many
+  via: allocations
+- from: GpuRentalOrderListResponse
+  to: User
+  type: belongs_to
+  via: user_id
+- from: GpuRentalOrderListResponse
+  to: GpuSkuResponse
+  type: has_one
+  via: sku
+- from: GpuRentalOrderListResponse
+  to: CvmAllocationResponse
+  type: has_many
+  via: cvm_allocations
+- from: GpuRentalOrderSummaryOut
+  to: OrderFinancialSummaryOut
+  type: has_one
+  via: financial
+- from: GpuRentalOrderSummaryOut
+  to: OrderMinimumPeriodOut
+  type: has_one
+  via: minimum_period
+- from: GpuRentalOrderSummaryOut
+  to: OrderRunwayOut
+  type: has_one
+  via: runway
+- from: GpuRentalOrderSummaryOut
+  to: RelatedTransactionOut
+  type: has_many
+  via: related_transactions
+- from: GpuSkuOut
+  to: GpuSkuPriceOut
+  type: has_many
+  via: prices
+- from: GpuSkuResponse
+  to: GpuSkuPriceResponse
+  type: has_many
+  via: prices
+- from: HostedCvm
+  to: VmInfo
+  type: has_one
+  via: hosted
+- from: HostedCvm
+  to: ManagedUser
+  type: has_one
+  via: managed_user
+- from: HostedCvm
+  to: CvmNode
+  type: has_one
+  via: node
+- from: HostedCvm
+  to: KMSInfo
+  type: has_one
+  via: kms_info
+- from: HostedCvm
+  to: CvmNetworkUrls
+  type: has_many
+  via: public_urls
+- from: HourlyBillingResponse
+  to: BillingRecordDetail
+  type: has_many
+  via: items
+- from: InvoiceItem
+  to: User
+  type: belongs_to
+  via: user_id
+- from: InvoiceListResponse
+  to: InvoiceListItem
+  type: has_many
+  via: items
+- from: InvoiceWithRelations
+  to: User
+  type: belongs_to
+  via: user_id
+- from: KmsContractWithNodesOut
+  to: KmsNodeOut
+  type: has_many
+  via: nodes
+- from: KmsGroupedData
+  to: KmsContractWithNodesOut
+  type: has_many
+  via: contract_groups
+- from: KmsGroupedData
+  to: KmsNodeOut
+  type: has_many
+  via: standalone_phala_nodes
+- from: KmsGroupedData
+  to: KmsNodeOut
+  type: has_many
+  via: standalone_legacy_nodes
+- from: KmsInspectResponse
+  to: KmsRpcInfo
+  type: has_one
+  via: rpc
+- from: KmsInspectResponse
+  to: GuestAgentInfo
+  type: has_one
+  via: guest_agent
+- from: KmsInspectResponse
+  to: TeepodInfo
+  type: has_many
+  via: teepods
+- from: KmsInspectResponse
+  to: OnChainInfo
+  type: has_one
+  via: on_chain
+- from: KmsListResponse
+  to: KMSInfo
+  type: has_many
+  via: items
+- from: KmsRpcInfo
+  to: BootstrapInfoOut
+  type: has_one
+  via: bootstrap_info
+- from: ListReservedGpusResponse
+  to: ReservedGpuOut
+  type: has_many
+  via: gpus
+- from: MatchedResourceInfo
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: MemberPreview
+  to: User
+  type: belongs_to
+  via: user_id
+- from: MonthlyUsageResponse
+  to: MonthlyUsageItem
+  type: has_many
+  via: items
+- from: NetworkConfigResponse
+  to: NetworkConfigPortMappingEntry
+  type: has_many
+  via: ports
+- from: NodeFirewallRulesResponse
+  to: NodeFirewallRuleOut
+  type: has_many
+  via: rules
+- from: NodeNetworkDevicesResponse
+  to: NodeNetworkDeviceOut
+  type: has_many
+  via: devices
+- from: NodeOutagesResponse
+  to: OutageItem
+  type: has_many
+  via: items
+- from: NodeStorageListResponse
+  to: NodeStorageVMItem
+  type: has_many
+  via: items
+- from: NodeSystemInfoResponse
+  to: NodeStorageInfo
+  type: has_one
+  via: storage
+- from: NodeTeescopeInfoResponse
+  to: NodeTeescopeCapabilities
+  type: has_one
+  via: capabilities
+- from: NodeTopSNIsResponse
+  to: NodeSNITrafficItem
+  type: has_many
+  via: snis
+- from: NodeVMItem
+  to: NodeVMQemuInfo
+  type: has_one
+  via: qemu
+- from: NodeVMItem
+  to: NodeVMStorageInfo
+  type: has_one
+  via: storage
+- from: NodeVMItem
+  to: NodeVMEgressInfo
+  type: has_one
+  via: egress
+- from: NodeVMItem
+  to: NodeVMIngressInfo
+  type: has_one
+  via: ingress
+- from: NodeVMsResponse
+  to: NodeVMItem
+  type: has_many
+  via: vms
+- from: OSImageListResponse
+  to: OSImagePublicOut
+  type: has_many
+  via: items
+- from: OnChainInfo
+  to: OnChainKmsInfo
+  type: has_one
+  via: kms_info
+- from: OnChainInfo
+  to: OnChainVerification
+  type: has_one
+  via: verification
+- from: OnChainKmsContractOut
+  to: OnChainDeviceOut
+  type: has_many
+  via: devices
+- from: OnChainKmsContractOut
+  to: OnChainOsImageOut
+  type: has_many
+  via: os_images
+- from: OnChainKmsResponse
+  to: OnChainKmsContractOut
+  type: has_many
+  via: contracts
+- from: OrderFinancialSummaryOut
+  to: PrepaidBreakdownOut
+  type: has_many
+  via: prepaid_breakdown
+- from: OrderWithRelations
+  to: User
+  type: belongs_to
+  via: user_id
+- from: OrderWithRelations
+  to: CreditTransaction
+  type: belongs_to
+  via: credit_transaction_id
+- from: OrdersListResponse
+  to: OrderResponse
+  type: has_many
+  via: data
+- from: OutagesResponse
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: OutagesResponse
+  to: OutageItem
+  type: has_many
+  via: items
+- from: PaginatedAdminInstanceEventsResponse
+  to: AdminInstanceEventResponse
+  type: has_many
+  via: items
+- from: PaginatedAdminTeepodDetail
+  to: AdminTeepodDetail
+  type: has_many
+  via: items
+- from: PaginatedBillingItemsResponse
+  to: HourlyBillingResponse
+  type: has_many
+  via: items
+- from: PaginatedCVMs
+  to: CVMItem
+  type: has_many
+  via: items
+- from: PaginatedCvmInfos
+  to: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  type: has_many
+  via: items
+- from: PaginatedCvmOperationsResponse
+  to: CvmOperationResponse
+  type: has_many
+  via: items
+- from: PaginatedDstackApps
+  to: DstackAppItem
+  type: has_many
+  via: items
+- from: PaginatedGpuRentalOrders
+  to: GpuRentalOrderItem
+  type: has_many
+  via: items
+- from: PaginatedHostedCvms
+  to: HostedCvm
+  type: has_many
+  via: items
+- from: PaginatedInvitations
+  to: InvitationResponse
+  type: has_many
+  via: items
+- from: PaginatedKms
+  to: KmsOut
+  type: has_many
+  via: items
+- from: PaginatedKmsContracts
+  to: KmsContractOut
+  type: has_many
+  via: items
+- from: PaginatedKmsSearchResult
+  to: KmsSearchResult
+  type: has_many
+  via: items
+- from: PaginatedNodes
+  to: NodeOut
+  type: has_many
+  via: items
+- from: PaginatedOSImageSearchResult
+  to: OSImageSearchResult
+  type: has_many
+  via: items
+- from: PaginatedOSImages
+  to: OSImageOut
+  type: has_many
+  via: items
+- from: PaginatedOrders
+  to: OrderWithRelations
+  type: has_many
+  via: items
+- from: PaginatedSyncLogs
+  to: SyncLogEntry
+  type: has_many
+  via: items
+- from: PaginatedTeamList
+  to: TeamListItem
+  type: has_many
+  via: items
+- from: PaginatedTeamSearchResult
+  to: TeamSearchResult
+  type: has_many
+  via: items
+- from: PaginatedTeepodGpus
+  to: TeepodGpuDetail
+  type: has_many
+  via: items
+- from: PaginatedUsers
+  to: AdminUserDetail
+  type: has_many
+  via: items
+- from: PaginatedWorkspaceGpus
+  to: GpuItem
+  type: has_many
+  via: items
+- from: PaginatedWorkspaceNodesResponse
+  to: NodeRef
+  type: has_many
+  via: items
+- from: PaginatedWorkspaceTeepods
+  to: TeepodItem
+  type: has_many
+  via: items
+- from: PendingUpdatesResponse
+  to: PendingUpdateItem
+  type: has_many
+  via: items
+- from: ProjectWithCvmResponse
+  to: teehouse__api__routes__projects__CvmBasicInfo
+  type: has_one
+  via: current_cvm
+- from: PromotionCodesResponse
+  to: PromotionCode
+  type: has_many
+  via: items
+- from: PromotionRedemptionsResponse
+  to: PromotionRedemptionItem
+  type: has_many
+  via: items
+- from: ProvisionDstackAppRequestV2
+  to: AppComposeV2
+  type: has_one
+  via: compose_file
+- from: ProvisionDstackAppRequestV2
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: ProvisionDstackAppRequestV2
+  to: GpuConfig
+  type: has_one
+  via: gpus
+- from: ProvisionElizaRequest
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: QueueHealth
+  to: PoolHealthInfo
+  type: has_many
+  via: pool_health
+- from: QueueHealth
+  to: LongRunningTask
+  type: has_many
+  via: long_running_tasks
+- from: Quote
+  to: QuoteHeader
+  type: has_one
+  via: header
+- from: Quote
+  to: QuoteBody
+  type: has_one
+  via: body
+- from: RecalculateBillingResponse
+  to: RecalculateBillingDetailItem
+  type: has_many
+  via: details
+- from: RefreshAttestationVerifiedResponse
+  to: RefreshAttestationVerifiedItem
+  type: has_many
+  via: items
+- from: ReplicateRequest
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: ReservedResourcesResponse
+  to: ReservedTeepodItem
+  type: has_many
+  via: teepods
+- from: ReservedResourcesResponse
+  to: ReservedGpuItem
+  type: has_many
+  via: gpus
+- from: ResourceSummaryResponse
+  to: ResourceMetrics
+  type: has_one
+  via: total_resources
+- from: ResourceSummaryResponse
+  to: ResourceMetrics
+  type: has_one
+  via: running_resources
+- from: ResourceSummaryResponse
+  to: InstanceTypeResourceItem
+  type: has_many
+  via: by_instance_type
+- from: ResourceSummaryResponse
+  to: BillingPeriodResourceItem
+  type: has_many
+  via: by_billing_period
+- from: ReviewQueueResponse
+  to: ReviewQueueItem
+  type: has_many
+  via: items
+- from: SessionsListResponse
+  to: SessionResponse
+  type: has_many
+  via: sessions
+- from: ShutdownAllCvmsResponse
+  to: ShutdownCvmErrorEntry
+  type: has_many
+  via: errors
+- from: ShutdownDeleteAllCvmsResponse
+  to: ShutdownCvmErrorEntry
+  type: has_many
+  via: errors
+- from: SpendingComparisonResponse
+  to: MonthlySpending
+  type: has_one
+  via: this_month
+- from: SpendingComparisonResponse
+  to: MonthlySpending
+  type: has_one
+  via: last_month
+- from: SshKeyResponse
+  to: User
+  type: belongs_to
+  via: user_id
+- from: StatsResponse
+  to: DailyStats
+  type: has_many
+  via: data
+- from: StatusResponse
+  to: StatusConnectionItem
+  type: has_many
+  via: connections
+- from: SyncMetadataResponse
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: SystemInfo
+  to: DiskInfo
+  type: has_many
+  via: disks
+- from: TcbEvaluationResponse
+  to: TcbEvaluationInstance
+  type: has_many
+  via: instances
+- from: TcbInfo
+  to: EventLog
+  type: has_many
+  via: event_log
+- from: TeamDetail
+  to: CreatorInfo
+  type: has_one
+  via: creator
+- from: TeamDetail
+  to: ProfileGetResponse
+  type: has_one
+  via: profile
+- from: TeamDetail
+  to: MemberPreview
+  type: has_many
+  via: members_preview
+- from: TeamDetail
+  to: DstackAppPreview
+  type: has_many
+  via: dstack_apps_preview
+- from: TeamDetail
+  to: CVMPreview
+  type: has_many
+  via: cvms_preview
+- from: TeamListItem
+  to: CreatorInfo
+  type: has_one
+  via: creator
+- from: TeepodAvailableImagesResponse
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: TeepodAvailableImagesResponse
+  to: AvailableImageOut
+  type: has_many
+  via: images
+- from: TeepodGpuCreate
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: TeepodGpuDetail
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: TeepodGpuDetail
+  to: GpuTeepodInfo
+  type: has_one
+  via: teepod
+- from: TeepodGpuDetail
+  to: GpuNodeInfo
+  type: has_one
+  via: node
+- from: TeepodGpuDetail
+  to: GpuReservedTeamInfo
+  type: has_one
+  via: reserved_team
+- from: TeepodGpuDetail
+  to: GpuCurrentAllocation
+  type: has_one
+  via: current_allocation
+- from: TeepodGpuDetail
+  to: GpuDeviceState
+  type: has_one
+  via: device_state
+- from: TeepodGpuDetail
+  to: GpuSyncStatus
+  type: has_one
+  via: sync_status
+- from: TeepodGpuUpdate
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: TeepodItem
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: TierCapacity
+  to: ResourceThreshold
+  type: has_one
+  via: capacity
+- from: TierCapacity
+  to: teehouse__api__routes__cvms__preflight__TeepodCapacity
+  type: has_many
+  via: nodes
+- from: TierCapacity
+  to: KmsWithSupportedOSImage
+  type: has_many
+  via: kms_list
+- from: TierCapacity
+  to: GpuAvailability
+  type: has_one
+  via: gpu_availability
+- from: UnifiedKmsOut
+  to: KmsContractWithNodesOut
+  type: has_many
+  via: contracts
+- from: UnifiedKmsOut
+  to: KmsNodeOut
+  type: has_many
+  via: legacy_nodes
+- from: UsageAuditResponse
+  to: AuditSummary
+  type: has_one
+  via: summary
+- from: UsageAuditResponse
+  to: AuditCvmDetail
+  type: has_many
+  via: cvm_details
+- from: UsageDataResponse
+  to: PeriodInfo
+  type: has_one
+  via: period
+- from: UsageDataResponse
+  to: CoreMetrics
+  type: has_one
+  via: core_metrics
+- from: UsageDataResponse
+  to: DailyTrend
+  type: has_many
+  via: daily_trends
+- from: UsageDataResponse
+  to: InstanceTypeBreakdown
+  type: has_many
+  via: instance_type_breakdown
+- from: UsageDataResponse
+  to: CVMDetail
+  type: has_many
+  via: cvm_details
+- from: User
+  to: teehouse__models__schemas__users__Credit
+  type: has_one
+  via: credit
+- from: UserInfo
+  to: teehouse__models__schemas__users__Credit
+  type: has_one
+  via: credit
+- from: UserInfo
+  to: TeamBase
+  type: has_many
+  via: teams
+- from: VM
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: VM
+  to: User
+  type: belongs_to
+  via: user_id
+- from: VMCreateWithTeepod
+  to: User
+  type: belongs_to
+  via: user_id
+- from: VMCreateWithTeepod
+  to: ComposeManifest
+  type: has_one
+  via: compose_manifest
+- from: VMCreateWithTeepod
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: VerificationAttemptOut
+  to: User
+  type: belongs_to
+  via: user_id
+- from: VerificationResponse
+  to: Quote
+  type: has_one
+  via: quote
+- from: VerificationResponse
+  to: QuoteCollateralV3
+  type: has_one
+  via: quote_collateral
+- from: VerificationResponse
+  to: NodeProvider
+  type: has_one
+  via: node_provider
+- from: VmConfiguration
+  to: AppComposeV2
+  type: has_one
+  via: compose_file
+- from: VmConfiguration
+  to: GpuConfig
+  type: has_one
+  via: gpus
+- from: VmInfo
+  to: VmConfiguration
+  type: has_one
+  via: configuration
+- from: VmInfo
+  to: GuestEvent
+  type: has_many
+  via: events
+- from: WorkspaceQuotas
+  to: QuotaMetric
+  type: has_one
+  via: vm_slots
+- from: WorkspaceQuotas
+  to: QuotaMetric
+  type: has_one
+  via: vcpu
+- from: WorkspaceQuotas
+  to: QuotaMetric
+  type: has_one
+  via: memory_mb
+- from: WorkspaceQuotas
+  to: QuotaMetric
+  type: has_one
+  via: disk_gb
+- from: WorkspaceQuotasResponse
+  to: WorkspaceQuotas
+  type: has_one
+  via: quotas
+- from: WorkspaceQuotasResponse
+  to: QuotaMetric
+  type: has_one
+  via: reserved_nodes
+- from: WorkspaceQuotasResponse
+  to: WorkspaceReservedGpuQuota
+  type: has_one
+  via: reserved_gpu
+- from: WorkspaceReservedGpuQuota
+  to: QuotaMetric
+  type: has_one
+  via: gpus
+- from: WorkspaceUsageItem
+  to: User
+  type: belongs_to
+  via: user_id
+- from: teehouse__api__routes__admin__workspaces__BillingSummaryResponse
+  to: MonthlyTransactionSummaryItem
+  type: has_many
+  via: monthly_transactions
+- from: teehouse__api__routes__admin__workspaces__BillingSummaryResponse
+  to: MonthlyUsageSummaryItem
+  type: has_many
+  via: monthly_usages
+- from: teehouse__api__routes__admin__workspaces__BillingSummaryResponse
+  to: MonthlyInvoiceSummaryItem
+  type: has_many
+  via: monthly_invoices
+- from: teehouse__api__routes__admin__workspaces__TeamMemberInfo
+  to: User
+  type: belongs_to
+  via: user_id
+- from: teehouse__api__routes__apps__schemas__InstanceEventResponse
+  to: User
+  type: belongs_to
+  via: user_id
+- from: teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo
+  to: MachineInfo
+  type: has_one
+  via: machine_info
+- from: teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse
+  to: ProfileGetResponse
+  type: has_one
+  via: profile
+- from: teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse
+  to: teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo
+  type: has_one
+  via: current_cvm
+- from: teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse
+  to: teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo
+  type: has_many
+  via: cvms
+- from: teehouse__api__routes__apps__v20251028__schemas__DstackAppListResponse
+  to: teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse
+  type: has_many
+  via: dstack_apps
+- from: teehouse__api__routes__apps__v20251028__schemas__DstackAppListResponse
+  to: DstackAppMinimalResponse
+  type: has_many
+  via: dstack_apps
+- from: teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse
+  to: ProfileGetResponse
+  type: has_one
+  via: profile
+- from: teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse
+  to: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  type: has_one
+  via: current_cvm
+- from: teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse
+  to: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  type: has_many
+  via: cvms
+- from: teehouse__api__routes__apps__v20260121__schemas__DstackAppListResponse
+  to: teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse
+  type: has_many
+  via: dstack_apps
+- from: teehouse__api__routes__apps__v20260121__schemas__DstackAppListResponse
+  to: DstackAppMinimalResponse
+  type: has_many
+  via: dstack_apps
+- from: teehouse__api__routes__billing__usage__BillingSummaryResponse
+  to: teehouse__api__routes__billing__usage__DailyUsageResponse
+  type: has_many
+  via: seven_days_usage
+- from: teehouse__api__routes__billing__usage__BillingSummaryResponse
+  to: InstanceSpendingResponse
+  type: has_many
+  via: recent_instance_spending
+- from: teehouse__api__routes__billing__usage__DailyUsageResponse
+  to: InstanceSpendingResponse
+  type: has_many
+  via: instances
+- from: teehouse__api__routes__cvms__management__CvmBasicInfo
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: teehouse__api__routes__cvms__management__CvmBasicInfo
+  to: CvmNode
+  type: has_one
+  via: teepod
+- from: teehouse__api__routes__cvms__management__CvmBasicInfo
+  to: KMSInfo
+  type: has_one
+  via: kms_info
+- from: teehouse__api__routes__cvms__patch_compose_file__AvailableOSImage
+  to: OSImageVariant
+  type: has_one
+  via: prod
+- from: teehouse__api__routes__cvms__patch_compose_file__AvailableOSImage
+  to: OSImageVariant
+  type: has_one
+  via: dev
+- from: teehouse__api__routes__cvms__preflight__TeepodCapacity
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: CVMResourceInfo
+  type: has_one
+  via: resource
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: NodeRef
+  type: has_one
+  via: node_info
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: CVMOSInfo
+  type: has_one
+  via: os
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: CVMKmsInfo
+  type: has_one
+  via: kms_info
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: CVMProgressInfo
+  type: has_one
+  via: progress
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: CVMGatewayInfo
+  type: has_one
+  via: gateway
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: CVMLogUrls
+  type: has_one
+  via: logs
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: WorkspaceRef
+  type: has_one
+  via: workspace
+- from: teehouse__api__routes__cvms__v20260121__schemas__CVMInfo
+  to: UserRef
+  type: has_one
+  via: creator
+- from: teehouse__api__routes__projects__CvmBasicInfo
+  to: Teepod
+  type: belongs_to
+  via: teepod_id
+- from: teehouse__api__routes__workspace_members__TeamMemberInfo
+  to: User
+  type: belongs_to
+  via: user_id

@@ -1,23 +1,143 @@
 aid: phala
 name: Phala Network
-description: 'Phala Network is a company surfaced via the API Evangelist harvest backlog (source: market-gap:ai-model-routing)
-  and added to the network as a stub for full-pipeline profiling.'
+description: Phala Network (Phala Cloud) runs confidential computing infrastructure built on Trusted Execution Environments (Intel TDX, NVIDIA GPU TEE) and the open-source dstack framework. Developers deploy Docker workloads as confidential VMs (CVMs) through the Phala Cloud API, CLI and SDKs, verify them with remote attestation and on-chain KMS, and call attested Private AI models through an OpenAI-compatible inference API at inference.phala.com.
 url: https://raw.githubusercontent.com/api-evangelist/phala/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:market-gap:ai-model-routing
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-10-13 (local-v5; was harvest)
 specificationVersion: '0.20'
 created: '2026-10-13'
 modified: '2026-10-13'
 tags:
 - Company
-apis: []
+- Confidential Computing
+- Trusted Execution Environments
+- AI Inference
+- Cloud Infrastructure
+- Attestation
+- LLM Router
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+image: https://phala.com/favicon.ico
 common:
+- type: AgenticAccess
+  url: agentic-access/phala-agentic-access.yml
+- type: Spectral
+  url: rules/phala-rules.yml
+- type: JSONLD
+  url: json-ld/phala-context.jsonld
+- type: Vocabulary
+  url: vocabulary/phala-vocabulary.yml
+- type: DataModel
+  url: data-model/phala-data-model.yml
+- type: Compliance
+  url: https://phala.com/trust
+- type: ErrorCatalog
+  url: errors/phala-problem-types.yml
+- type: Conformance
+  url: conformance/phala-conformance.yml
+- type: LLMsTxt
+  url: llms/phala-llms.txt
+- type: AgentCard
+  url: a2a/phala-a2a.yml
+- type: SecurityTxt
+  url: well-known/phala-explorer-security.txt
+- type: WellKnown
+  url: well-known/phala-well-known.yml
+- type: Hosts
+  url: hosts/phala-hosts.yml
+- type: Vendors
+  url: vendors/phala-vendors.yml
+- type: SDKs
+  url: packages/phala-packages.yml
+- type: Packages
+  url: packages/phala-packages.yml
+- type: Security
+  url: https://phala.com/learn/tags/Security
+- type: Newsroom
+  url: https://phala.com/tags/News
+- type: Authentication
+  url: authentication/phala-authentication.yml
+- type: TrustCenter
+  url: security/phala-trust-center.yml
+- type: DomainSecurity
+  url: security/phala-domain-security.yml
 - type: Website
-  url: https://phala.network
+  url: https://phala.com
+- type: Documentation
+  url: https://docs.phala.com/
+- type: APIReference
+  url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+- type: DeveloperPortal
+  url: https://phala.com/tags/Developers
+- type: GettingStarted
+  url: https://docs.phala.com/phala-cloud/getting-started/attestation
+- type: Blog
+  url: https://phala.com/blog
+- type: GitHubOrganization
+  url: https://github.com/Phala-Network
+- type: Login
+  url: https://cloud.phala.com/login
+- type: SignUp
+  url: https://cloud.phala.com/register
+- type: Pricing
+  url: https://phala.com/pricing
+- type: PrivacyPolicy
+  url: https://phala.com/privacy
+- type: TermsOfService
+  url: https://phala.com/terms
+apis:
+- aid: phala:phala-cloud-api
+  name: Phala Cloud API
+  description: 'REST API for Phala Cloud: provision and manage confidential VMs (CVMs), apps and revisions, attestations, KMS, workspaces, SSH keys and instance types. Published by Phala as an OpenAPI 3.1 document at docs.phala.com/openapi.json.'
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - Confidential Computing
+  - CVM
+  - Attestation
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-cloud-api-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://docs.phala.com/openapi.json
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+  image: https://phala.com/favicon.ico
+- aid: phala:phala-private-ai-api
+  name: Phala Private AI API
+  description: OpenAI-compatible confidential inference API (chat completions, responses, Anthropic-format messages, completions, embeddings, models) served from GPU TEEs, plus attestation report, signed receipt and attested-session endpoints. Documented on docs.phala.com; no machine-readable contract is published.
+  humanURL: https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/confidential-ai-api
+  baseURL: https://inference.phala.com/v1
+  tags:
+  - AI Inference
+  - LLM
+  - Confidential AI
+  properties:
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/confidential-ai/overview
+  - type: APIReference
+    url: https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/chat-completions
+  image: https://phala.com/favicon.ico
+x-enrichment:
+  date: '2026-10-13'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v5

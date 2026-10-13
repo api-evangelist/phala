@@ -1,0 +1,866 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/phala/main/json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json",
+  "title": "CVMInfo",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/phala-cloud-api-openapi.yml#/components/schemas/teehouse__api__routes__cvms__v20260121__schemas__CVMInfo",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^cvm_.+",
+      "format": "hashid",
+      "title": "HashedId[cvms]",
+      "description": "A hashed identifier that maps to an internal database ID"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name"
+    },
+    "app_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "App Id"
+    },
+    "vm_uuid": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Vm Uuid"
+    },
+    "instance_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Instance Id"
+    },
+    "resource": {
+      "$ref": "#/$defs/CVMResourceInfo"
+    },
+    "node_info": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NodeRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "os": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CVMOSInfo"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "kms_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KmsType"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "kms_info": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CVMKmsInfo"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status"
+    },
+    "in_progress": {
+      "type": "boolean",
+      "title": "In Progress",
+      "default": false
+    },
+    "progress": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CVMProgressInfo"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "compose_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Compose Hash"
+    },
+    "docker_compose_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Docker Compose Hash"
+    },
+    "pre_launch_script_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Pre Launch Script Hash"
+    },
+    "gateway": {
+      "$ref": "#/$defs/CVMGatewayInfo"
+    },
+    "logs": {
+      "$ref": "#/$defs/CVMLogUrls"
+    },
+    "services": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "type": "array",
+      "title": "Services"
+    },
+    "endpoints": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/CvmNetworkUrls"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Endpoints"
+    },
+    "public_logs": {
+      "type": "boolean",
+      "title": "Public Logs",
+      "default": false
+    },
+    "public_sysinfo": {
+      "type": "boolean",
+      "title": "Public Sysinfo",
+      "default": false
+    },
+    "public_tcbinfo": {
+      "type": "boolean",
+      "title": "Public Tcbinfo",
+      "default": true
+    },
+    "gateway_enabled": {
+      "type": "boolean",
+      "title": "Gateway Enabled",
+      "default": false
+    },
+    "secure_time": {
+      "type": "boolean",
+      "title": "Secure Time",
+      "default": false
+    },
+    "storage_fs": {
+      "type": "string",
+      "title": "Storage Fs",
+      "default": "zfs"
+    },
+    "workspace": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WorkspaceRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "creator": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UserRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "created_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Created At"
+    },
+    "deleted_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Deleted At"
+    },
+    "listed": {
+      "type": "boolean",
+      "title": "Listed",
+      "default": false
+    },
+    "project_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Project Type"
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "resource",
+    "status",
+    "gateway"
+  ],
+  "$defs": {
+    "BillingPeriod": {
+      "type": "string",
+      "enum": [
+        "skip",
+        "hourly",
+        "monthly"
+      ],
+      "title": "BillingPeriod"
+    },
+    "CVMGatewayInfo": {
+      "properties": {
+        "base_domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Base Domain"
+        },
+        "cname": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cname"
+        }
+      },
+      "type": "object",
+      "title": "CVMGatewayInfo"
+    },
+    "CVMKmsInfo": {
+      "properties": {
+        "chain_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Chain Id"
+        },
+        "dstack_kms_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dstack Kms Address"
+        },
+        "dstack_app_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dstack App Address"
+        },
+        "deployer_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deployer Address"
+        },
+        "rpc_endpoint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rpc Endpoint"
+        },
+        "encrypted_env_pubkey": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Encrypted Env Pubkey"
+        }
+      },
+      "type": "object",
+      "title": "CVMKmsInfo"
+    },
+    "CVMLogUrls": {
+      "properties": {
+        "serial": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Serial"
+        },
+        "stdout": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stdout"
+        },
+        "stderr": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stderr"
+        },
+        "container_log_base": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Container Log Base"
+        }
+      },
+      "type": "object",
+      "title": "CVMLogUrls"
+    },
+    "CVMOSInfo": {
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Name"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Version"
+        },
+        "is_dev": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Is Dev"
+        },
+        "os_image_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Os Image Hash"
+        }
+      },
+      "type": "object",
+      "title": "CVMOSInfo"
+    },
+    "CVMProgressInfo": {
+      "properties": {
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Target"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Started At"
+        },
+        "correlation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Correlation Id"
+        }
+      },
+      "type": "object",
+      "title": "CVMProgressInfo"
+    },
+    "CVMResourceInfo": {
+      "properties": {
+        "instance_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Instance Type"
+        },
+        "vcpu": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vcpu"
+        },
+        "memory_in_gb": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Memory In Gb"
+        },
+        "disk_in_gb": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Disk In Gb"
+        },
+        "gpus": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Gpus"
+        },
+        "compute_billing_price": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "decimal",
+              "description": "A monetary value with precise decimal arithmetic"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Compute Billing Price"
+        },
+        "billing_period": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BillingPeriod"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "type": "object",
+      "title": "CVMResourceInfo"
+    },
+    "CvmNetworkUrls": {
+      "properties": {
+        "app": {
+          "type": "string",
+          "title": "App"
+        },
+        "instance": {
+          "type": "string",
+          "title": "Instance"
+        }
+      },
+      "type": "object",
+      "required": [
+        "app",
+        "instance"
+      ],
+      "title": "CvmNetworkUrls",
+      "description": "Model representing public URLs for a CVM port"
+    },
+    "KmsType": {
+      "type": "string",
+      "enum": [
+        "phala",
+        "ethereum",
+        "base",
+        "legacy"
+      ],
+      "title": "KmsType"
+    },
+    "NodeRef": {
+      "properties": {
+        "object_type": {
+          "type": "string",
+          "const": "node",
+          "title": "Object Type",
+          "description": "Fixed value 'node'",
+          "default": "node"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Id",
+          "description": "Teepod numeric ID"
+        },
+        "node_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Node Id",
+          "description": "Physical node numeric ID"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Name",
+          "description": "Node display name"
+        },
+        "region": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Region",
+          "description": "Region identifier"
+        },
+        "device_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Device Id",
+          "description": "Device ID"
+        },
+        "ppid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ppid",
+          "description": "PPID"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TeepodStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Node status"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Version",
+          "description": "Teepod version"
+        }
+      },
+      "type": "object",
+      "title": "NodeRef",
+      "description": "Minimal node/teepod reference for embedding in responses."
+    },
+    "TeepodStatus": {
+      "type": "string",
+      "enum": [
+        "ONLINE",
+        "OFFLINE",
+        "MAINTENANCE"
+      ],
+      "title": "TeepodStatus"
+    },
+    "UserRef": {
+      "properties": {
+        "object_type": {
+          "type": "string",
+          "const": "user",
+          "title": "Object Type",
+          "description": "Fixed value 'user'",
+          "default": "user"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^usr_.+",
+              "format": "hashid",
+              "title": "HashedId[users]",
+              "description": "A hashed identifier that maps to an internal database ID"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Id",
+          "description": "Hashed user ID"
+        },
+        "username": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Username",
+          "description": "Display username"
+        },
+        "avatar_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Avatar Url",
+          "description": "Gravatar or OAuth provider avatar URL"
+        }
+      },
+      "type": "object",
+      "title": "UserRef",
+      "description": "Minimal user reference for embedding in responses."
+    },
+    "WorkspaceRef": {
+      "properties": {
+        "object_type": {
+          "type": "string",
+          "const": "workspace",
+          "title": "Object Type",
+          "description": "Fixed value 'workspace'",
+          "default": "workspace"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^wks_.+",
+          "format": "hashid",
+          "title": "HashedId[teams]",
+          "description": "Hashed workspace ID"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "Workspace display name"
+        },
+        "slug": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Slug",
+          "description": "URL-safe workspace identifier"
+        },
+        "avatar_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Avatar Url",
+          "description": "Workspace avatar URL from profile"
+        }
+      },
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "WorkspaceRef",
+      "description": "Minimal workspace reference for embedding in responses."
+    }
+  }
+}

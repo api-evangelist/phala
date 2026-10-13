@@ -1,0 +1,214 @@
+generated: '2026-10-13'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/phala-cloud-api-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: No MCP server was found. The pre-flight posted tools/list to /mcp on api.phala.network, phala.network, app.phala.network, bridge.phala.network;
+  verdict absent. Candidate tools below are derived from the 101 operation(s) in the provider's own OpenAPI (40 listed); they describe what a
+  server WOULD expose, not one that exists.
+tools:
+- name: handle_provision_cvm_for_eliza_api_v1_cvms_provision_eliza_p
+  operationId: handle_provision_cvm_for_eliza_api_v1_cvms_provision_eliza_post
+  method: POST
+  path: /api/v1/cvms/provision/eliza
+  description: Provision Eliza app
+- name: handle_provision_cvm_api_v1_cvms_provision_post
+  operationId: handle_provision_cvm_api_v1_cvms_provision_post
+  method: POST
+  path: /api/v1/cvms/provision
+  description: Provision DStack app
+- name: handle_create_cvm_for_workload_api_v1_cvms_workload_post
+  operationId: handle_create_cvm_for_workload_api_v1_cvms_workload_post
+  method: POST
+  path: /api/v1/cvms/workload
+  description: Create GPU workload CVM
+- name: handle_create_cvm_from_povision_api_v1_cvms_post
+  operationId: handle_create_cvm_from_povision_api_v1_cvms_post
+  method: POST
+  path: /api/v1/cvms
+  description: Create CVM from provision
+- name: handle_list_cvms_api_v1_cvms_get
+  operationId: handle_list_cvms_api_v1_cvms_get
+  method: GET
+  path: /api/v1/cvms
+  description: List CVMs
+- name: handle_create_eliza_from_provision_api_v1_cvms_eliza_post
+  operationId: handle_create_eliza_from_provision_api_v1_cvms_eliza_post
+  method: POST
+  path: /api/v1/cvms/eliza
+  description: Create Eliza from provision
+- name: get_cvm_compose_file_api_v1_cvms_cvm_id_compose_file_get
+  operationId: get_cvm_compose_file_api_v1_cvms__cvm_id__compose_file_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/compose_file
+  description: Get raw compose file
+- name: trigger_cvm_compose_file_update_api_v1_cvms_cvm_id_compose_f
+  operationId: trigger_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/compose_file
+  description: Trigger compose file update
+- name: submit_cvm_compose_file_update_api_v1_cvms_cvm_id_compose_fi
+  operationId: submit_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/compose_file
+  description: Submit compose file update
+- name: provision_for_cvm_compose_file_update_api_v1_cvms_cvm_id_com
+  operationId: provision_for_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_provision_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/compose_file/provision
+  description: Provision compose file update
+- name: handle_replicate_cvm_api_v1_cvms_cvm_id_replicas_post
+  operationId: handle_replicate_cvm_api_v1_cvms__cvm_id__replicas_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/replicas
+  description: Replicate CVM
+- name: get_cvm_operations_api_v1_cvms_cvm_id_operations_get
+  operationId: get_cvm_operations_api_v1_cvms__cvm_id__operations_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/operations
+  description: List CVM operations
+- name: cancel_cvm_operation_api_v1_cvms_cvm_id_operations_cancel_po
+  operationId: cancel_cvm_operation_api_v1_cvms__cvm_id__operations_cancel_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/operations/cancel
+  description: Cancel in-progress CVM operation
+- name: handle_get_cvm_docker_compose_api_v1_cvms_cvm_id_docker_comp
+  operationId: handle_get_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_yml_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/docker-compose.yml
+  description: Get Docker Compose file
+- name: handle_get_cvm_prelaunch_script_api_v1_cvms_cvm_id_pre_launc
+  operationId: handle_get_cvm_prelaunch_script_api_v1_cvms__cvm_id__pre_launch_script_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/pre-launch-script
+  description: Get pre-launch script
+- name: update_cvm_pre_launch_script_api_v1_cvms_cvm_id_pre_launch_s
+  operationId: update_cvm_pre_launch_script_api_v1_cvms__cvm_id__pre_launch_script_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/pre-launch-script
+  description: Update pre-launch script
+- name: get_available_os_images_api_v1_cvms_cvm_id_available_os_imag
+  operationId: get_available_os_images_api_v1_cvms__cvm_id__available_os_images_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/available-os-images
+  description: List available OS images
+- name: update_cvm_os_image_api_v1_cvms_cvm_id_os_image_patch
+  operationId: update_cvm_os_image_api_v1_cvms__cvm_id__os_image_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/os-image
+  description: Update OS image
+- name: update_cvm_envs_api_v1_cvms_cvm_id_envs_patch
+  operationId: update_cvm_envs_api_v1_cvms__cvm_id__envs_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/envs
+  description: Update environment variables
+- name: update_cvm_docker_compose_api_v1_cvms_cvm_id_docker_compose_
+  operationId: update_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/docker-compose
+  description: Update Docker Compose file
+- name: redeploy_cvm_revision_api_v1_cvms_cvm_id_revisions_revision_
+  operationId: redeploy_cvm_revision_api_v1_cvms__cvm_id__revisions__revision_id__redeploy_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/revisions/{revision_id}/redeploy
+  description: Redeploy CVM from a specific revision
+- name: handle_batch_refresh_cvm_instance_ids_api_v1_cvms_instance_i
+  operationId: handle_batch_refresh_cvm_instance_ids_api_v1_cvms_instance_ids_patch
+  method: PATCH
+  path: /api/v1/cvms/instance-ids
+  description: Batch refresh CVM instance IDs
+- name: handle_list_cvms_paginated_api_v1_cvms_paginated_get
+  operationId: handle_list_cvms_paginated_api_v1_cvms_paginated_get
+  method: GET
+  path: /api/v1/cvms/paginated
+  description: List CVMs (paginated)
+- name: handle_refresh_cvm_instance_id_api_v1_cvms_cvm_id_instance_i
+  operationId: handle_refresh_cvm_instance_id_api_v1_cvms__cvm_id__instance_id_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/instance-id
+  description: Refresh CVM instance ID
+- name: handle_get_cvm_api_v1_cvms_cvm_id_get
+  operationId: handle_get_cvm_api_v1_cvms__cvm_id__get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}
+  description: Get CVM details
+- name: handle_remove_cvm_api_v1_cvms_cvm_id_delete
+  operationId: handle_remove_cvm_api_v1_cvms__cvm_id__delete
+  method: DELETE
+  path: /api/v1/cvms/{cvm_id}
+  description: Delete CVM
+- name: update_cvm_endpoint_api_v1_cvms_cvm_id_patch
+  operationId: update_cvm_endpoint_api_v1_cvms__cvm_id__patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}
+  description: Update CVM
+- name: handle_get_cvm_stats_api_v1_cvms_cvm_id_stats_get
+  operationId: handle_get_cvm_stats_api_v1_cvms__cvm_id__stats_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/stats
+  description: Get CVM system stats
+- name: handle_get_cvm_attestation_api_v1_cvms_cvm_id_attestation_ge
+  operationId: handle_get_cvm_attestation_api_v1_cvms__cvm_id__attestation_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/attestation
+  description: Get CVM attestation
+- name: handle_get_cvm_network_info_api_v1_cvms_cvm_id_network_get
+  operationId: handle_get_cvm_network_info_api_v1_cvms__cvm_id__network_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/network
+  description: Get CVM network info
+- name: handle_start_cvm_api_v1_cvms_cvm_id_start_post
+  operationId: handle_start_cvm_api_v1_cvms__cvm_id__start_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/start
+  description: Start CVM
+- name: handle_shutdown_cvm_api_v1_cvms_cvm_id_shutdown_post
+  operationId: handle_shutdown_cvm_api_v1_cvms__cvm_id__shutdown_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/shutdown
+  description: Shutdown CVM
+- name: handle_stop_cvm_api_v1_cvms_cvm_id_stop_post
+  operationId: handle_stop_cvm_api_v1_cvms__cvm_id__stop_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/stop
+  description: Force stop CVM
+- name: handle_restart_cvm_api_v1_cvms_cvm_id_restart_post
+  operationId: handle_restart_cvm_api_v1_cvms__cvm_id__restart_post
+  method: POST
+  path: /api/v1/cvms/{cvm_id}/restart
+  description: Restart CVM
+- name: get_operation_status_api_v1_cvms_cvm_id_operation_status_get
+  operationId: get_operation_status_api_v1_cvms__cvm_id__operation_status_get
+  method: GET
+  path: /api/v1/cvms/{cvm_id}/operation-status
+  description: Get operation status
+- name: handle_update_cvm_name_api_v1_cvms_cvm_id_name_patch
+  operationId: handle_update_cvm_name_api_v1_cvms__cvm_id__name_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/name
+  description: Handle Update Cvm Name
+- name: handle_update_cvm_listed_api_v1_cvms_cvm_id_listed_patch
+  operationId: handle_update_cvm_listed_api_v1_cvms__cvm_id__listed_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/listed
+  description: Handle Update Cvm Listed
+- name: handle_update_cvm_scheduled_delete_api_v1_cvms_cvm_id_schedu
+  operationId: handle_update_cvm_scheduled_delete_api_v1_cvms__cvm_id__scheduled_delete_patch
+  method: PATCH
+  path: /api/v1/cvms/{cvm_id}/scheduled-delete
+  description: Handle Update Cvm Scheduled Delete
+- name: handle_batch_stop_cvms_api_v1_cvms_batch_stop_post
+  operationId: handle_batch_stop_cvms_api_v1_cvms_batch_stop_post
+  method: POST
+  path: /api/v1/cvms/batch-stop
+  description: Batch stop CVMs
+- name: handle_batch_cvm_status_api_v1_status_batch_post
+  operationId: handle_batch_cvm_status_api_v1_status_batch_post
+  method: POST
+  path: /api/v1/status/batch
+  description: Handle Batch Cvm Status

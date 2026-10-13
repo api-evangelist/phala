@@ -1,0 +1,524 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/phala/main/json-schema/phala-provision-dstack-app-request-v2-schema.json",
+  "title": "ProvisionDstackAppRequestV2",
+  "description": "Request for provisioning a DStack app with automatic resource matching.\n\nMost fields are optional and will be automatically determined by the resource\nmatching logic in preflight_dstack_app. Only compose_file and name are required.",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/phala-cloud-api-openapi.yml#/components/schemas/ProvisionDstackAppRequestV2",
+  "properties": {
+    "compose_file": {
+      "$ref": "#/$defs/AppComposeV2"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "CVM name (used as hostname): 5-63 chars, must start with letter, can contain letters/numbers/hyphens"
+    },
+    "instance_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Instance Type"
+    },
+    "vcpu": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Vcpu"
+    },
+    "memory": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Memory"
+    },
+    "disk_size": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Disk Size"
+    },
+    "image": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Image"
+    },
+    "prefer_dev": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Prefer Dev",
+      "description": "Prefer dev OS image (True) or non-dev OS image (False). When None, auto-selects based on image name or defaults to dev."
+    },
+    "teepod_id": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Teepod Id"
+    },
+    "region": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Region"
+    },
+    "listed": {
+      "type": "boolean",
+      "title": "Listed",
+      "default": true
+    },
+    "kms_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Kms Id"
+    },
+    "kms": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KmsType"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": "phala"
+    },
+    "nonce": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Nonce",
+      "description": "Optional nonce for deterministic app_id generation. When provided, app_id must also be provided. System will verify: app_id == get_create_address(team_wallet, nonce)"
+    },
+    "app_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "App Id",
+      "description": "Optional app_id for manual specification. Required when nonce is provided. Only works with PHALA KMS."
+    },
+    "env_keys": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Env Keys"
+    },
+    "ports": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/PortMapping"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Ports"
+    },
+    "encrypted_env": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Encrypted Env"
+    },
+    "user_config": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "User Config"
+    },
+    "hugepages": {
+      "type": "boolean",
+      "title": "Hugepages",
+      "default": false
+    },
+    "pin_numa": {
+      "type": "boolean",
+      "title": "Pin Numa",
+      "default": false
+    },
+    "gpus": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GpuConfig"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "kms_urls": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Kms Urls"
+    },
+    "gateway_urls": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Gateway Urls"
+    },
+    "experimental_vpc_server_app_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Experimental Vpc Server App Id"
+    }
+  },
+  "type": "object",
+  "required": [
+    "compose_file",
+    "name"
+  ],
+  "$defs": {
+    "AppComposeV2": {
+      "properties": {
+        "allowed_envs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Allowed Envs"
+        },
+        "bash_script": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bash Script"
+        },
+        "default_gateway_domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Default Gateway Domain"
+        },
+        "docker_compose_file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Docker Compose File"
+        },
+        "init_script": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Init Script"
+        },
+        "kms_enabled": {
+          "type": "boolean",
+          "title": "Kms Enabled",
+          "default": true
+        },
+        "local_key_provider_enabled": {
+          "type": "boolean",
+          "title": "Local Key Provider Enabled",
+          "default": false
+        },
+        "manifest_version": {
+          "type": "integer",
+          "title": "Manifest Version",
+          "default": 2
+        },
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "no_instance_id": {
+          "type": "boolean",
+          "title": "No Instance Id",
+          "default": false
+        },
+        "pre_launch_script": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pre Launch Script"
+        },
+        "public_logs": {
+          "type": "boolean",
+          "title": "Public Logs",
+          "default": true
+        },
+        "public_sysinfo": {
+          "type": "boolean",
+          "title": "Public Sysinfo",
+          "default": true
+        },
+        "public_tcbinfo": {
+          "type": "boolean",
+          "title": "Public Tcbinfo",
+          "default": true
+        },
+        "runner": {
+          "type": "string",
+          "title": "Runner",
+          "default": "docker-compose"
+        },
+        "gateway_enabled": {
+          "type": "boolean",
+          "title": "Gateway Enabled",
+          "default": true
+        },
+        "features": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Features",
+          "default": [
+            "kms",
+            "tproxy-net"
+          ]
+        },
+        "salt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Salt"
+        },
+        "secure_time": {
+          "type": "boolean",
+          "title": "Secure Time",
+          "default": false
+        },
+        "storage_fs": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "ext4"
+            },
+            {
+              "type": "string",
+              "const": "zfs"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Storage Fs",
+          "default": "zfs"
+        },
+        "tproxy_enabled": {
+          "type": "boolean",
+          "title": "Tproxy Enabled",
+          "default": true
+        }
+      },
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "title": "AppComposeV2"
+    },
+    "GpuConfig": {
+      "properties": {
+        "gpus": {
+          "items": {
+            "$ref": "#/$defs/GpuSpec"
+          },
+          "type": "array",
+          "title": "Gpus"
+        },
+        "attach_mode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "listed",
+                "all"
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Attach Mode",
+          "default": "listed"
+        }
+      },
+      "type": "object",
+      "required": [
+        "gpus"
+      ],
+      "title": "GpuConfig"
+    },
+    "GpuSpec": {
+      "properties": {
+        "slot": {
+          "type": "string",
+          "title": "Slot"
+        },
+        "product_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Product Id"
+        }
+      },
+      "type": "object",
+      "required": [
+        "slot"
+      ],
+      "title": "GpuSpec"
+    },
+    "KmsType": {
+      "type": "string",
+      "enum": [
+        "phala",
+        "ethereum",
+        "base",
+        "legacy"
+      ],
+      "title": "KmsType"
+    },
+    "PortMapping": {
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "title": "Protocol"
+        },
+        "host_port": {
+          "type": "integer",
+          "title": "Host Port"
+        },
+        "vm_port": {
+          "type": "integer",
+          "title": "Vm Port"
+        },
+        "host_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Host Address"
+        }
+      },
+      "type": "object",
+      "required": [
+        "protocol",
+        "host_port",
+        "vm_port"
+      ],
+      "title": "PortMapping"
+    }
+  }
+}

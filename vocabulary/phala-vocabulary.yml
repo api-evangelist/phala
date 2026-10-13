@@ -1,0 +1,416 @@
+generated: '2026-10-13'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/phala-cloud-api-openapi.yml
+vocabulary:
+  name: Phala Network Domain Vocabulary
+  description: 'Terms declared by Phala Network''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-13'
+  terms:
+  - term: CVMs
+    definition: Confidential Virtual Machine (CVM) lifecycle management on Phala Network
+    tags:
+    - Resource Group
+    source: openapi/phala-cloud-api-openapi.yml
+  - term: Apps
+    definition: App template management and CVM deployment from app blueprints
+    tags:
+    - Resource Group
+    source: openapi/phala-cloud-api-openapi.yml
+  - term: Webhooks
+    definition: Manage webhook endpoints and monitor delivery history
+    tags:
+    - Resource Group
+    source: openapi/phala-cloud-api-openapi.yml
+  - term: SSH Keys
+    definition: SSH public key management for CVM access
+    tags:
+    - Resource Group
+    source: openapi/phala-cloud-api-openapi.yml
+  - term: KMS
+    definition: Key Management Service — key derivation, on-chain anchoring, and inspection
+    tags:
+    - Resource Group
+    source: openapi/phala-cloud-api-openapi.yml
+  - term: Instance Types
+    definition: Available hardware configurations for CVM deployment
+    tags:
+    - Resource Group
+    source: openapi/phala-cloud-api-openapi.yml
+  - term: Attestations
+    definition: Remote attestation and TEE verification endpoints
+    tags:
+    - Resource Group
+    source: openapi/phala-cloud-api-openapi.yml
+  - term: Account
+    definition: OAuth account linked to a user.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/Account
+  - term: AccountsResponse
+    definition: Response for getting user's connected accounts.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AccountsResponse
+  - term: AcmeFetchResult
+    definition: Result of an ACME account fetch attempt.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AcmeFetchResult
+  - term: ActiveGpuRentalOverviewResponse
+    definition: Overview payload combining active rental metrics and featured items.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/ActiveGpuRentalOverviewResponse
+  - term: ActiveGpuRentalResponse
+    definition: Summary of an active GPU rental instance.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/ActiveGpuRentalResponse
+  - term: ActivityIpEntry
+    definition: IP address activity record from ClickHouse.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/ActivityIpEntry
+  - term: AddGpusRequest
+    definition: Request to add GPUs to a workspace.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AddGpusRequest
+  - term: AddMembersRequest
+    definition: Request to add members to a team.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AddMembersRequest
+  - term: AddTeepodsRequest
+    definition: Request to add teepods to a workspace.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AddTeepodsRequest
+  - term: AdminEmailPreviewRequest
+    definition: 'Object declared by the contract with fields: subject, content.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AdminEmailPreviewRequest
+  - term: AdminEmailRequest
+    definition: 'Object declared by the contract with fields: subject, content, recipients, reply_to, attachments.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AdminEmailRequest
+  - term: AdminEmailResponse
+    definition: 'Object declared by the contract with fields: total, sent, failed, results.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AdminEmailResponse
+  - term: AdminEmailResult
+    definition: 'Object declared by the contract with fields: email, success, resend_email_id, error.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AdminEmailResult
+  - term: AdminInstanceEventResponse
+    definition: Instance lifecycle event with CVM, user, and team context.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AdminInstanceEventResponse
+  - term: AdminTeepodDetail
+    definition: Teepod with admin-specific metadata.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AdminTeepodDetail
+  - term: AdminUserDetail
+    definition: Extended user information for admin interface.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AdminUserDetail
+  - term: AffectedApp
+    definition: 'Object declared by the contract with fields: app_id, project_name, contract_address, chain_id, allow_any_device, cvms.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AffectedApp
+  - term: AffectedCvm
+    definition: 'Object declared by the contract with fields: cvm_id, vm_uuid, device_id, device_allowed, node_name, status.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AffectedCvm
+  - term: AffectedTeam
+    definition: 'Object declared by the contract with fields: team_id, team_name, contact_email, apps.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AffectedTeam
+  - term: AllFamiliesResponse
+    definition: All instance type families with their types.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllFamiliesResponse
+  - term: AllocationDetail
+    definition: CVM allocation detail for an order.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllocationDetail
+  - term: AllocationGpuDetail
+    definition: GPU details for an allocation.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllocationGpuDetail
+  - term: AllocationHistoryItem
+    definition: GPU allocation history record.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllocationHistoryItem
+  - term: AllocationHistoryResponse
+    definition: GPU allocation history response.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllocationHistoryResponse
+  - term: AllowedNodeOut
+    definition: 'Object declared by the contract with fields: teepod_id, teepod_name, device_id, on_chain_allowed.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllowedNodeOut
+  - term: AllowedNodesResponse
+    definition: 'Object declared by the contract with fields: kms_id, is_onchain, nodes.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllowedNodesResponse
+  - term: AllowedOsImageOut
+    definition: 'Object declared by the contract with fields: os_image_id, name, version, os_image_hash, db_enabled, on_chain_allowed.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllowedOsImageOut
+  - term: AllowedOsImagesResponse
+    definition: 'Object declared by the contract with fields: kms_id, is_onchain, images.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AllowedOsImagesResponse
+  - term: ApiToken
+    definition: 'Object declared by the contract with fields: id, name, token, token_prefix, is_active, created_at, last_used_at, expires_at,
+      default_version, team_id, team_name, team_slug.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/ApiToken
+  - term: ApiTokenCreate
+    definition: 'Object declared by the contract with fields: name, expires_in_days.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/ApiTokenCreate
+  - term: ApiTokenRefresh
+    definition: 'Object declared by the contract with fields: expires_in_days, upgrade_version.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/ApiTokenRefresh
+  - term: AppComposeV2
+    definition: 'Object declared by the contract with fields: allowed_envs, bash_script, default_gateway_domain, docker_compose_file, init_script,
+      kms_enabled, local_key_provider_enabled, manifest_version, name, no_instance_id, pre_launch_script, public_logs. (9 more)'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppComposeV2
+  - term: AppCvmsBatchIsAllowedResponse
+    definition: 'Object declared by the contract with fields: is_onchain, results, total, allowed_count, denied_count, error_count, skipped_cvm_ids.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppCvmsBatchIsAllowedResponse
+  - term: AppEventsResponse
+    definition: Instance event list response.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppEventsResponse
+  - term: AppIsAllowedRequest
+    definition: 'Object declared by the contract with fields: compose_hash, node_id, device_id, chain_id.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppIsAllowedRequest
+  - term: AppIsAllowedResponse
+    definition: 'Object declared by the contract with fields: app_contract_address, compose_hash, device_id, compose_hash_allowed, allow_any_device,
+      device_id_allowed, is_allowed, error.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppIsAllowedResponse
+  - term: AppKmsInfoResponse
+    definition: 'Object declared by the contract with fields: is_onchain_kms, chain_id, kms_contract_address, app_contract_address, deployer_address,
+      deployer_type, is_contract, safe_app_url.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppKmsInfoResponse
+  - term: AppRevisionDetailResponse
+    definition: Full revision detail with configuration data.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppRevisionDetailResponse
+  - term: AppRevisionResponse
+    definition: App deployment revision summary.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppRevisionResponse
+  - term: AppRevisionsResponse
+    definition: Paginated revision list.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppRevisionsResponse
+  - term: AppUsageResponse
+    definition: App usage response with cost summary.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AppUsageResponse
+  - term: AttachmentRequest
+    definition: 'Object declared by the contract with fields: filename, content, content_type.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AttachmentRequest
+  - term: AttestationKeyType
+    definition: Attestation key type (subset used in SGX/TDX DCAP quotes).
+    tags:
+    - Enumeration
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AttestationKeyType
+  - term: AuditCvmDetail
+    definition: 'Object declared by the contract with fields: cvm_id, name, vm_uuid, node_name, instance_type, instance_type_name, vcpu, memory_gb,
+      disk_size_gb, is_running, is_deleted, created_at. (8 more)'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AuditCvmDetail
+  - term: AuditSegment
+    definition: 'Object declared by the contract with fields: start, end, end_reason, duration_hours, compute_cost, storage_cost.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AuditSegment
+  - term: AuditSummary
+    definition: 'Object declared by the contract with fields: total_cvms, total_running_hours, total_compute, total_storage, total_estimated.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AuditSummary
+  - term: AutoSettleRequest
+    definition: 'Object declared by the contract with fields: reason.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AutoSettleRequest
+  - term: AutoSettleResponse
+    definition: 'Object declared by the contract with fields: success, invoice_id, status, original_amount_due, write_off_amount, adjustment_item_id.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AutoSettleResponse
+  - term: AvailableGpuItem
+    definition: GPU information for available GPUs (reserved + available).
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AvailableGpuItem
+  - term: AvailableGpusResponse
+    definition: Response for available GPUs list.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AvailableGpusResponse
+  - term: AvailableImageOut
+    definition: Available OS image from teepod RPC.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AvailableImageOut
+  - term: AvailableOSImageOut
+    definition: OS image available for KMS association.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AvailableOSImageOut
+  - term: AvailableTeepodItem
+    definition: Teepod information for available teepods (reserved + enabled).
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AvailableTeepodItem
+  - term: AvailableTeepodsResponse
+    definition: Response for available teepods list.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/AvailableTeepodsResponse
+  - term: BackfillEnvPubkeyItem
+    definition: 'Object declared by the contract with fields: cvm_id, app_id, status, reason, pubkey.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BackfillEnvPubkeyItem
+  - term: BackfillEnvPubkeyRequest
+    definition: 'Object declared by the contract with fields: cvm_ids, dry_run.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BackfillEnvPubkeyRequest
+  - term: BackfillEnvPubkeyResponse
+    definition: 'Object declared by the contract with fields: total, updated, items.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BackfillEnvPubkeyResponse
+  - term: BalanceResponse
+    definition: 'Object declared by the contract with fields: external_id, credits, credits_line, needs_recharge, recharge_amount.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BalanceResponse
+  - term: BatchDeleteKmsOSImagesRequest
+    definition: Batch delete KMS-OS image relationships.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchDeleteKmsOSImagesRequest
+  - term: BatchDisableRequest
+    definition: Request to batch disable multiple users.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchDisableRequest
+  - term: BatchDisableResponse
+    definition: Summary of batch disable operation.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchDisableResponse
+  - term: BatchInstanceIdRefreshRequest
+    definition: 'Object declared by the contract with fields: cvm_ids, running_only, missing_only, overwrite, limit, dry_run.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchInstanceIdRefreshRequest
+  - term: BatchInstanceIdRefreshResponse
+    definition: 'Object declared by the contract with fields: total, scanned, updated, unchanged, skipped, conflicts, errors, items.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchInstanceIdRefreshResponse
+  - term: BatchIsAllowedRequest
+    definition: 'Object declared by the contract with fields: cvm_ids.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchIsAllowedRequest
+  - term: BatchIsAllowedResponse
+    definition: 'Object declared by the contract with fields: results, total, allowed_count, denied_count, error_count, skipped_cvm_ids.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchIsAllowedResponse
+  - term: BatchItemResult
+    definition: 'Object declared by the contract with fields: cvm_id, app_contract_address, compose_hash, device_id, compose_hash_allowed, allow_any_device,
+      device_id_allowed, is_allowed, error.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchItemResult
+  - term: BatchKmsOSImageRelationRequest
+    definition: Batch create/update KMS-OS image relationships.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchKmsOSImageRelationRequest
+  - term: BatchStatusRequest
+    definition: 'Object declared by the contract with fields: vm_uuids.'
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchStatusRequest
+  - term: BatchStopErrorEntry
+    definition: Error detail for a single CVM in batch stop.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchStopErrorEntry
+  - term: BatchStopRequest
+    definition: Request to batch stop multiple CVMs.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchStopRequest
+  - term: BatchStopResponse
+    definition: Summary of batch stop operation.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchStopResponse
+  - term: BatchSyncMetadataResponse
+    definition: Result of batch KMS metadata sync.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchSyncMetadataResponse
+  - term: BatchTeepodKmsRelationRequest
+    definition: Request for batch teepod-KMS operations.
+    tags:
+    - Object
+    source: openapi/phala-cloud-api-openapi.yml#/components/schemas/BatchTeepodKmsRelationRequest

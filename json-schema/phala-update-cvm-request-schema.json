@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/phala/main/json-schema/phala-update-cvm-request-schema.json",
+  "title": "UpdateCvmRequest",
+  "description": "PATCH request body — all fields optional, only set fields are applied.",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/phala-cloud-api-openapi.yml#/components/schemas/UpdateCvmRequest",
+  "properties": {
+    "docker_compose_file": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Docker Compose File",
+      "description": "Docker Compose YAML content"
+    },
+    "pre_launch_script": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Pre Launch Script",
+      "description": "Shell script executed before containers start"
+    },
+    "allowed_envs": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Allowed Envs",
+      "description": "Allowed environment variable names (env_keys)"
+    },
+    "public_logs": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Public Logs",
+      "description": "Expose container logs publicly"
+    },
+    "public_sysinfo": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Public Sysinfo",
+      "description": "Expose system info publicly"
+    },
+    "public_tcbinfo": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Public Tcbinfo",
+      "description": "Expose TCB attestation info publicly"
+    },
+    "encrypted_env": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Encrypted Env",
+      "description": "Encrypted environment variables as hex string"
+    },
+    "user_config": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "User Config",
+      "description": "User configuration string"
+    },
+    "gpus": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GpuConfig"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "GPU configuration"
+    },
+    "vcpu": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Vcpu",
+      "description": "Number of vCPUs"
+    },
+    "memory": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Memory",
+      "description": "Memory in MB"
+    },
+    "disk_size": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Disk Size",
+      "description": "Disk size in MB"
+    },
+    "image": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Image",
+      "description": "OS image name or slug from available-os-images"
+    },
+    "shutdown_timeout": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "maximum": 1200.0,
+          "minimum": 10.0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Shutdown Timeout",
+      "description": "Timeout in seconds for graceful shutdown. null means no timeout."
+    },
+    "allow_force_stop": {
+      "type": "boolean",
+      "title": "Allow Force Stop",
+      "description": "When true, falls back to hard stop if graceful shutdown times out. Use for zombie CVMs that are unresponsive to shutdown signals.",
+      "default": false
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "GpuConfig": {
+      "properties": {
+        "gpus": {
+          "items": {
+            "$ref": "#/$defs/GpuSpec"
+          },
+          "type": "array",
+          "title": "Gpus"
+        },
+        "attach_mode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "listed",
+                "all"
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Attach Mode",
+          "default": "listed"
+        }
+      },
+      "type": "object",
+      "required": [
+        "gpus"
+      ],
+      "title": "GpuConfig"
+    },
+    "GpuSpec": {
+      "properties": {
+        "slot": {
+          "type": "string",
+          "title": "Slot"
+        },
+        "product_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Product Id"
+        }
+      },
+      "type": "object",
+      "required": [
+        "slot"
+      ],
+      "title": "GpuSpec"
+    }
+  }
+}

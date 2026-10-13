@@ -1,0 +1,412 @@
+# Phala
+
+- [What is Phala Cloud](https://docs.phala.com/phala-cloud/what-is/what-is-phala-cloud.md): Phala Cloud provides secure TEE-powered infrastructure for running AI applications with hardware-level privacy and verifiable execution.
+- [Quick Start](https://docs.phala.com/phala-cloud/getting-started/overview.md): Get started with Phala Cloud in minutes. Deploy your first TEE application and verify attestation proofs with this step-by-step quick start guide.
+- [Create Account](https://docs.phala.com/phala-cloud/getting-started/sign-up-for-cloud-account.md): Create your Phala Cloud account to start deploying confidential applications.
+- [CVM Deployment](https://docs.phala.com/phala-cloud/getting-started/start-from-cloud-ui.md): Deploy your first TEE application on Phala Cloud using the web UI.
+- [Deploy Your First CVM](https://docs.phala.com/phala-cloud/getting-started/deploy-first-cvm.md): Go from zero to a running Confidential VM on Phala Cloud using the Dashboard, CLI, or SDK.
+- [Explore Templates](https://docs.phala.com/phala-cloud/getting-started/explore-templates/overview.md): Deploy pre-built confidential applications on Phala Cloud using templates.
+- [Get and Verify Attestation](https://docs.phala.com/phala-cloud/getting-started/attestation.md): Get a TEE attestation report from your CVM and verify it step by step.
+- [Migration from dstack v0.3](https://docs.phala.com/phala-cloud/references/migration-from-dstack-v03.md): Complete migration guide from dstack OS v0.3.x to v0.5.x
+- [CVM Overview](https://docs.phala.com/phala-cloud/cvm/overview.md): Landing page for CVM creation and management on Phala Cloud. Links to deployment methods, scaling, and lifecycle operations.
+- [CVM with Docker Compose](https://docs.phala.com/phala-cloud/cvm/create-with-docker-compose.md): Deploy a CVM from a docker-compose.yml file using the Phala Cloud dashboard.
+- [Environment Variables](https://docs.phala.com/phala-cloud/cvm/set-secure-environment-variables.md): Manage encrypted secrets and built-in environment variables for your CVM.
+- [Private Container Registry](https://docs.phala.com/phala-cloud/cvm/create-with-private-docker-image.md): Configure private container registry access for CVM deployments on Phala Cloud.
+- [Scale with Multiple Replicas](https://docs.phala.com/phala-cloud/cvm/multi-replica-scaling.md): Understand when replicas make sense, what you get from them, and where they fall short. For concrete replication steps, see Replicating CVMs.
+- [Replicating CVMs](https://docs.phala.com/phala-cloud/cvm/replicating-cvms.md): Scale an existing CVM by creating replicas on the same or different nodes. Covers the dashboard flow, the phala CLI, Cloud KMS, and Onchain KMS approval workflows.
+- [Deployment Cheat Sheet](https://docs.phala.com/phala-cloud/cvm/deployment-cheat-sheet.md): Common gotchas and quick fixes when deploying CVMs, including cross-architecture image builds and Docker log sizing.
+- [OS Image](https://docs.phala.com/phala-cloud/cvm/image/overview.md): Deploy confidential applications with dstack - a TEE-based infrastructure platform.
+- [Database](https://docs.phala.com/phala-cloud/storage/access-database.md): Deploy confidential applications with Phala Cloud's managed TEE infrastructure.
+- [Update Code](https://docs.phala.com/phala-cloud/update/upgrade-application.md): Seamless code updates in TEE
+- [Scaling](https://docs.phala.com/phala-cloud/update/resize-resource.md): Create and manage Confidential Virtual Machines (CVMs) on Phala Cloud.
+- [Deploy AI Models in GPU TEE](https://docs.phala.com/phala-cloud/confidential-ai/gpu-tee-deployment-guide.md): End-to-end guide for deploying custom LLMs on GPU TEE with vLLM and accessing them via OpenAI-compatible API
+- [Deploy and Verify GPU TEE](https://docs.phala.com/phala-cloud/confidential-ai/confidential-gpu/deploy-and-verify.md): Deploy or fine-tune AI models with hardware-level security using TEE-protected GPUs and verify they run in genuine TEE hardware
+- [Troubleshooting](https://docs.phala.com/phala-cloud/confidential-ai/confidential-gpu/troubleshooting.md): Common issues and warnings when running GPU TEE workloads
+- [Benchmark](https://docs.phala.com/phala-cloud/confidential-ai/benchmark.md): Performance benchmarks and metrics for LLM inference in GPU TEE environments.
+- [CLI Overview](https://docs.phala.com/phala-cloud/phala-cloud-cli/overview.md): Deploy and manage CVMs from your terminal
+- [Deploy Your First CVM](https://docs.phala.com/phala-cloud/phala-cloud-cli/start-from-cloud-cli.md): Deploy a Jupyter notebook to Phala Cloud and test TEE functions using the CLI
+- [phala.toml Configuration](https://docs.phala.com/phala-cloud/phala-cloud-cli/phala-toml.md): Project configuration file for the Phala Cloud CLI, defining default settings for CVM deployments and operations.
+- [Set Up a CI/CD Pipeline](https://docs.phala.com/phala-cloud/phala-cloud-cli/ci-cd-automation/setup-a-ci-cd-pipeline.md): Automate CVM deployments with GitHub Actions, GitLab CI, and Phala Cloud SDKs.
+- [deploy](https://docs.phala.com/phala-cloud/phala-cloud-cli/deploy.md): Deploy new CVM or update existing one
+- [instance-types](https://docs.phala.com/phala-cloud/phala-cloud-cli/instance-types.md): List available instance types
+- [nodes](https://docs.phala.com/phala-cloud/phala-cloud-cli/nodes.md): Manage TEE nodes
+- [nodes list](https://docs.phala.com/phala-cloud/phala-cloud-cli/nodes/list.md): List workspace nodes
+- [os-images](https://docs.phala.com/phala-cloud/phala-cloud-cli/os-images.md): List available OS images
+- [cp](https://docs.phala.com/phala-cloud/phala-cloud-cli/cp.md): Copy files to/from a CVM via SCP
+- [logs](https://docs.phala.com/phala-cloud/phala-cloud-cli/logs.md): Fetch logs from a CVM
+- [ps](https://docs.phala.com/phala-cloud/phala-cloud-cli/ps.md): List containers of a CVM
+- [runtime-config](https://docs.phala.com/phala-cloud/phala-cloud-cli/runtime-config.md): Show the runtime configuration of a CVM
+- [ssh](https://docs.phala.com/phala-cloud/phala-cloud-cli/ssh.md): Connect to a CVM via SSH
+- [apps](https://docs.phala.com/phala-cloud/phala-cloud-cli/apps.md): List dstack apps
+- [instances](https://docs.phala.com/phala-cloud/phala-cloud-cli/instances.md): Manage app instances
+- [instances ls](https://docs.phala.com/phala-cloud/phala-cloud-cli/instances/ls.md): List instances of an app
+- [instances add](https://docs.phala.com/phala-cloud/phala-cloud-cli/instances/add.md): Create a new instance under an existing app
+- [instances rm](https://docs.phala.com/phala-cloud/phala-cloud-cli/instances/rm.md): Delete one or more app instances by VM UUID
+- [cvms](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms.md): Manage CVMs
+- [cvms attestation](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/attestation.md): Get CVM attestation
+- [cvms delete](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/delete.md): Delete a CVM
+- [cvms device-allowlist](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/device-allowlist.md): Show device allowlist status for a CVM's app
+- [cvms get](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/get.md): Get details of a CVM
+- [cvms list](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/list.md): List CVMs
+- [cvms list-nodes](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/list-nodes.md): List worker nodes
+- [cvms logs (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/logs.md): Fetch container logs from a CVM
+- [cvms replicate](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/replicate.md): Create a replica of an existing CVM
+- [cvms resize](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/resize.md): Resize resources for a CVM
+- [cvms restart](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/restart.md): Restart a CVM
+- [cvms serial-logs (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/serial-logs.md): Fetch VM serial console logs from a CVM
+- [cvms start](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/start.md): Start a stopped CVM
+- [cvms stop](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/stop.md): Stop a running CVM
+- [cvms upgrade (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/cvms/upgrade.md): Upgrade a CVM to a new version (use "phala deploy" instead)
+- [envs](https://docs.phala.com/phala-cloud/phala-cloud-cli/envs.md): Encrypt and update CVM sealed environment variables
+- [envs encrypt](https://docs.phala.com/phala-cloud/phala-cloud-cli/envs/encrypt.md): Encrypt environment variables for a CVM (sealed, only readable inside TEE)
+- [envs update](https://docs.phala.com/phala-cloud/phala-cloud-cli/envs/update.md): Encrypt and push sealed environment variables to a CVM (only readable inside TEE)
+- [ssh-keys](https://docs.phala.com/phala-cloud/phala-cloud-cli/ssh-keys.md): Manage SSH keys
+- [ssh-keys list](https://docs.phala.com/phala-cloud/phala-cloud-cli/ssh-keys/list.md): List SSH keys for the current user
+- [ssh-keys add](https://docs.phala.com/phala-cloud/phala-cloud-cli/ssh-keys/add.md): Add a local SSH public key to your account
+- [ssh-keys remove](https://docs.phala.com/phala-cloud/phala-cloud-cli/ssh-keys/remove.md): Remove an SSH key from your account
+- [ssh-keys import-github](https://docs.phala.com/phala-cloud/phala-cloud-cli/ssh-keys/import-github.md): Import SSH keys from a GitHub user's public profile
+- [allow-devices](https://docs.phala.com/phala-cloud/phala-cloud-cli/allow-devices.md): Manage on-chain device allowlist for an app contract
+- [allow-devices list](https://docs.phala.com/phala-cloud/phala-cloud-cli/allow-devices/list.md): List allowed devices from the on-chain contract
+- [allow-devices add](https://docs.phala.com/phala-cloud/phala-cloud-cli/allow-devices/add.md): Add devices to the on-chain allowlist
+- [allow-devices remove](https://docs.phala.com/phala-cloud/phala-cloud-cli/allow-devices/remove.md): Remove devices from the on-chain allowlist
+- [allow-devices allow-any](https://docs.phala.com/phala-cloud/phala-cloud-cli/allow-devices/allow-any.md): Set the allow-any-device flag on the contract. Requires --enable or --disable.
+- [allow-devices disallow-any](https://docs.phala.com/phala-cloud/phala-cloud-cli/allow-devices/disallow-any.md): Disable allow-any-device on the contract. Equivalent to `allow-any --disable`.
+- [allow-devices toggle-allow-any](https://docs.phala.com/phala-cloud/phala-cloud-cli/allow-devices/toggle-allow-any.md): Toggle allow-any-device on the contract (or force via --enable/--disable)
+- [kms](https://docs.phala.com/phala-cloud/phala-cloud-cli/kms.md): Manage on-chain KMS contracts
+- [kms list](https://docs.phala.com/phala-cloud/phala-cloud-cli/kms/list.md): List KMS contracts
+- [kms nodes](https://docs.phala.com/phala-cloud/phala-cloud-cli/kms/nodes.md): List the KMS nodes (with RPC url) under a contract
+- [kms ethereum](https://docs.phala.com/phala-cloud/phala-cloud-cli/kms/ethereum.md): Show on-chain KMS details for ethereum
+- [kms base](https://docs.phala.com/phala-cloud/phala-cloud-cli/kms/base.md): Show on-chain KMS details for base
+- [kms phala](https://docs.phala.com/phala-cloud/phala-cloud-cli/kms/phala.md): Show the off-chain Phala KMS root keys
+- [login](https://docs.phala.com/phala-cloud/phala-cloud-cli/login.md): Authenticate with Phala Cloud
+- [logout](https://docs.phala.com/phala-cloud/phala-cloud-cli/logout.md): Remove stored API key
+- [profiles](https://docs.phala.com/phala-cloud/phala-cloud-cli/profiles.md): List auth profiles
+- [profiles use](https://docs.phala.com/phala-cloud/phala-cloud-cli/profiles/use.md): Switch to an auth profile
+- [profiles rename](https://docs.phala.com/phala-cloud/phala-cloud-cli/profiles/rename.md): Rename an auth profile
+- [profiles delete](https://docs.phala.com/phala-cloud/phala-cloud-cli/profiles/delete.md): Delete an auth profile
+- [status](https://docs.phala.com/phala-cloud/phala-cloud-cli/status.md): Check authentication status
+- [switch](https://docs.phala.com/phala-cloud/phala-cloud-cli/switch.md): Switch auth profiles
+- [whoami](https://docs.phala.com/phala-cloud/phala-cloud-cli/whoami.md): Print the current user
+- [link](https://docs.phala.com/phala-cloud/phala-cloud-cli/link.md): Link a local directory to a CVM
+- [api](https://docs.phala.com/phala-cloud/phala-cloud-cli/api.md): Make an authenticated HTTP request to Phala Cloud API.
+- [simulator](https://docs.phala.com/phala-cloud/phala-cloud-cli/simulator.md): TEE simulator commands
+- [simulator start](https://docs.phala.com/phala-cloud/phala-cloud-cli/simulator/start.md): Start the TEE simulator
+- [simulator stop](https://docs.phala.com/phala-cloud/phala-cloud-cli/simulator/stop.md): Stop the TEE simulator
+- [keccak256sum](https://docs.phala.com/phala-cloud/phala-cloud-cli/keccak256sum.md): Compute or verify keccak256 checksums of hex inputs
+- [phala completion](https://docs.phala.com/phala-cloud/phala-cloud-cli/completion.md): Generate shell completion scripts for bash, zsh, or fish.
+- [self](https://docs.phala.com/phala-cloud/phala-cloud-cli/self.md): CLI self-management
+- [self update](https://docs.phala.com/phala-cloud/phala-cloud-cli/self/update.md): Update the Phala CLI
+- [Changelog](https://docs.phala.com/phala-cloud/phala-cloud-cli/changelog.md): Release history for the Phala Cloud CLI
+- [auth (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/auth.md): Authenticate with Phala Cloud
+- [auth login (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/auth/login.md): Authenticate with Phala Cloud (use 'phala login' instead)
+- [auth logout (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/auth/logout.md): Remove stored API key (use 'phala logout' instead)
+- [auth status (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/auth/status.md): Check auth status (use 'phala status' instead)
+- [config (Deprecated)](https://docs.phala.com/phala-cloud/phala-cloud-cli/config.md): Manage local CLI state
+- [config get](https://docs.phala.com/phala-cloud/phala-cloud-cli/config/get.md): Get a configuration value
+- [config list](https://docs.phala.com/phala-cloud/phala-cloud-cli/config/list.md): List config values
+- [config set](https://docs.phala.com/phala-cloud/phala-cloud-cli/config/set.md): Set a configuration value
+- [Overview](https://docs.phala.com/phala-cloud/networking/overview.md): Automatic HTTPS endpoints for your containers with zero configuration
+- [Quickstart](https://docs.phala.com/phala-cloud/networking/quickstart.md): Deploy a service with public HTTPS access in under 5 minutes
+- [Expose an HTTP Service](https://docs.phala.com/phala-cloud/networking/expose-http-service.md): Step-by-step guide to expose HTTP services with automatic HTTPS
+- [Set Up a Custom Domain](https://docs.phala.com/phala-cloud/networking/setup-custom-domain.md): Use your own domain with automatic SSL certificates
+- [Expose TCP Services](https://docs.phala.com/phala-cloud/networking/expose-tcp-service.md): Expose TCP services like databases with automatic TLS encryption
+- [Enable SSH Access](https://docs.phala.com/phala-cloud/networking/enable-ssh-access.md): Connect to your CVM via SSH for debugging and management
+- [TLS Passthrough](https://docs.phala.com/phala-cloud/networking/tls-passthrough.md): Set up end-to-end encryption with TLS passthrough for databases and custom protocols
+- [Set Up gRPC Services](https://docs.phala.com/phala-cloud/networking/setup-grpc-service.md): Deploy gRPC services with HTTP/2 and automatic TLS
+- [Architecture](https://docs.phala.com/phala-cloud/networking/architecture.md): Understanding how Phala Cloud routes and secures your network traffic
+- [Network Security](https://docs.phala.com/phala-cloud/networking/security.md): How Phala Cloud keeps your network traffic private even from the cloud provider
+- [Domain Attestation](https://docs.phala.com/phala-cloud/networking/domain-attestation.md): How to verify your data privacy when connecting to TEE applications
+- [Reference](https://docs.phala.com/phala-cloud/networking/specifications.md): Quick lookup for URL patterns, environment variables, and configuration parameters
+- [Troubleshooting](https://docs.phala.com/phala-cloud/networking/troubleshooting.md): Diagnosing and fixing common networking issues
+- [What is KMS](https://docs.phala.com/phala-cloud/key-management/key-management-protocol.md): Technical design documents and architecture details for the dstack TEE platform.
+- [Cloud vs Onchain KMS](https://docs.phala.com/phala-cloud/key-management/cloud-vs-onchain-kms.md): Choose between centralized Cloud KMS or blockchain-governed Onchain KMS for your dstack application.
+- [Understanding Onchain KMS](https://docs.phala.com/phala-cloud/key-management/understanding-onchain-kms.md): The mental model behind Onchain KMS — which contracts exist, who signs what, and how the KMS verifies your CVM at boot time.
+- [Deploying with Onchain KMS](https://docs.phala.com/phala-cloud/key-management/deploying-with-onchain-kms.md): Deploy a dstack CVM whose authorization is governed by a smart contract on Ethereum or Base, using either the Phala Cloud dashboard or the phala CLI.
+- [Updating with Onchain KMS](https://docs.phala.com/phala-cloud/key-management/updating-with-onchain-kms.md): Roll a new compose file to a running Onchain KMS CVM when the DstackApp owner is a plain wallet you control.
+- [Device Management](https://docs.phala.com/phala-cloud/key-management/device-management.md): Manage which physical nodes can run your Onchain KMS app by controlling the on-chain device allowlist.
+- [Multisig and Governance](https://docs.phala.com/phala-cloud/key-management/multisig-governance.md): Run production Onchain KMS apps with Safe, Timelock, or DAO ownership using the prepare and commit flow.
+- [Get a Deterministic Key](https://docs.phala.com/phala-cloud/key-management/get-a-key.md): Generate deterministic keys for cryptographic operations in Phala Cloud
+- [Create Crypto Wallets](https://docs.phala.com/phala-cloud/key-management/create-crypto-wallet.md): Generate blockchain wallets with deterministic keys in Phala Cloud
+- [Trust Center Verification](https://docs.phala.com/phala-cloud/attestation/trust-center-verification.md): Automated verification reports for every Phala Cloud deployment with the Trust Center platform
+- [Become a Featured Builder](https://docs.phala.com/phala-cloud/attestation/feature-builder.md): How to become a Featured Builder on Trust Center and showcase your verified application
+- [Overview](https://docs.phala.com/phala-cloud/attestation/overview.md): Learn how attestation proves your CVM runs unmodified code in genuine TEE hardware.
+- [Quickstart](https://docs.phala.com/phala-cloud/attestation/quickstart.md): Get your first attestation proof using the dashboard.
+- [Get Attestation](https://docs.phala.com/phala-cloud/attestation/get-attestation.md): Learn how to get CVM attestation on Phala Cloud using dashboard or dstack SDK.
+- [Verify Your Application](https://docs.phala.com/phala-cloud/attestation/verify-your-application.md): Prove your exact Docker containers run unmodified in the TEE.
+- [Verify the Platform](https://docs.phala.com/phala-cloud/attestation/verify-the-platform.md): Verify Phala's infrastructure integrity end-to-end.
+- [End-to-End Attestation Verification](https://docs.phala.com/phala-cloud/attestation/verification-guide.md): Fetch, verify, and integrate CVM attestation into your workflow — end-to-end with working code
+- [Complete Chain of Trust](https://docs.phala.com/phala-cloud/attestation/chain-of-trust.md): Complete security checklist ensuring no verification gaps exist.
+- [Attestation Fields Reference](https://docs.phala.com/phala-cloud/attestation/attestation-fields.md): Reference guide for Intel TDX attestation quote fields and their meanings.
+- [Compliance & Certifications](https://docs.phala.com/phala-cloud/security-and-privacy/compliance.md): Security compliance certifications, controls, and data processing practices for Phala Cloud
+- [Security Audit Report](https://docs.phala.com/phala-cloud/security-and-privacy/security-audit.md): Independent third-party security audit of Phala Cloud's underlying dstack infrastructure by zkSecurity
+- [Security Architecture](https://docs.phala.com/phala-cloud/security-and-privacy/security-architecture.md): Security features and remote attestation capabilities of Phala Cloud TEE.
+- [Privacy](https://docs.phala.com/phala-cloud/security-and-privacy/privacy.md): Phala Cloud privacy policy covering data collection, usage, and protection practices for TEE-powered confidential computing services.
+- [Public Logs](https://docs.phala.com/phala-cloud/monitoring/public-logs.md): View Docker container logs and control access to their public URLs.
+- [Serial Logs](https://docs.phala.com/phala-cloud/monitoring/serials-logs.md): View CVM boot and QEMU logs from the Phala Cloud dashboard.
+- [Private Log Viewer](https://docs.phala.com/phala-cloud/monitoring/private-log-viewer.md): Secure your Docker container logs with password-protected access using Dozzle.
+- [Datadog Integration](https://docs.phala.com/phala-cloud/monitoring/datadog-integration.md): Integrate Datadog with your CVM for metrics, logs, and alerting using a zero-code-change sidecar approach.
+- [Troubleshooting Guide](https://docs.phala.com/phala-cloud/troubleshooting/troubleshooting.md): Common issues and solutions for Phala Cloud deployments.
+- [Private Log Viewer](https://docs.phala.com/phala-cloud/troubleshooting/private-log-viewer.md): Create and manage Confidential Virtual Machines (CVMs) on Phala Cloud.
+- [Debug Application](https://docs.phala.com/phala-cloud/troubleshooting/debug-your-application.md): Access your CVM for debugging and troubleshooting.
+- [Production Checklist](https://docs.phala.com/phala-cloud/production-checklist.md): Production checklist for launch.
+- [Performance Report](https://docs.phala.com/phala-cloud/references/performance-report.md): Comprehensive performance analysis of Phala Cloud's TEE infrastructure.
+- [Overview](https://docs.phala.com/phala-cloud/references/overview.md): Reference documentation for Phala Cloud — Cloud JS SDK, CLI, API error codes, and performance benchmarks.
+- [API Overview](https://docs.phala.com/phala-cloud/phala-cloud-api/overview.md): Deploy confidential applications with Phala Cloud's managed TEE infrastructure.
+- [Attestation API Reference](https://docs.phala.com/phala-cloud/phala-cloud-api/attestations.md): Complete API reference for Phala Cloud's remote attestation service. Covers all endpoints, parameters, schemas, and integration patterns for Intel SGX and TDX quote verification.
+- [CVM Deployment via API](https://docs.phala.com/phala-cloud/references/api-deployment-guide.md): Overview of deploying Confidential Virtual Machines programmatically using the Phala Cloud REST API or SDKs.
+- [List apps](https://docs.phala.com/api-reference/apps/list-apps.md): Returns paginated app list with filtering. Response schema varies by API version.
+- [Get app filter options](https://docs.phala.com/api-reference/apps/get-app-filter-options.md): Returns distinct values for each filterable field based on user's apps.
+- [Get app details](https://docs.phala.com/api-reference/apps/get-app-details.md): Returns app metadata and current CVM configuration. Response schema varies by API version.
+- [Get app attestation data](https://docs.phala.com/api-reference/apps/get-app-attestation-data.md): Returns TEE attestation quotes, event logs, and KMS configuration for running CVMs.
+- [Run app TCB evaluation](https://docs.phala.com/api-reference/apps/run-app-tcb-evaluation.md): Runs a live Intel PCS early collateral evaluation for each running CVM without using Redis collateral cache.
+- [List app CVMs](https://docs.phala.com/api-reference/apps/list-app-cvms.md): Returns CVM instances for an app. Admins see all instances; users see only their own.
+- [Batch check on-chain deployment allowance for all CVMs under an app](https://docs.phala.com/api-reference/apps/batch-check-on-chain-deployment-allowance-for-all-cvms-under-an-app.md)
+- [Create CVM replica](https://docs.phala.com/api-reference/apps/create-cvm-replica.md): Clones a CVM to a target node. Uses source node if target not specified.
+- [Create a new instance under an existing app](https://docs.phala.com/api-reference/apps/create-a-new-instance-under-an-existing-app.md): Deploy a new CVM instance under an existing app, optionally with a new Docker Compose file. For on-chain KMS apps, this uses a two-phase flow: the first request returns HTTP 465 with a commit token; after registering the compose hash on-chain, the second request commits with the token and transactio…
+- [Get device allowlist status](https://docs.phala.com/api-reference/apps/get-device-allowlist-status.md): Returns the device_id allowlist status for an app's CVMs. For on-chain KMS apps, queries the blockchain in real-time to check which devices are registered in the app contract.
+- [Check if app deployment is allowed on-chain](https://docs.phala.com/api-reference/apps/check-if-app-deployment-is-allowed-on-chain.md)
+- [Get app on-chain KMS info](https://docs.phala.com/api-reference/apps/get-app-on-chain-kms-info.md): Returns on-chain KMS metadata for an app: chain, KMS contract, app contract, deployer address, and deployer type detection (EOA, Safe multisig, legacy multisig, ERC-4337, or generic contract).
+- [Get pending compose updates](https://docs.phala.com/api-reference/apps/get-pending-compose-updates.md): Returns provisioned compose file updates that have been signed on-chain but not yet applied to CVMs.
+- [Preview a pending compose update](https://docs.phala.com/api-reference/apps/preview-a-pending-compose-update.md): Returns current and pending docker compose file and pre-launch script for diffing before applying an update.
+- [List app revisions](https://docs.phala.com/api-reference/apps/list-app-revisions.md): Returns deployment history with compose hashes, operation types, and user refs.
+- [Get revision detail](https://docs.phala.com/api-reference/apps/get-revision-detail.md): Returns full revision data including compose file, encrypted env, and user config.
+- [Redeploy app from a specific revision](https://docs.phala.com/api-reference/apps/redeploy-app-from-a-specific-revision.md): Redeploy a CVM to a specific revision. If the app has exactly one CVM, it will be redeployed by default. If the app has multiple CVMs, you must specify target vm_uuids in request body. This schedules async CVM update task(s).
+- [Get app metered usage](https://docs.phala.com/api-reference/apps/get-app-metered-usage.md): Returns billing usage records from ClickHouse. Defaults to 7-day window if dates not specified.
+- [Create CVM from provision](https://docs.phala.com/api-reference/cvms/create-cvm-from-provision.md): Creates a CVM using cached provision data from /cvms/provision. Requires compose_hash from the provision response.
+- [List CVMs](https://docs.phala.com/api-reference/cvms/list-cvms.md): Returns CVMs in current workspace. Admins can filter by user_id or teepod_id.
+- [List CVMs (paginated)](https://docs.phala.com/api-reference/cvms/list-cvms-paginated.md): Returns paginated CVMs in current workspace with total count.
+- [Provision DStack app](https://docs.phala.com/api-reference/cvms/provision-dstack-app.md): Validates Docker Compose configuration and caches it for 14 days. Returns compose_hash and KMS info for on-chain registration before creation.
+- [Create GPU workload CVM](https://docs.phala.com/api-reference/cvms/create-gpu-workload-cvm.md): Creates a CVM for GPU workloads. Node is auto-selected from available GPU nodes.
+- [Batch stop CVMs](https://docs.phala.com/api-reference/cvms/batch-stop-cvms.md): Force stop multiple CVMs at once. Non-admin users can only stop CVMs in their current workspace. Admin users can stop any CVM. Max 50 per request.
+- [Create Eliza from provision](https://docs.phala.com/api-reference/cvms/create-eliza-from-provision.md): Creates an Eliza CVM using cached provision data from /cvms/provision/eliza. Requires compose_hash from the provision response.
+- [Provision Eliza app](https://docs.phala.com/api-reference/cvms/provision-eliza-app.md): Validates Eliza configuration and caches it for 14 days. Returns compose_hash and KMS info for on-chain registration.
+- [Batch refresh CVM instance IDs](https://docs.phala.com/api-reference/cvms/batch-refresh-cvm-instance-ids.md): Resolves and persists missing instance_id values. Admin can pass cross-workspace CVM IDs.
+- [Handle Batch Cvm Status](https://docs.phala.com/api-reference/cvms/handle-batch-cvm-status.md): Batch query CVM real-time status.
+- [Get CVM details](https://docs.phala.com/api-reference/cvms/get-cvm-details.md): Returns full CVM details including status, network info, and KMS configuration.
+- [Delete CVM](https://docs.phala.com/api-reference/cvms/delete-cvm.md): Stops and permanently deletes CVM. Data is not recoverable.
+- [Update CVM](https://docs.phala.com/api-reference/cvms/update-cvm.md): Unified PATCH endpoint for CVM updates. Only fields present in the request body are applied. Handles resource resize, compose configuration, visibility, environment, and OS image updates. For contract-owned KMS, compose-hash-affecting changes require two-phase flow with on-chain hash registration.
+- [Get CVM attestation](https://docs.phala.com/api-reference/cvms/get-cvm-attestation.md): Returns TEE attestation data including TCB info and app certificates.
+- [List available OS images](https://docs.phala.com/api-reference/cvms/list-available-os-images.md): Returns OS images this CVM can upgrade to, filtered by node availability, KMS allowlist, dev/prod upgrade rules, and GPU compatibility.
+- [Commit CVM replica (token-based, no auth required)](https://docs.phala.com/api-reference/cvms/commit-cvm-replica-token-based-no-auth-required.md): Completes a two-phase CVM replication using a one-time commit token. The token was generated during a prepare-only or hash-required replica request.
+- [Get commit token info (no auth required)](https://docs.phala.com/api-reference/cvms/get-commit-token-info-no-auth-required.md): Read-only lookup of commit token metadata for the confirm-update page.
+- [Commit CVM update (token-based, no auth required)](https://docs.phala.com/api-reference/cvms/commit-cvm-update-token-based-no-auth-required.md): Completes a two-phase CVM update using a one-time commit token. The token was generated during a prepare-only PATCH request. No workspace authentication is required — the commit token is the credential.
+- [Get raw compose file](https://docs.phala.com/api-reference/cvms/get-raw-compose-file.md): Returns the complete compose file as JSON or raw text based on query param.
+- [Trigger compose file update](https://docs.phala.com/api-reference/cvms/trigger-compose-file-update.md): Applies a provisioned compose file update. Requires compose_hash from provision endpoint. Restarts the CVM with new configuration.
+- [Submit compose file update](https://docs.phala.com/api-reference/cvms/submit-compose-file-update.md): Submit complete compose file with hash verification. Use when you have pre-computed compose_hash and want to skip provision step.
+- [Provision compose file update](https://docs.phala.com/api-reference/cvms/provision-compose-file-update.md): Validates new compose file and returns compose_hash for on-chain registration. Cache expires after 14 days.
+- [Diagnose custom domain DNS](https://docs.phala.com/api-reference/cvms/diagnose-custom-domain-dns.md): Verify DNS records for custom domain configuration. Checks CNAME pointing to CVM, TXT records for app verification, and CAA records.
+- [Update Docker Compose file](https://docs.phala.com/api-reference/cvms/update-docker-compose-file.md): Replaces the docker-compose.yml and restarts the CVM. For contract-owned KMS, requires two-phase flow with on-chain hash registration.
+- [Get Docker Compose file](https://docs.phala.com/api-reference/cvms/get-docker-compose-file.md): Returns the raw Docker Compose YAML content from the CVM configuration.
+- [Update environment variables](https://docs.phala.com/api-reference/cvms/update-environment-variables.md): Updates encrypted environment variables. If env_keys changes for contract-owned KMS, requires two-phase flow with on-chain hash registration.
+- [Get firewall availability for this CVM's node](https://docs.phala.com/api-reference/cvms/get-firewall-availability-for-this-cvms-node.md): Checks teescope capabilities.firewall on the node hosting this CVM.
+- [Refresh CVM instance ID](https://docs.phala.com/api-reference/cvms/refresh-cvm-instance-id.md): Resolve and persist instance_id for a CVM. Default behavior only backfills missing values.
+- [Handle Update Cvm Listed](https://docs.phala.com/api-reference/cvms/handle-update-cvm-listed.md)
+- [Handle Update Cvm Name](https://docs.phala.com/api-reference/cvms/handle-update-cvm-name.md): Update CVM name with RFC 1123 validation and availability check
+- [Get CVM network info](https://docs.phala.com/api-reference/cvms/get-cvm-network-info.md): Returns network status including internal IP, handshake time, and public URLs.
+- [Get network configuration](https://docs.phala.com/api-reference/cvms/get-network-configuration.md): Returns real-time KMS URLs, Gateway URLs, and port mappings from VMM.
+- [Update KMS/Gateway URLs](https://docs.phala.com/api-reference/cvms/update-kmsgateway-urls.md): Update KMS and/or Gateway URLs for this CVM. Requires VMM >= 0.5.7.
+- [Get operation status](https://docs.phala.com/api-reference/cvms/get-operation-status.md): Returns current in-progress operation details including Celery task status.
+- [List CVM operations](https://docs.phala.com/api-reference/cvms/list-cvm-operations.md): Returns operation records grouped by correlation_id. Only includes events with correlation_id (new format since 2024-01). Error messages are sanitized for non-admin users.
+- [Cancel in-progress CVM operation](https://docs.phala.com/api-reference/cvms/cancel-in-progress-cvm-operation.md): Cancel the current in-progress operation for a CVM. Revokes the Celery task and clears the operation lock.
+- [Update OS image](https://docs.phala.com/api-reference/cvms/update-os-image.md): Upgrades the CVM to a different OS image. Shuts down, updates, and restarts. Takes several minutes. Track progress via correlation_id.
+- [Get port mappings](https://docs.phala.com/api-reference/cvms/get-port-mappings.md): Returns persisted port mappings for this CVM.
+- [Set port mappings](https://docs.phala.com/api-reference/cvms/set-port-mappings.md): Bulk-replace all port mappings for this CVM. Writes to DB and applies to VMM.
+- [Get pre-launch script](https://docs.phala.com/api-reference/cvms/get-pre-launch-script.md): Returns the shell script that runs before containers start.
+- [Update pre-launch script](https://docs.phala.com/api-reference/cvms/update-pre-launch-script.md): Replaces the pre-launch script and restarts the CVM. For contract-owned KMS, requires two-phase flow with on-chain hash registration.
+- [Replicate CVM](https://docs.phala.com/api-reference/cvms/replicate-cvm.md): Create a replica of the CVM on a target node. If request body is omitted, it replicates to the source node and reuses existing env.
+- [Restart CVM](https://docs.phala.com/api-reference/cvms/restart-cvm.md): Stops and starts CVM. Use force=true to skip graceful shutdown.
+- [Redeploy CVM from a specific revision](https://docs.phala.com/api-reference/cvms/redeploy-cvm-from-a-specific-revision.md): Switch/rollback a CVM to a specified app revision (compose_hash).
+- [Handle Update Cvm Scheduled Delete](https://docs.phala.com/api-reference/cvms/handle-update-cvm-scheduled-delete.md): Update CVM scheduled delete time
+- [Shutdown CVM](https://docs.phala.com/api-reference/cvms/shutdown-cvm.md): Gracefully shuts down CVM (SIGTERM then SIGKILL after timeout). Triggers billing.
+- [Start CVM](https://docs.phala.com/api-reference/cvms/start-cvm.md): Powers on a stopped CVM. GPU allocation happens during start.
+- [Handle Get Cvm State](https://docs.phala.com/api-reference/cvms/handle-get-cvm-state.md): Get CVM state. Supports two modes:
+- [Get CVM system stats](https://docs.phala.com/api-reference/cvms/get-cvm-system-stats.md): Returns live system metrics (CPU, memory, disk) from the running CVM.
+- [Force stop CVM](https://docs.phala.com/api-reference/cvms/force-stop-cvm.md): Immediately stops CVM (like pulling power). Cancels any in-progress operation. Triggers billing.
+- [Get CVM user config](https://docs.phala.com/api-reference/cvms/get-cvm-user-config.md): Returns the user_config stored in Teepod for this CVM, including injected SSH keys.
+- [Verify TEE quote](https://docs.phala.com/api-reference/attestations/verify-tee-quote.md): Accepts quote as file upload, form hex, or JSON hex. 0x prefix handled automatically.
+- [View quote details](https://docs.phala.com/api-reference/attestations/view-quote-details.md): Public endpoint. Returns parsed quote data with verification status.
+- [Get quote collateral](https://docs.phala.com/api-reference/attestations/get-quote-collateral.md): Returns TCB collateral data for quote verification. Cached for 24 hours.
+- [Download raw quote](https://docs.phala.com/api-reference/attestations/download-raw-quote.md): Returns raw quote bytes as binary file attachment.
+- [Check raw quote exists](https://docs.phala.com/api-reference/attestations/check-raw-quote-exists.md): Returns headers without body. Use to check existence and get Content-Length.
+- [List recent quotes](https://docs.phala.com/api-reference/attestations/list-recent-quotes.md): Public endpoint. Returns recently uploaded quotes ordered by timestamp.
+- [List nodes](https://docs.phala.com/api-reference/attestations/list-nodes.md): Public endpoint. Returns NodeRef list derived from nodes table (excluding deleted).
+- [List node device IDs](https://docs.phala.com/api-reference/attestations/list-node-device-ids.md): Public endpoint. Returns device_id list from nodes table (excluding deleted).
+- [List node PPIDs](https://docs.phala.com/api-reference/attestations/list-node-ppids.md): Public endpoint. Returns PPID list from nodes table (excluding deleted).
+- [List KMS instances](https://docs.phala.com/api-reference/kms/list-kms-instances.md): Query available KMS instances with pagination. Filter by onchain status to find instances with blockchain integration.
+- [Get KMS details](https://docs.phala.com/api-reference/kms/get-kms-details.md): Retrieve KMS instance details by hashed ID or slug.
+- [Inspect KMS instance](https://docs.phala.com/api-reference/kms/inspect-kms-instance.md): Real-time inspection of a KMS instance. Queries KMS RPC, guest agent, associated Teepod VMMs, and on-chain contract data with cross-validation.
+- [Get app encryption pubkey](https://docs.phala.com/api-reference/kms/get-app-encryption-pubkey.md): Retrieve the public key for encrypting environment variables before deployment.
+- [Get on-chain KMS details by chain](https://docs.phala.com/api-reference/kms/get-on-chain-kms-details-by-chain.md): Returns KMS contracts on the specified chain with device and OS image whitelist status.
+- [Predict next app IDs](https://docs.phala.com/api-reference/kms/predict-next-app-ids.md): Predict the next N app IDs that will be assigned to the team's wallet. Maximum 20 predictions allowed.
+- [List user SSH keys](https://docs.phala.com/api-reference/ssh-keys/list-user-ssh-keys.md): Returns all SSH keys belonging to the authenticated user.
+- [Add SSH key](https://docs.phala.com/api-reference/ssh-keys/add-ssh-key.md): Validates and stores an SSH public key. Minimum RSA 2048-bit, Ed25519 recommended.
+- [Delete SSH key](https://docs.phala.com/api-reference/ssh-keys/delete-ssh-key.md): Soft-deletes an SSH key. Key must belong to the authenticated user.
+- [Import keys from GitHub profile](https://docs.phala.com/api-reference/ssh-keys/import-keys-from-github-profile.md): Fetches public SSH keys from any GitHub user's profile via the unauthenticated GitHub API. Deduplicates against the user's existing keys by fingerprint.
+- [Sync keys from GitHub](https://docs.phala.com/api-reference/ssh-keys/sync-keys-from-github.md): Imports SSH keys from linked GitHub account. Adds new keys, updates existing, removes deleted.
+- [List instance type families](https://docs.phala.com/api-reference/instance-types/list-instance-type-families.md): Public endpoint. Returns all families with their public instance types grouped.
+- [List family instance types](https://docs.phala.com/api-reference/instance-types/list-family-instance-types.md): Public endpoint. Returns all public instance types for a specific family.
+- [List workspace webhooks](https://docs.phala.com/api-reference/webhooks/list-workspace-webhooks.md)
+- [Create workspace webhook](https://docs.phala.com/api-reference/webhooks/create-workspace-webhook.md)
+- [Get webhook details](https://docs.phala.com/api-reference/webhooks/get-webhook-details.md)
+- [Update webhook](https://docs.phala.com/api-reference/webhooks/update-webhook.md)
+- [Delete webhook](https://docs.phala.com/api-reference/webhooks/delete-webhook.md)
+- [Reveal webhook secret (requires 2FA)](https://docs.phala.com/api-reference/webhooks/reveal-webhook-secret-requires-2fa.md)
+- [Rotate webhook secret (requires 2FA)](https://docs.phala.com/api-reference/webhooks/rotate-webhook-secret-requires-2fa.md)
+- [Send test webhook event](https://docs.phala.com/api-reference/webhooks/send-test-webhook-event.md)
+- [List webhook deliveries](https://docs.phala.com/api-reference/webhooks/list-webhook-deliveries.md)
+- [Resend a webhook delivery](https://docs.phala.com/api-reference/webhooks/resend-a-webhook-delivery.md)
+- [Get webhook delivery stats](https://docs.phala.com/api-reference/webhooks/get-webhook-delivery-stats.md)
+- [Cloud JS SDK](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/overview.md): JavaScript/TypeScript SDK for Phala Cloud API — manage CVMs, deployments, and resources programmatically.
+- [Authentication](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/authentication.md): User authentication functions in the Cloud JS SDK
+- [CVM Lifecycle](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/cvm-lifecycle.md): Functions for starting, stopping, restarting, and deleting CVMs
+- [CVM Configuration](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/cvm-configuration.md): Functions for updating CVM resources, visibility, OS images, and compose files
+- [CVM Query](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/cvm-query.md): Functions for querying CVM information, state, and metrics
+- [provisionCvm](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/provision-cvm.md): Provision a new CVM — first phase of the two-phase deployment flow
+- [commitCvmProvision](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/commit-cvm-provision.md): Commit a CVM provision — second phase of the two-phase deployment flow
+- [updateCvmEnvs](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/update-cvm-envs.md): Update encrypted environment variables for a CVM
+- [updateDockerCompose](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/update-docker-compose.md): Update the Docker Compose configuration for a CVM
+- [watchCvmState](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/watch-cvm-state.md): Watch CVM state changes via Server-Sent Events until a target status is reached
+- [Apps](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/apps.md): Functions for querying app information, CVMs, and revision history
+- [Workspaces](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/workspaces.md): Functions for querying workspace information, nodes, and quotas
+- [KMS](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/kms.md): List KMS contracts, inspect their nodes and verification anchors, and retrieve app encryption keys.
+- [SSH Keys](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/ssh-keys.md): Functions for managing SSH keys used for CVM access
+- [Nodes & Instance Types](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/nodes-and-instance-types.md): Functions for querying available TEE nodes and instance type configurations
+- [getAppEnvEncryptPubKey](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/get-app-env-encrypt-pubkey.md): Retrieve the KMS-managed encryption public key for encrypting environment variables
+- [deployAppAuth](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/deploy-app-auth.md): Deploy an AppAuth smart contract for on-chain KMS
+- [addComposeHash](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/add-compose-hash.md): Register a compose hash on-chain for CVM updates with on-chain KMS
+- [Schema Reference](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/schema-reference.md): Zod schema definitions for Phala Cloud API responses — CVM info, user info, and pagination schemas across API versions.
+- [Error Handling](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/error-handling.md): Error classes, safe methods, and error formatting utilities in the Phala Cloud JS SDK.
+- [API Versioning](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/api-versioning.md): Supported Phala Cloud API versions, the current default, and version-specific TypeScript response types.
+- [Changelog](https://docs.phala.com/phala-cloud/references/cloud-js-sdk/changelog.md): Release history for the @phala/cloud JavaScript SDK
+- [Cloud Python SDK](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/overview.md): Python SDK for Phala Cloud API — sync and async clients with Pydantic validation, safe error handling, and REPL-friendly design.
+- [Authentication](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/authentication.md): Configure API key authentication for the Phala Cloud Python SDK.
+- [CVM Lifecycle](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/cvm-lifecycle.md): Provision, start, stop, restart, delete, and replicate CVMs using the Python SDK.
+- [CVM Configuration](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/cvm-configuration.md): Update Docker Compose files, environment variables, resources, visibility, and OS images on running CVMs.
+- [Apps](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/apps.md): List apps, retrieve app details, query revision history, and manage device allowlists.
+- [Workspaces](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/workspaces.md): List workspaces, get workspace details, query nodes, and check quotas.
+- [KMS](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/kms.md): List KMS contracts, inspect their nodes and verification anchors, and retrieve app encryption keys.
+- [SSH Keys](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/ssh-keys.md): List, create, delete SSH keys and import them from GitHub.
+- [Error Handling](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/error-handling.md): Error hierarchy, safe methods, and structured error codes in the Phala Cloud Python SDK.
+- [Changelog](https://docs.phala.com/phala-cloud/references/cloud-python-sdk/changelog.md): Version history for the Phala Cloud Python SDK.
+- [Cloud Go SDK](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/overview.md): Go client for the Phala Cloud API — manage CVMs, deployments, and infrastructure programmatically.
+- [Authentication](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/authentication.md): Configure API key authentication, environment variables, and custom headers for the Go SDK.
+- [CVM Lifecycle](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/cvm-lifecycle.md): Provision, start, stop, restart, delete, and replicate CVMs with the Go SDK.
+- [CVM Configuration](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/cvm-configuration.md): Update Docker Compose, pre-launch scripts, resources, visibility, environment variables, and OS images for CVMs.
+- [Watch CVM State](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/watch-cvm-state.md): Monitor CVM state changes in real-time using Server-Sent Events (SSE) with Go channels.
+- [Apps](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/apps.md): List applications, query app details, revisions, attestations, and device allowlists.
+- [Workspaces](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/workspaces.md): List workspaces, get workspace details, nodes, and quotas.
+- [KMS](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/kms.md): List KMS contracts, inspect their nodes and verification anchors, and retrieve app encryption keys.
+- [SSH Keys](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/ssh-keys.md): Manage SSH keys for CVM access — list, create, delete, and import from GitHub.
+- [Error Handling](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/error-handling.md): APIError struct, error classification methods, retry logic, and structured error codes in the Go SDK.
+- [Changelog](https://docs.phala.com/phala-cloud/references/cloud-go-sdk/changelog.md): Version history and release notes for the Phala Cloud Go SDK.
+- [Terraform Provider](https://docs.phala.com/phala-cloud/references/terraform-provider/overview.md): Deploy confidential apps on Phala Cloud with Terraform — install, configure, and deploy your first CVM in minutes.
+- [phala_app Resource](https://docs.phala.com/phala-cloud/references/terraform-provider/app-resource.md): Reference for the phala_app resource — deploy and manage Phala Cloud apps with Docker Compose, environment variables, replicas, and CVM lifecycle.
+- [phala_cvm_power Resource](https://docs.phala.com/phala-cloud/references/terraform-provider/cvm-power.md): Reference for the phala_cvm_power resource — manage CVM power state (running/stopped) without recreating the parent app.
+- [phala_ssh_key Resource](https://docs.phala.com/phala-cloud/references/terraform-provider/ssh-key.md): Reference for the phala_ssh_key resource — manage account-level SSH keys on Phala Cloud.
+- [Data Sources](https://docs.phala.com/phala-cloud/references/terraform-provider/data-sources.md): Reference for all Phala Cloud Terraform data sources — discover account info, sizes, regions, images, nodes, and attestation data.
+- [Examples](https://docs.phala.com/phala-cloud/references/terraform-provider/examples.md): Common Terraform patterns for Phala Cloud — basic deployments, multi-replica, cross-app wiring, GPU, SSH access, and power management.
+- [Changelog](https://docs.phala.com/phala-cloud/references/terraform-provider/changelog.md): Version history for the Phala Cloud Terraform provider — new features, breaking changes, and bug fixes.
+- [Error Codes](https://docs.phala.com/phala-cloud/references/error-codes.md): Reference for Phala Cloud API error codes
+- [Webhooks](https://docs.phala.com/phala-cloud/references/webhooks.md): Receive real-time HTTP notifications for CVM lifecycle events
+- [Overview](https://docs.phala.com/phala-cloud/cases/overview.md): Explore real-world applications and use cases for TEE technology.
+- [Building confidential AI](https://docs.phala.com/phala-cloud/cases/tee_with_ai.md): Build confidential AI applications with Trusted Execution Environment technology.
+- [2FA for FHE/MPC Systems](https://docs.phala.com/phala-cloud/cases/tee_with_fhe_and_mpc.md): Combine TEE with FHE and MPC for enhanced privacy-preserving computations.
+- [Private Proving with TEE](https://docs.phala.com/phala-cloud/cases/tee_with_zk_and_zkrollup.md): Private Proving - Running ZK provers inside TEE to protect sensitive data during proof generation.
+- [Cases Explorer](https://docs.phala.com/phala-cloud/cases/best-practices-and-successful-case.md): Explore real-world use cases showing how Phala Cloud enables secure, verifiable AI and trustless applications using TEE technology.
+- [FAQ](https://docs.phala.com/phala-cloud/faqs.md): Deploy confidential applications with Phala Cloud's managed TEE infrastructure.
+- [Get Support](https://docs.phala.com/phala-cloud/support.md): Get your questions answered
+- [Overview](https://docs.phala.com/phala-cloud/confidential-ai/overview.md): Use Private AI through an OpenAI-compatible API, or rent GPU TEE servers for your own confidential AI, with attestation reports and signed receipts you can verify.
+- [On-demand API](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/confidential-ai-api.md): Make your first OpenAI-compatible Private AI request through Phala, then confirm it was served through an attested gateway.
+- [Playground](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/playground.md): Learn how to use Open-WebUI to play with Private AI models
+- [Migration and Integrations](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/migration-and-integrations.md): Connect OpenAI-compatible clients, Pi, OpenCode, LangChain, Vercel AI SDK, observability tools, and desktop clients to Private AI.
+- [Chat Completions](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/chat-completions.md): Create OpenAI-compatible chat completion responses with Private AI models.
+- [Responses](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/responses.md): Create a model response using the Responses API format through the attested Private AI gateway.
+- [Messages](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/messages.md): Create a model response using the Anthropic Messages API format through the attested Private AI gateway.
+- [Completions](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/completions.md): Create a legacy text completion through the attested Private AI gateway.
+- [List Models](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/models.md): List available Private AI models, modalities, context windows, and pricing metadata.
+- [Attestation Report](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/attestation.md): Fetch the gateway TEE attestation report, bound to a caller-supplied nonce.
+- [Get Receipt](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/receipts.md): Fetch the signed receipt for a response, including the transparency event log.
+- [Get Session](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/sessions.md): Fetch the immutable attested-session record behind a confidential response.
+- [Signature](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/signature.md): Use the legacy receipt wrapper for older Private AI clients.
+- [Embeddings](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/embeddings.md): Create vector embeddings with OpenAI-compatible embedding models.
+- [List Embedding Models](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/embedding-models.md): List embedding-capable models available through the Private AI API.
+- [Tool Calling](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/tool-calling.md): Quick guide for how to tool calling (or function calling) of Private AI API.
+- [Images and Vision](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/images-and-vision.md): Learn how to use images and vision models in Private AI.
+- [Structured Output](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/structured-output.md): Learn how to use structured output in Private AI
+- [Streaming](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/streaming.md): Learn how to use streaming in Private AI API
+- [Attested Routing](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/attested-routing.md): Restrict a request to an upstream the gateway verified inside the TEE, and pin it to a specific attested channel.
+- [Zero Data Retention](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/zero-data-retention.md): Restrict requests to serving routes that do not retain prompt or completion content, and list models that support that constraint.
+- [Error Handling](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/error-handling.md): Handle Private AI API errors, retries, unsupported parameters, and upstream failures.
+- [Overview](https://docs.phala.com/phala-cloud/confidential-ai/verify/overview.md): Learn how to verify Private AI gateway attestation, signed receipts, and upstream provider verification.
+- [TypeScript ACI Verifier](https://docs.phala.com/phala-cloud/confidential-ai/verify/typescript-sdk.md): Use the official TypeScript SDK to verify Phala Private AI attestation, pin the TLS channel, and audit signed response receipts.
+- [Attestation](https://docs.phala.com/phala-cloud/confidential-ai/verify/verify-attestation.md): Learn how to verify the ACI gateway attestation report for Private AI.
+- [Verify a Response](https://docs.phala.com/phala-cloud/confidential-ai/verify/verify-signature.md): Learn how to verify a Private AI response with the gateway attestation report and signed receipt.
+- [Receipts and Sessions](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/receipts-and-sessions.md): Learn how per-response receipts and attested sessions prove what happened to a Private AI request.
+- [TCB and Claims](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/tcb-and-claims.md): Interpret typed claims in receipts and attested sessions, including source, status, and TCB freshness.
+- [Trust Boundary](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/trust-boundary.md): Understand what the attested gateway protects, what routed models expose, and where plaintext is visible.
+- [Channel Binding](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/channel-binding.md): Learn how the gateway binds confidential upstream verification to the actual request channel.
+- [Provider Verification](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/providers.md): Understand how Private AI verifies upstream serving environments without relying on a static provider list.
+- [End-to-End Encryption](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/e2ee-encryption.md): Add field-level encryption to Private AI requests with keys published in the attested gateway keyset.
+- [Compliance and Open Source](https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/compliance-and-open-source.md): Understand the technical controls, source provenance, and audit evidence behind Private AI.
+- [FAQs](https://docs.phala.com/phala-cloud/confidential-ai/faqs.md): Frequently asked questions about Private AI.
+- [Overview](https://docs.phala.com/dstack/overview.md): Deploy confidential applications with dstack — a TEE-based infrastructure platform.
+- [Getting Started](https://docs.phala.com/dstack/getting-started.md): Set up and deploy your first confidential application using dstack TEE infrastructure.
+- [dstack Security Audit](https://docs.phala.com/dstack/security-audit.md): Third-party security audit of dstack by zkSecurity covering system architecture, TEE integration, and production hardening
+- [Trust Center Technical Documentation](https://docs.phala.com/dstack/trust-center-technical.md): Technical architecture and API reference for Trust Center verification system
+- [Local Development Guide](https://docs.phala.com/dstack/local-development.md): Deploy confidential applications with dstack - a TEE-based infrastructure platform.
+- [Hardware Requirements](https://docs.phala.com/dstack/hardware-requirements.md): Hardware requirements and specifications for running dstack TEE infrastructure.
+- [Whitepaper](https://docs.phala.com/dstack/design-documents/whitepaper.md): Technical design documents and architecture details for the dstack TEE platform.
+- [Decentralized Root-of-Trust](https://docs.phala.com/dstack/design-documents/decentralized-root-of-trust.md): Technical design documents and architecture details for the dstack TEE platform.
+- [Key Management Service](https://docs.phala.com/dstack/design-documents/key-management-protocol.md): Technical design documents and architecture details for the dstack TEE platform.
+- [TEE-Controlled Domain Certificates](https://docs.phala.com/dstack/design-documents/tee-controlled-domain-certificates.md): Technical design documents and architecture details for the dstack TEE platform.
+- [Acknowledgement](https://docs.phala.com/dstack/acknowledgement.md): Deploy confidential applications with dstack — a TEE-based infrastructure platform.
+- [Media Kit](https://docs.phala.com/dstack/media-kit.md): Download official dstack logos, brand assets, and media resources
+- [FAQs](https://docs.phala.com/dstack/faqs.md): Deploy confidential applications with dstack — a TEE-based infrastructure platform.
+- [dstack-cloud Overview](https://docs.phala.com/dstack-cloud/overview.md): dstack-cloud is an extension of the dstack framework that enables deploying confidential Docker applications on GCP Confidential VMs and AWS Nitro Enclaves.
+- [Quick Start: Deploy Your First dstack App on GCP](https://docs.phala.com/dstack-cloud/get-started.md): Quick start tutorial to deploy your first dstack CVM on GCP in 15-25 minutes.
+- [KMS and Key Delivery](https://docs.phala.com/dstack-cloud/kms-and-key-delivery.md): Understand KMS operating modes, key delivery flow, and GCP vs Nitro differences in dstack-cloud deployments.
+- [AWS Nitro Enclave Integration](https://docs.phala.com/dstack-cloud/nitro-enclave.md): How AWS Nitro Enclaves work with dstack-cloud, including EIF, VSOCK proxy, and key architectural differences from GCP.
+- [Attestation Integration](https://docs.phala.com/dstack-cloud/attestation-integration.md): How dstack-cloud integrates remote attestation mechanisms on GCP (TDX Quote) and AWS Nitro (NSM Attestation Document).
+- [On-chain Governance Model](https://docs.phala.com/dstack-cloud/governance.md): The on-chain governance model using Multisig + Timelock to control KMS authorization and prevent covert upgrades.
+- [Threat Model and Security Guarantees](https://docs.phala.com/dstack-cloud/security-model.md): Trust boundaries, threat categories, security guarantees, and residual risks for dstack-cloud deployments.
+- [Run a Workload on GCP](https://docs.phala.com/dstack-cloud/run-on-gcp.md): Step-by-step guide to deploy a Docker application as a dstack CVM on GCP with Intel TDX.
+- [Run a Workload on AWS Nitro](https://docs.phala.com/dstack-cloud/run-on-nitro.md): Step-by-step guide to deploy a Docker application as a Nitro Enclave on AWS.
+- [Run a dstack-kms CVM on GCP](https://docs.phala.com/dstack-cloud/run-kms-on-gcp.md): Deploy a dstack-kms (Key Management Service) instance on GCP as a Confidential VM with on-chain governance.
+- [Deploy On-chain KMS Smart Contracts](https://docs.phala.com/dstack-cloud/deploy-onchain-kms.md): Deploy DstackKms smart contracts and configure governance with Multisig and Timelock.
+- [Register Workload Measurements On-chain](https://docs.phala.com/dstack-cloud/register-enclave-measurement.md): Register workload measurements (OS_IMAGE_HASH / RTMR) on-chain for KMS authorization.
+- [Governance Operations](https://docs.phala.com/dstack-cloud/manage-governance.md): Create governance proposals, manage Multisig signing, and execute Timelock transactions.
+- [Monitoring and Alerting](https://docs.phala.com/dstack-cloud/monitoring-alerting.md): Set up monitoring, alerting, and dashboards for dstack-cloud deployments.
+- [Upgrade Procedures](https://docs.phala.com/dstack-cloud/upgrade.md): Upgrade procedures for KMS images, CVM applications, and smart contracts.
+- [Troubleshooting Runbook](https://docs.phala.com/dstack-cloud/runbook.md): Troubleshooting runbook for common dstack-cloud deployment issues.
+- [API Reference](https://docs.phala.com/dstack-cloud/api-reference.md): API reference for Guest Agent (Unix Socket), KMS Onboard API, and management endpoints.
+- [Configuration Reference](https://docs.phala.com/dstack-cloud/configuration.md): Configuration reference for dstack-cloud global config, app.json, docker-compose.yaml, and CLI commands.
+- [Glossary](https://docs.phala.com/dstack-cloud/glossary.md): Glossary of core terminology used in dstack-cloud documentation.
+- [Code Walkthrough and KT Materials](https://docs.phala.com/dstack-cloud/code-walkthrough.md): Code walkthrough and knowledge transfer materials for the dstack-cloud project.
+- [E2E Test Report](https://docs.phala.com/dstack-cloud/e2e-test-report.md): End-to-end test report covering test coverage and pre-production validation results.
+- [Release Notes](https://docs.phala.com/dstack-cloud/release-notes.md): Release notes, version history, compatibility notes, and known issues.
+- [Phala Network Overview](https://docs.phala.com/network/index.md): Build confidential, verifiable, and decentralized applications with Phala Network's TEE technology.
+- [Phala Network](https://docs.phala.com/network/overview/phala-network.md): Overview of Phala Network's decentralized computing infrastructure and features.
+- [Acquiring PHA](https://docs.phala.com/network/overview/get-pha-and-transfer.md): Reference documentation and resources for Phala Network development.
+- [Block Explorers](https://docs.phala.com/network/overview/block-explorers.md): Support resources, endpoints, and compatibility information for Phala Network.
+- [phala staking](https://docs.phala.com/network/overview/phala-staking.md): Stake PHA tokens to earn rewards and support network governance.
+- [Phala Treasury](https://docs.phala.com/network/overview/phala-treasury.md): Participate in Phala Network governance using PHA tokens and democratic processes.
+- [Phala Governance](https://docs.phala.com/network/overview/phala-governance.md): Participate in Phala Network governance using PHA tokens and democratic processes.
+- [Introduction](https://docs.phala.com/network/compute-providers/introduction.md): Essential information for becoming a compute provider on Phala Network(ETH L2).
+- [Phala GPU Mining Deployment Guide (H100 / H200 / B200)](https://docs.phala.com/network/compute-providers/run-GPU-on-phala/gpu-deployment-guide.md): Deploy and manage worker nodes to provide computing power on Phala Network.
+- [Register Your GPU Worker On-Chain and Start Earning Rewards](https://docs.phala.com/network/compute-providers/run-GPU-on-phala/register-work-onchain.md): How to Register Your GPU Worker On-Chain and Start Earning Rewards:
+- [Baseline report pr162](https://docs.phala.com/.doc-review/baseline-report-pr162.md)
+- [Doc requirements](https://docs.phala.com/doc-requirements.md)
+- [Overview](https://docs.phala.com/index.md): Official documentation for Phala Cloud - deploy AI applications with hardware-level privacy, TEE security, and verifiable computation. Get started with confidential computing today.
+- [Core Concepts Refresher](https://docs.phala.com/phala-cloud/getting-started/core-concepts-refresher.md): Key building blocks of Phala Cloud — CVMs, key management, and GPU TEE.
+- [Deploy ERC-8004 Agent in 5 Minutes](https://docs.phala.com/phala-cloud/getting-started/explore-templates/deploy-erc-8004-agent.md): Deploy a verifiable ERC-8004 Trustless Agent using Phala Cloud's VibeVM with TEE attestation
+- [Eliza Agent](https://docs.phala.com/phala-cloud/getting-started/explore-templates/launch-an-eliza-agent.md): Quick guide for launching Eliza Agent on Phala Cloud
+- [NextJS & Python](https://docs.phala.com/phala-cloud/getting-started/explore-templates/start-from-template.md): Get started quickly with Next.js and Python templates on Phala Cloud.
+- [What is a Trusted Execution Environment (TEE)?](https://docs.phala.com/phala-cloud/what-is/what-is-tee.md): Learn how Trusted Execution Environments provide hardware-level security for confidential computing, protecting your code and data from unauthorized access.
+- [README mintlify](https://docs.phala.com/README_mintlify.md)
+
+## OpenAPI Specs
+
+- [openapi](/openapi.json)
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

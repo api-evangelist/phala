@@ -1,0 +1,12 @@
+generated: '2026-10-13'
+method: none
+source: openapi/phala-cloud-api-openapi.yml
+schemes:
+- name: OAuth2AuthorizationCodeBearer
+  source: openapi/phala-cloud-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    tokenUrl: token
+scopes: []
+note: The Phala Cloud OpenAPI declares an OAuth2AuthorizationCodeBearer scheme with
+  an empty scopes map and placeholder URLs; no scopes are published.

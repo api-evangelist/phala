@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/phala/main/json-schema/phala-provision-compose-file-update-request-schema.json",
+  "title": "ProvisionComposeFileUpdateRequest",
+  "description": "Request model for provisioning compose file updates.",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/phala-cloud-api-openapi.yml#/components/schemas/ProvisionComposeFileUpdateRequest",
+  "properties": {
+    "allowed_envs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Allowed Envs"
+    },
+    "bash_script": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Bash Script"
+    },
+    "default_gateway_domain": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Default Gateway Domain"
+    },
+    "docker_compose_file": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Docker Compose File"
+    },
+    "init_script": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Init Script"
+    },
+    "kms_enabled": {
+      "type": "boolean",
+      "title": "Kms Enabled",
+      "default": true
+    },
+    "local_key_provider_enabled": {
+      "type": "boolean",
+      "title": "Local Key Provider Enabled",
+      "default": false
+    },
+    "manifest_version": {
+      "type": "integer",
+      "title": "Manifest Version",
+      "default": 2
+    },
+    "name": {
+      "type": "string",
+      "title": "Name"
+    },
+    "no_instance_id": {
+      "type": "boolean",
+      "title": "No Instance Id",
+      "default": false
+    },
+    "pre_launch_script": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Pre Launch Script"
+    },
+    "public_logs": {
+      "type": "boolean",
+      "title": "Public Logs",
+      "default": true
+    },
+    "public_sysinfo": {
+      "type": "boolean",
+      "title": "Public Sysinfo",
+      "default": true
+    },
+    "public_tcbinfo": {
+      "type": "boolean",
+      "title": "Public Tcbinfo",
+      "default": true
+    },
+    "runner": {
+      "type": "string",
+      "title": "Runner",
+      "default": "docker-compose"
+    },
+    "gateway_enabled": {
+      "type": "boolean",
+      "title": "Gateway Enabled",
+      "default": true
+    },
+    "features": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Features",
+      "default": [
+        "kms",
+        "tproxy-net"
+      ]
+    },
+    "salt": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Salt"
+    },
+    "secure_time": {
+      "type": "boolean",
+      "title": "Secure Time",
+      "default": false
+    },
+    "storage_fs": {
+      "anyOf": [
+        {
+          "type": "string",
+          "const": "ext4"
+        },
+        {
+          "type": "string",
+          "const": "zfs"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Storage Fs",
+      "default": "zfs"
+    },
+    "tproxy_enabled": {
+      "type": "boolean",
+      "title": "Tproxy Enabled",
+      "default": true
+    },
+    "update_env_vars": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Update Env Vars",
+      "description": "Whether to also update allowed_envs",
+      "default": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "name"
+  ]
+}
