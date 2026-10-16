@@ -24,6 +24,8 @@ maintainers:
   email: info@apis.io
 image: https://phala.com/favicon.ico
 common:
+- type: OAuthScopes
+  url: scopes/phala-scopes.yml
 - type: AgenticAccess
   url: agentic-access/phala-agentic-access.yml
 - type: Spectral
