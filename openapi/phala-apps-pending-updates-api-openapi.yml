@@ -1,0 +1,191 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud Apps Pending Updates API
+  version: 0.1.0
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: apps-pending-updates
+paths:
+  /api/v1/apps/{app_id}/pending-updates:
+    get:
+      tags:
+      - apps-pending-updates
+      summary: Get pending compose updates
+      description: Returns provisioned compose file updates that have been signed on-chain but not yet applied to CVMs.
+      operationId: get_pending_updates_api_v1_apps__app_id__pending_updates_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: Pending updates list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingUpdatesResponse'
+        '401':
+          description: Not authenticated
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/pending-updates/{vm_uuid}/{compose_hash}/preview:
+    get:
+      tags:
+      - apps-pending-updates
+      summary: Preview a pending compose update
+      description: Returns current and pending docker compose file and pre-launch script for diffing before applying an update.
+      operationId: get_pending_update_preview_api_v1_apps__app_id__pending_updates__vm_uuid___compose_hash__preview_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      - name: vm_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+          description: VM UUID
+          title: Vm Uuid
+        description: VM UUID
+      - name: compose_hash
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Compose hash of the pending update
+          title: Compose Hash
+        description: Compose hash of the pending update
+      responses:
+        '200':
+          description: Preview data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingUpdatePreview'
+        '401':
+          description: Not authenticated
+        '404':
+          description: App or pending update not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PendingUpdateItem:
+      properties:
+        vm_uuid:
+          type: string
+          title: Vm Uuid
+        compose_hash:
+          type: string
+          title: Compose Hash
+        on_chain:
+          type: boolean
+          title: On Chain
+        instance_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Name
+      type: object
+      required:
+      - vm_uuid
+      - compose_hash
+      - on_chain
+      title: PendingUpdateItem
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PendingUpdatePreview:
+      properties:
+        current_docker_compose:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Current Docker Compose
+        pending_docker_compose:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pending Docker Compose
+        current_pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Current Pre Launch Script
+        pending_pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pending Pre Launch Script
+      type: object
+      title: PendingUpdatePreview
+    PendingUpdatesResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/PendingUpdateItem'
+          type: array
+          title: Items
+          default: []
+      type: object
+      title: PendingUpdatesResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

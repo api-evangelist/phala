@@ -1,0 +1,372 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud Cvms Network Config API
+  version: 0.1.0
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: cvms-network-config
+paths:
+  /api/v1/cvms/{cvm_id}/network-config:
+    get:
+      tags:
+      - cvms-network-config
+      summary: Get network configuration
+      description: Returns real-time KMS URLs, Gateway URLs, and port mappings from VMM.
+      operationId: handle_get_network_config_api_v1_cvms__cvm_id__network_config_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Network configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConfigResponse'
+        '404':
+          description: CVM not found
+        '500':
+          description: Failed to query VMM
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - cvms-network-config
+      summary: Update KMS/Gateway URLs
+      description: Update KMS and/or Gateway URLs for this CVM. Requires VMM >= 0.5.7.
+      operationId: handle_update_network_config_api_v1_cvms__cvm_id__network_config_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNetworkConfigRequest'
+      responses:
+        '200':
+          description: Updated network configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConfigResponse'
+        '400':
+          description: VMM too old or invalid request
+        '403':
+          description: Feature not enabled for this workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/ports:
+    get:
+      tags:
+      - cvms-network-config
+      summary: Get port mappings
+      description: Returns persisted port mappings for this CVM.
+      operationId: handle_get_port_mappings_api_v1_cvms__cvm_id__ports_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Port mappings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortMappingResponse'
+                title: Response Handle Get Port Mappings Api V1 Cvms  Cvm Id  Ports Get
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - cvms-network-config
+      summary: Set port mappings
+      description: Bulk-replace all port mappings for this CVM. Writes to DB and applies to VMM.
+      operationId: handle_set_port_mappings_api_v1_cvms__cvm_id__ports_put
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePortMappingsRequest'
+      responses:
+        '200':
+          description: Updated port mappings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortMappingResponse'
+                title: Response Handle Set Port Mappings Api V1 Cvms  Cvm Id  Ports Put
+        '400':
+          description: Invalid request
+        '403':
+          description: Feature not enabled for this workspace
+        '409':
+          description: Port conflict during concurrent updates
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/firewall-status:
+    get:
+      tags:
+      - cvms-network-config
+      summary: Get firewall availability for this CVM's node
+      description: Checks teescope capabilities.firewall on the node hosting this CVM.
+      operationId: handle_get_firewall_status_api_v1_cvms__cvm_id__firewall_status_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirewallStatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    FirewallStatusResponse:
+      properties:
+        available:
+          type: boolean
+          title: Available
+          description: Whether firewall/port-mapping is available
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+          description: Why it is unavailable
+      type: object
+      required:
+      - available
+      title: FirewallStatusResponse
+      description: Firewall availability for the node hosting a CVM.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdatePortMappingsRequest:
+      properties:
+        ports:
+          items:
+            $ref: '#/components/schemas/PortMappingEntry'
+          type: array
+          title: Ports
+      type: object
+      required:
+      - ports
+      title: UpdatePortMappingsRequest
+      description: Bulk-replace all port mappings for a CVM.
+    PortMappingResponse:
+      properties:
+        id:
+          type: string
+          pattern: ^pm_.+
+          format: hashid
+          title: HashedId[cvm_port_mappings]
+          description: A hashed identifier that maps to an internal database ID
+          examples:
+          - pm_0123abcd
+        host_port:
+          type: integer
+          title: Host Port
+        vm_port:
+          type: integer
+          title: Vm Port
+        protocol:
+          type: string
+          title: Protocol
+        host_address:
+          type: string
+          title: Host Address
+      type: object
+      required:
+      - id
+      - host_port
+      - vm_port
+      - protocol
+      - host_address
+      title: PortMappingResponse
+      description: Port mapping with server-assigned ID.
+    UpdateNetworkConfigRequest:
+      properties:
+        kms_urls:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Kms Urls
+        gateway_urls:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Gateway Urls
+        restart:
+          type: boolean
+          title: Restart
+          description: Restart the CVM after applying changes to reload configuration.
+          default: false
+      type: object
+      title: UpdateNetworkConfigRequest
+      description: Partial update for KMS/Gateway URLs. Only set fields are applied.
+    PortMappingEntry:
+      properties:
+        vm_port:
+          type: integer
+          maximum: 65535.0
+          minimum: 1.0
+          title: Vm Port
+        protocol:
+          type: string
+          pattern: ^(tcp|udp)$
+          title: Protocol
+          default: tcp
+      type: object
+      required:
+      - vm_port
+      title: PortMappingEntry
+      description: Single requested port mapping rule.
+    NetworkConfigResponse:
+      properties:
+        kms_urls:
+          items:
+            type: string
+          type: array
+          title: Kms Urls
+        gateway_urls:
+          items:
+            type: string
+          type: array
+          title: Gateway Urls
+        ports:
+          items:
+            $ref: '#/components/schemas/NetworkConfigPortMappingEntry'
+          type: array
+          title: Ports
+      type: object
+      title: NetworkConfigResponse
+      description: Real-time network configuration from VMM.
+    NetworkConfigPortMappingEntry:
+      properties:
+        host_port:
+          type: integer
+          maximum: 65535.0
+          minimum: 1.0
+          title: Host Port
+        vm_port:
+          type: integer
+          maximum: 65535.0
+          minimum: 1.0
+          title: Vm Port
+        protocol:
+          type: string
+          pattern: ^(tcp|udp)$
+          title: Protocol
+          default: tcp
+        host_address:
+          type: string
+          title: Host Address
+          default: ''
+      type: object
+      required:
+      - host_port
+      - vm_port
+      title: NetworkConfigPortMappingEntry
+      description: Single port mapping rule returned from VMM network config.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

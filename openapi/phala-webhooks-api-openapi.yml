@@ -1,0 +1,541 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud Webhooks API
+  version: 0.1.0
+  description: Manage webhook endpoints and monitor delivery history
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: Webhooks
+  description: Manage webhook endpoints and monitor delivery history
+paths:
+  /api/v1/workspace/webhooks:
+    get:
+      tags:
+      - Webhooks
+      summary: List workspace webhooks
+      operationId: list_webhooks_api_v1_workspace_webhooks_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/WebhookResponse'
+                type: array
+                title: Response List Webhooks Api V1 Workspace Webhooks Get
+    post:
+      tags:
+      - Webhooks
+      summary: Create workspace webhook
+      operationId: create_webhook_api_v1_workspace_webhooks_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workspace/webhooks/{webhook_id}:
+    get:
+      tags:
+      - Webhooks
+      summary: Get webhook details
+      operationId: get_webhook_api_v1_workspace_webhooks__webhook_id__get
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Webhooks
+      summary: Update webhook
+      operationId: update_webhook_api_v1_workspace_webhooks__webhook_id__put
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Webhooks
+      summary: Delete webhook
+      operationId: delete_webhook_api_v1_workspace_webhooks__webhook_id__delete
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workspace/webhooks/{webhook_id}/reveal-secret:
+    post:
+      tags:
+      - Webhooks
+      summary: Reveal webhook secret (requires 2FA)
+      operationId: reveal_webhook_secret_api_v1_workspace_webhooks__webhook_id__reveal_secret_post
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workspace/webhooks/{webhook_id}/rotate-secret:
+    post:
+      tags:
+      - Webhooks
+      summary: Rotate webhook secret (requires 2FA)
+      operationId: rotate_webhook_secret_api_v1_workspace_webhooks__webhook_id__rotate_secret_post
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workspace/webhooks/{webhook_id}/test:
+    post:
+      tags:
+      - Webhooks
+      summary: Send test webhook event
+      operationId: test_webhook_api_v1_workspace_webhooks__webhook_id__test_post
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workspace/webhooks/{webhook_id}/deliveries:
+    get:
+      tags:
+      - Webhooks
+      summary: List webhook deliveries
+      operationId: list_deliveries_api_v1_workspace_webhooks__webhook_id__deliveries_get
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookDeliveryResponse'
+                title: Response List Deliveries Api V1 Workspace Webhooks  Webhook Id  Deliveries Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workspace/webhooks/{webhook_id}/deliveries/{event_id}/resend:
+    post:
+      tags:
+      - Webhooks
+      summary: Resend a webhook delivery
+      operationId: resend_delivery_api_v1_workspace_webhooks__webhook_id__deliveries__event_id__resend_post
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      - name: event_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Event Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workspace/webhooks/{webhook_id}/stats:
+    get:
+      tags:
+      - Webhooks
+      summary: Get webhook delivery stats
+      operationId: webhook_stats_api_v1_workspace_webhooks__webhook_id__stats_get
+      parameters:
+      - name: webhook_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Webhook Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookStatsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    WebhookDeliveryResponse:
+      properties:
+        snowflake_id:
+          type: integer
+          title: Snowflake Id
+        event_id:
+          type: string
+          title: Event Id
+        event_type:
+          type: string
+          title: Event Type
+        status:
+          type: string
+          title: Status
+        attempts:
+          type: integer
+          title: Attempts
+        request_url:
+          type: string
+          title: Request Url
+        response_status:
+          type: integer
+          title: Response Status
+        error_message:
+          type: string
+          title: Error Message
+        duration_ms:
+          type: integer
+          title: Duration Ms
+          default: 0
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        delivered_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Delivered At
+        original_event_id:
+          type: string
+          title: Original Event Id
+          default: ''
+      type: object
+      required:
+      - snowflake_id
+      - event_id
+      - event_type
+      - status
+      - attempts
+      - request_url
+      - response_status
+      - error_message
+      - created_at
+      title: WebhookDeliveryResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WebhookStatsResponse:
+      properties:
+        total:
+          type: integer
+          title: Total
+        success_count:
+          type: integer
+          title: Success Count
+        failed_count:
+          type: integer
+          title: Failed Count
+        success_rate:
+          type: number
+          title: Success Rate
+        avg_duration_ms:
+          type: integer
+          title: Avg Duration Ms
+        max_duration_ms:
+          type: integer
+          title: Max Duration Ms
+        last_delivery_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Delivery At
+      type: object
+      required:
+      - total
+      - success_count
+      - failed_count
+      - success_rate
+      - avg_duration_ms
+      - max_duration_ms
+      title: WebhookStatsResponse
+    WebhookCreateRequest:
+      properties:
+        url:
+          type: string
+          title: Url
+        events:
+          items:
+            type: string
+          type: array
+          title: Events
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Name
+        secret:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Secret
+      type: object
+      required:
+      - url
+      - events
+      title: WebhookCreateRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WebhookResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        url:
+          type: string
+          title: Url
+        secret:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Secret
+        events:
+          items:
+            type: string
+          type: array
+          title: Events
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        enabled:
+          type: boolean
+          title: Enabled
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - url
+      - events
+      - enabled
+      - created_at
+      - updated_at
+      title: WebhookResponse
+    WebhookUpdateRequest:
+      properties:
+        url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Url
+        events:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Events
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Name
+        enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Enabled
+      type: object
+      title: WebhookUpdateRequest
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

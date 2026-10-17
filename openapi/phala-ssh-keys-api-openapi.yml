@@ -1,0 +1,336 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud SSH Keys API
+  version: 0.1.0
+  description: SSH public key management for CVM access
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: SSH Keys
+  description: SSH public key management for CVM access
+paths:
+  /api/v1/user/ssh-keys:
+    get:
+      tags:
+      - SSH Keys
+      summary: List user SSH keys
+      description: Returns all SSH keys belonging to the authenticated user.
+      operationId: get_user_ssh_keys_api_v1_user_ssh_keys_get
+      responses:
+        '200':
+          description: List of SSH keys
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SshKeyResponse'
+                type: array
+                title: Response Get User Ssh Keys Api V1 User Ssh Keys Get
+        '401':
+          description: Not authenticated
+    post:
+      tags:
+      - SSH Keys
+      summary: Add SSH key
+      description: Validates and stores an SSH public key. Minimum RSA 2048-bit, Ed25519 recommended.
+      operationId: create_user_ssh_key_api_v1_user_ssh_keys_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SshKeyCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Key created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SshKeyResponse'
+        '400':
+          description: Invalid key format or key too weak
+        '401':
+          description: Not authenticated
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/user/ssh-keys/{key_id}:
+    delete:
+      tags:
+      - SSH Keys
+      summary: Delete SSH key
+      description: Soft-deletes an SSH key. Key must belong to the authenticated user.
+      operationId: delete_user_ssh_key_api_v1_user_ssh_keys__key_id__delete
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: SSH key hashid
+          title: Key Id
+        description: SSH key hashid
+      responses:
+        '204':
+          description: Key deleted
+        '400':
+          description: Invalid key ID format
+        '401':
+          description: Not authenticated
+        '404':
+          description: Key not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/user/ssh-keys/github-profile:
+    post:
+      tags:
+      - SSH Keys
+      summary: Import keys from GitHub profile
+      description: Fetches public SSH keys from any GitHub user's profile via the unauthenticated GitHub API. Deduplicates against the user's existing keys by fingerprint.
+      operationId: import_github_profile_ssh_keys_api_v1_user_ssh_keys_github_profile_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GithubProfileImportRequest'
+        required: true
+      responses:
+        '200':
+          description: Import completed; check keys_added and errors for per-key results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubProfileImportResponse'
+        '400':
+          description: GitHub user not found, API request timed out, or network error
+        '401':
+          description: Not authenticated
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/user/ssh-keys/github-sync:
+    post:
+      tags:
+      - SSH Keys
+      summary: Sync keys from GitHub
+      description: Imports SSH keys from linked GitHub account. Adds new keys, updates existing, removes deleted.
+      operationId: sync_github_ssh_keys_api_v1_user_ssh_keys_github_sync_post
+      responses:
+        '200':
+          description: Sync completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubSyncResponse'
+        '400':
+          description: GitHub not linked or authorization revoked
+        '401':
+          description: Not authenticated
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SshKeyResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Key hashid
+        user_id:
+          type: string
+          title: User Id
+          description: Owner user hashid
+        name:
+          type: string
+          title: Name
+          description: Human-readable name
+        public_key:
+          type: string
+          title: Public Key
+          description: OpenSSH format public key
+        fingerprint:
+          type: string
+          title: Fingerprint
+          description: SHA256 fingerprint
+        key_type:
+          type: string
+          title: Key Type
+          description: Algorithm (ed25519, rsa, etc)
+        source:
+          type: string
+          title: Source
+          description: 'Origin: manual or github'
+        key_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Key Metadata
+          description: Extra data like bit length
+        last_synced_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Synced At
+          description: Last GitHub sync timestamp
+        created_at:
+          type: string
+          title: Created At
+          description: Creation timestamp
+        updated_at:
+          type: string
+          title: Updated At
+          description: Last update timestamp
+      type: object
+      required:
+      - id
+      - user_id
+      - name
+      - public_key
+      - fingerprint
+      - key_type
+      - source
+      - created_at
+      - updated_at
+      title: SshKeyResponse
+      description: SSH key details returned by API.
+    GithubSyncResponse:
+      properties:
+        synced_count:
+          type: integer
+          title: Synced Count
+          description: Total keys synced from GitHub
+        keys_added:
+          type: integer
+          title: Keys Added
+          description: New keys added
+        keys_updated:
+          type: integer
+          title: Keys Updated
+          description: Existing keys updated
+        keys_removed:
+          type: integer
+          title: Keys Removed
+          description: Stale keys removed
+        errors:
+          items:
+            type: string
+          type: array
+          title: Errors
+          description: Sync errors encountered
+      type: object
+      required:
+      - synced_count
+      - keys_added
+      - keys_updated
+      - keys_removed
+      title: GithubSyncResponse
+      description: Result of GitHub SSH key sync operation.
+    GithubProfileImportResponse:
+      properties:
+        github_username:
+          type: string
+          title: Github Username
+          description: GitHub username that was imported
+        keys_added:
+          type: integer
+          title: Keys Added
+          description: New keys added
+        keys_skipped:
+          type: integer
+          title: Keys Skipped
+          description: Keys skipped (already exist by fingerprint)
+        errors:
+          items:
+            type: string
+          type: array
+          title: Errors
+          description: Per-key errors encountered
+      type: object
+      required:
+      - github_username
+      - keys_added
+      - keys_skipped
+      title: GithubProfileImportResponse
+      description: Result of importing SSH keys from a GitHub profile.
+    GithubProfileImportRequest:
+      properties:
+        github_username:
+          type: string
+          maxLength: 39
+          minLength: 1
+          title: Github Username
+          description: GitHub username to import SSH keys from
+      type: object
+      required:
+      - github_username
+      title: GithubProfileImportRequest
+      description: Request model for importing SSH keys from a GitHub profile.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SshKeyCreateRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Name
+          description: Human-readable name for the key
+        public_key:
+          type: string
+          title: Public Key
+          description: OpenSSH format public key
+      type: object
+      required:
+      - name
+      - public_key
+      title: SshKeyCreateRequest
+      description: Request model for creating an SSH key.
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

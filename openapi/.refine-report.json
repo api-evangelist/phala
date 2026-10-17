@@ -1,0 +1,35 @@
+{
+  "provider": "phala",
+  "sources": [
+    "_original/phala-cloud-api-openapi.json"
+  ],
+  "outputs": [
+    "phala-apps-api-openapi.yml",
+    "phala-attestations-api-openapi.yml",
+    "phala-cvms-api-openapi.yml",
+    "phala-instance-types-api-openapi.yml",
+    "phala-kms-api-openapi.yml",
+    "phala-ssh-keys-api-openapi.yml",
+    "phala-webhooks-api-openapi.yml",
+    "phala-apps-kms-info-api-openapi.yml",
+    "phala-apps-pending-updates-api-openapi.yml",
+    "phala-cvms-network-config-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "phala-cloud-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "phala-cloud-api-openapi.json: declared missing tag: apps-kms-info",
+    "phala-cloud-api-openapi.json: declared missing tag: apps-pending-updates",
+    "phala-cloud-api-openapi.json: declared missing tag: cvms-network-config",
+    "superseded outputs removed: phala-cloud-api-openapi.yml",
+    "apis.yml register: written (+10 apis, 11 total)"
+  ],
+  "skipped": [
+    "phala-cloud-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

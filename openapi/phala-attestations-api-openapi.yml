@@ -1,0 +1,634 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud Attestations API
+  version: 0.1.0
+  description: Remote attestation and TEE verification endpoints
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: Attestations
+  description: Remote attestation and TEE verification endpoints
+paths:
+  /api/v1/attestations/verify:
+    post:
+      tags:
+      - Attestations
+      summary: Verify TEE quote
+      description: Accepts quote as file upload, form hex, or JSON hex. 0x prefix handled automatically.
+      operationId: handle_upload_and_verify_api_v1_attestations_verify_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_handle_upload_and_verify_api_v1_attestations_verify_post'
+      responses:
+        '200':
+          description: Quote verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResponse'
+        '400':
+          description: Invalid quote format or verification failed
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attestations/recent:
+    get:
+      tags:
+      - Attestations
+      summary: List recent quotes
+      description: Public endpoint. Returns recently uploaded quotes ordered by timestamp.
+      operationId: handle_list_recent_api_v1_attestations_recent_get
+      parameters:
+      - name: skip
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Offset for pagination
+          default: 0
+          title: Skip
+        description: Offset for pagination
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Max results
+          default: 20
+          title: Limit
+        description: Max results
+      responses:
+        '200':
+          description: List of recent quotes
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attestations/view/{checksum}:
+    get:
+      tags:
+      - Attestations
+      summary: View quote details
+      description: Public endpoint. Returns parsed quote data with verification status.
+      operationId: handle_view_api_v1_attestations_view__checksum__get
+      parameters:
+      - name: checksum
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Quote SHA256 checksum
+          title: Checksum
+        description: Quote SHA256 checksum
+      responses:
+        '200':
+          description: Quote details
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: Quote not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attestations/collateral/{checksum}:
+    get:
+      tags:
+      - Attestations
+      summary: Get quote collateral
+      description: Returns TCB collateral data for quote verification. Cached for 24 hours.
+      operationId: get_collateral_api_v1_attestations_collateral__checksum__get
+      parameters:
+      - name: checksum
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Quote SHA256 checksum
+          title: Checksum
+        description: Quote SHA256 checksum
+      responses:
+        '200':
+          description: Collateral data
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Bad quote data
+        '404':
+          description: Quote not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attestations/raw/{checksum}:
+    get:
+      tags:
+      - Attestations
+      summary: Download raw quote
+      description: Returns raw quote bytes as binary file attachment.
+      operationId: handle_get_raw_api_v1_attestations_raw__checksum__get
+      parameters:
+      - name: checksum
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Quote SHA256 checksum
+          title: Checksum
+        description: Quote SHA256 checksum
+      responses:
+        '200':
+          description: Binary quote file
+          content:
+            application/json:
+              schema: {}
+            application/octet-stream: {}
+        '404':
+          description: Quote not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    head:
+      tags:
+      - Attestations
+      summary: Check raw quote exists
+      description: Returns headers without body. Use to check existence and get Content-Length.
+      operationId: handle_check_raw_file_api_v1_attestations_raw__checksum__head
+      parameters:
+      - name: checksum
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Quote SHA256 checksum
+          title: Checksum
+        description: Quote SHA256 checksum
+      responses:
+        '200':
+          description: Quote exists
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: Quote not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attestations/ppids:
+    get:
+      tags:
+      - Attestations
+      summary: List node PPIDs
+      description: Public endpoint. Returns PPID list from nodes table (excluding deleted).
+      operationId: handle_list_ppids_api_v1_attestations_ppids_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/v1/attestations/device_ids:
+    get:
+      tags:
+      - Attestations
+      summary: List node device IDs
+      description: Public endpoint. Returns device_id list from nodes table (excluding deleted).
+      operationId: handle_list_device_ids_api_v1_attestations_device_ids_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/v1/attestations/nodes:
+    get:
+      tags:
+      - Attestations
+      summary: List nodes
+      description: Public endpoint. Returns NodeRef list derived from nodes table (excluding deleted).
+      operationId: handle_list_nodes_api_v1_attestations_nodes_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/NodeRef'
+                type: array
+                title: Response Handle List Nodes Api V1 Attestations Nodes Get
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_handle_upload_and_verify_api_v1_attestations_verify_post:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: File
+        hex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hex
+      type: object
+      title: Body_handle_upload_and_verify_api_v1_attestations_verify_post
+    VerificationResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Quote checksum identifier
+        success:
+          type: boolean
+          title: Success
+          description: Verification passed
+        proof_of_cloud:
+          type: boolean
+          title: Proof Of Cloud
+          description: Quote from Phala Cloud TEE
+        quote:
+          anyOf:
+          - $ref: '#/components/schemas/Quote'
+          - type: 'null'
+          description: Parsed quote structure
+        checksum:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Checksum
+          description: SHA256 of quote bytes
+        can_download:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Can Download
+          description: Raw quote downloadable
+        uploaded_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Uploaded At
+          description: ISO8601 upload timestamp
+        verified_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verified At
+          description: ISO8601 timestamp when verified was computed
+        quote_collateral:
+          anyOf:
+          - $ref: '#/components/schemas/QuoteCollateralV3'
+          - type: 'null'
+          description: TCB collateral data
+        node_provider:
+          anyOf:
+          - $ref: '#/components/schemas/NodeProvider'
+          - type: 'null'
+          description: Node provider info
+      type: object
+      required:
+      - id
+      - success
+      - proof_of_cloud
+      title: VerificationResponse
+      description: Quote verification result.
+    QuoteHeader:
+      properties:
+        version:
+          type: integer
+          title: Version
+        ak_type:
+          $ref: '#/components/schemas/AttestationKeyType'
+        tee_type:
+          $ref: '#/components/schemas/TeeType'
+        qe_vendor:
+          type: string
+          format: binary
+          title: Qe Vendor
+        user_data:
+          type: string
+          format: binary
+          title: User Data
+      type: object
+      required:
+      - version
+      - ak_type
+      - tee_type
+      - qe_vendor
+      - user_data
+      title: QuoteHeader
+    Quote:
+      properties:
+        header:
+          $ref: '#/components/schemas/QuoteHeader'
+        cert_data:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cert Data
+        body:
+          $ref: '#/components/schemas/QuoteBody'
+        verified:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Verified
+          default: false
+      type: object
+      required:
+      - header
+      - cert_data
+      - body
+      title: Quote
+    QuoteBody:
+      properties:
+        tee_tcb_svn:
+          type: string
+          title: Tee Tcb Svn
+        mrseam:
+          type: string
+          format: binary
+          title: Mrseam
+        mrsignerseam:
+          type: string
+          format: binary
+          title: Mrsignerseam
+        seamattributes:
+          type: string
+          format: binary
+          title: Seamattributes
+        tdattributes:
+          type: string
+          format: binary
+          title: Tdattributes
+        xfam:
+          type: string
+          format: binary
+          title: Xfam
+        mrtd:
+          type: string
+          format: binary
+          title: Mrtd
+        mrconfig:
+          type: string
+          format: binary
+          title: Mrconfig
+        mrowner:
+          type: string
+          format: binary
+          title: Mrowner
+        mrownerconfig:
+          type: string
+          format: binary
+          title: Mrownerconfig
+        rtmr0:
+          type: string
+          format: binary
+          title: Rtmr0
+        rtmr1:
+          type: string
+          format: binary
+          title: Rtmr1
+        rtmr2:
+          type: string
+          format: binary
+          title: Rtmr2
+        rtmr3:
+          type: string
+          format: binary
+          title: Rtmr3
+        reportdata:
+          type: string
+          format: binary
+          title: Reportdata
+      type: object
+      required:
+      - tee_tcb_svn
+      - mrseam
+      - mrsignerseam
+      - seamattributes
+      - tdattributes
+      - xfam
+      - mrtd
+      - mrconfig
+      - mrowner
+      - mrownerconfig
+      - rtmr0
+      - rtmr1
+      - rtmr2
+      - rtmr3
+      - reportdata
+      title: QuoteBody
+    TeepodStatus:
+      type: string
+      enum:
+      - ONLINE
+      - OFFLINE
+      - MAINTENANCE
+      title: TeepodStatus
+    TeeType:
+      type: integer
+      enum:
+      - 0
+      - 129
+      title: TeeType
+      description: TEE type values used by Intel DCAP quote header.
+    AttestationKeyType:
+      type: integer
+      enum:
+      - 2
+      - 3
+      title: AttestationKeyType
+      description: Attestation key type (subset used in SGX/TDX DCAP quotes).
+    NodeRef:
+      properties:
+        object_type:
+          type: string
+          const: node
+          title: Object Type
+          description: Fixed value 'node'
+          default: node
+        id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Id
+          description: Teepod numeric ID
+        node_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Node Id
+          description: Physical node numeric ID
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: Node display name
+        region:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region
+          description: Region identifier
+        device_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Id
+          description: Device ID
+        ppid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ppid
+          description: PPID
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/TeepodStatus'
+          - type: 'null'
+          description: Node status
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: Teepod version
+      type: object
+      title: NodeRef
+      description: Minimal node/teepod reference for embedding in responses.
+    QuoteCollateralV3:
+      properties:
+        pck_crl_issuer_chain:
+          type: string
+          title: Pck Crl Issuer Chain
+        root_ca_crl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Root Ca Crl
+        pck_crl:
+          type: string
+          title: Pck Crl
+        tcb_info_issuer_chain:
+          type: string
+          title: Tcb Info Issuer Chain
+        tcb_info:
+          type: string
+          title: Tcb Info
+        tcb_info_signature:
+          type: string
+          title: Tcb Info Signature
+        qe_identity_issuer_chain:
+          type: string
+          title: Qe Identity Issuer Chain
+        qe_identity:
+          type: string
+          title: Qe Identity
+        qe_identity_signature:
+          type: string
+          title: Qe Identity Signature
+      type: object
+      required:
+      - pck_crl_issuer_chain
+      - root_ca_crl
+      - pck_crl
+      - tcb_info_issuer_chain
+      - tcb_info
+      - tcb_info_signature
+      - qe_identity_issuer_chain
+      - qe_identity
+      - qe_identity_signature
+      title: QuoteCollateralV3
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    NodeProvider:
+      properties:
+        proof_of_cloud:
+          type: boolean
+          title: Proof Of Cloud
+          description: Quote from a trusted cloud TEE
+        provider:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider
+          description: Provider label (e.g. 'phala', 'scrt')
+        ppid:
+          type: string
+          title: Ppid
+          description: Platform Provisioning ID
+      type: object
+      required:
+      - proof_of_cloud
+      - ppid
+      title: NodeProvider
+      description: TEE node provider info.
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

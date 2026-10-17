@@ -1,0 +1,3239 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud Apps API
+  version: 0.1.0
+  description: App template management and CVM deployment from app blueprints
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: Apps
+  description: App template management and CVM deployment from app blueprints
+paths:
+  /api/v1/apps:
+    get:
+      tags:
+      - Apps
+      summary: List apps
+      description: Returns paginated app list with filtering. Response schema varies by API version.
+      operationId: list_dstack_apps_api_v1_apps_get
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          description: Page number (1-indexed)
+          default: 1
+          title: Page
+        description: Page number (1-indexed)
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Items per page
+          default: 20
+          title: Page Size
+        description: Items per page
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Search name, app_id, vm_uuid, instance_id
+          title: Search
+        description: Search name, app_id, vm_uuid, instance_id
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: string
+          - type: 'null'
+          description: CVM status filter
+          title: Status
+        description: CVM status filter
+      - name: listed
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Listed status filter
+          title: Listed
+        description: Listed status filter
+      - name: base_image
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: OS image name filter
+          title: Base Image
+        description: OS image name filter
+      - name: instance_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Instance type filter
+          title: Instance Type
+        description: Instance type filter
+      - name: kms_slug
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: KMS slug filter
+          title: Kms Slug
+        description: KMS slug filter
+      - name: kms_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: KMS type filter
+          title: Kms Type
+        description: KMS type filter
+      - name: node
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Node name filter (matches teepod or node name)
+          title: Node
+        description: Node name filter (matches teepod or node name)
+      - name: region
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Region identifier filter
+          title: Region
+        description: Region identifier filter
+      responses:
+        '200':
+          description: Paginated app list
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/teehouse__api__routes__apps__v20251028__schemas__DstackAppListResponse'
+                - $ref: '#/components/schemas/teehouse__api__routes__apps__v20260121__schemas__DstackAppListResponse'
+                title: Response List Dstack Apps Api V1 Apps Get
+        '401':
+          description: Not authenticated
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/filter-options:
+    get:
+      tags:
+      - Apps
+      summary: Get app filter options
+      description: Returns distinct values for each filterable field based on user's apps.
+      operationId: get_filter_options_api_v1_apps_filter_options_get
+      responses:
+        '200':
+          description: Available filter values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilterOptionsResponse'
+        '401':
+          description: Not authenticated
+  /api/v1/apps/{app_id}:
+    get:
+      tags:
+      - Apps
+      summary: Get app details
+      description: Returns app metadata and current CVM configuration. Response schema varies by API version.
+      operationId: get_dstack_app_api_v1_apps__app_id__get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: App details with CVM info
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse'
+                - $ref: '#/components/schemas/DstackAppMinimalResponse'
+                - $ref: '#/components/schemas/teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse'
+                - $ref: '#/components/schemas/DstackAppMinimalResponse'
+                title: Response Get Dstack App Api V1 Apps  App Id  Get
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/cvms:
+    get:
+      tags:
+      - Apps
+      summary: List app CVMs
+      description: Returns CVM instances for an app. Admins see all instances; users see only their own.
+      operationId: handle_get_app_cvms_api_v1_apps__app_id__cvms_get
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: List of CVM instances
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/HostedCvm'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/teehouse__api__routes__cvms__v20260121__schemas__CVMInfo'
+                title: Response Handle Get App Cvms Api V1 Apps  App Id  Cvms Get
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/cvms/{vm_uuid}/replicas:
+    post:
+      tags:
+      - Apps
+      summary: Create CVM replica
+      description: Clones a CVM to a target node. Uses source node if target not specified.
+      operationId: handle_replicate_cvm_api_v1_apps__app_id__cvms__vm_uuid__replicas_post
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      - name: vm_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Source CVM UUID
+          title: Vm Uuid
+        description: Source CVM UUID
+      - name: X-Prepare-Only
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Prepare-Only
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/ReplicateRequest'
+              - type: 'null'
+              title: Request
+      responses:
+        '200':
+          description: Replica CVM created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '400':
+          description: App ID mismatch, no OS image, or invalid target node
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: CVM or target node not found
+        '500':
+          description: Replication failed
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/instances:
+    post:
+      tags:
+      - Apps
+      summary: Create a new instance under an existing app
+      description: 'Deploy a new CVM instance under an existing app, optionally with a new Docker Compose file. For on-chain KMS apps, this uses a two-phase flow: the first request returns HTTP 465 with a commit token; after registering the compose hash on-chain, the second request commits with the token and transaction hash.'
+      operationId: handle_create_app_instance_api_v1_apps__app_id__instances_post
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAppInstanceRequest'
+      responses:
+        '200':
+          description: Instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '400':
+          description: Invalid compose, no template instance, or app mismatch
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: App or target node not found
+        '465':
+          description: On-chain compose hash registration required (two-phase flow)
+        '500':
+          description: Instance creation failed
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/device-allowlist:
+    get:
+      tags:
+      - Apps
+      summary: Get device allowlist status
+      description: Returns the device_id allowlist status for an app's CVMs. For on-chain KMS apps, queries the blockchain in real-time to check which devices are registered in the app contract.
+      operationId: get_device_allowlist_api_v1_apps__app_id__device_allowlist_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: Device allowlist status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAllowlistResponse'
+        '401':
+          description: Not authenticated
+        '404':
+          description: App not found or not on-chain KMS
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/attestations:
+    get:
+      tags:
+      - Apps
+      summary: Get app attestation data
+      description: Returns TEE attestation quotes, event logs, and KMS configuration for running CVMs.
+      operationId: handle_get_app_attestation_api_v1_apps__app_id__attestations_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: Attestation data with KMS info and instance quotes
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/attestations/tcb-evaluation:
+    get:
+      tags:
+      - Apps
+      summary: Run app TCB evaluation
+      description: Runs a live Intel PCS early collateral evaluation for each running CVM without using Redis collateral cache.
+      operationId: handle_get_app_tcb_evaluation_api_v1_apps__app_id__attestations_tcb_evaluation_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: TCB evaluation results for running instances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TcbEvaluationResponse'
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/revisions:
+    get:
+      tags:
+      - Apps
+      summary: List app revisions
+      description: Returns deployment history with compose hashes, operation types, and user refs.
+      operationId: get_app_revisions_api_v1_apps__app_id__revisions_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          description: Page number (1-indexed)
+          default: 1
+          title: Page
+        description: Page number (1-indexed)
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Items per page
+          default: 50
+          title: Page Size
+        description: Items per page
+      responses:
+        '200':
+          description: Paginated revision list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppRevisionsResponse'
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/revisions/{revision_id}:
+    get:
+      tags:
+      - Apps
+      summary: Get revision detail
+      description: Returns full revision data including compose file, encrypted env, and user config.
+      operationId: get_app_revision_detail_api_v1_apps__app_id__revisions__revision_id__get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      - name: revision_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Revision Id
+      - name: raw_compose_file
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Return compose_file as string instead of dict
+          default: false
+          title: Raw Compose File
+        description: Return compose_file as string instead of dict
+      responses:
+        '200':
+          description: Revision detail with compose file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppRevisionDetailResponse'
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: App or revision not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/revisions/{revision_id}/redeploy:
+    post:
+      tags:
+      - Apps
+      summary: Redeploy app from a specific revision
+      description: Redeploy a CVM to a specific revision. If the app has exactly one CVM, it will be redeployed by default. If the app has multiple CVMs, you must specify target vm_uuids in request body. This schedules async CVM update task(s).
+      operationId: redeploy_app_revision_api_v1_apps__app_id__revisions__revision_id__redeploy_post
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      - name: revision_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Revision Id
+      - name: transaction_hash
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Optional transaction hash proving on-chain compose hash registration
+          title: Transaction Hash
+        description: Optional transaction hash proving on-chain compose hash registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/RedeployRevisionRequest'
+              - type: 'null'
+              description: Optional target CVM selection. If the app has multiple CVMs, you must specify vm_uuids.
+              title: Payload
+      responses:
+        '202':
+          description: Activation initiated
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: App or revision not found
+        '409':
+          description: Another operation is in progress
+        '465':
+          description: Compose hash registration required (contract-owned KMS)
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/usage:
+    get:
+      tags:
+      - Apps
+      summary: Get app metered usage
+      description: Returns billing usage records from ClickHouse. Defaults to 7-day window if dates not specified.
+      operationId: get_app_usage_api_v1_apps__app_id__usage_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            examples:
+            - '2024-01-01T00:00:00Z'
+          - type: 'null'
+          description: Start date (ISO 8601)
+          title: Start Date
+        description: Start date (ISO 8601)
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            examples:
+            - '2024-01-01T00:00:00Z'
+          - type: 'null'
+          description: End date (ISO 8601)
+          title: End Date
+        description: End date (ISO 8601)
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 5000
+          minimum: 1
+          description: Max records to return
+          default: 500
+          title: Limit
+        description: Max records to return
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Records to skip
+          default: 0
+          title: Offset
+        description: Records to skip
+      responses:
+        '200':
+          description: Usage records with cost breakdown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUsageResponse'
+        '400':
+          description: end_date before start_date
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/is-allowed:
+    post:
+      tags:
+      - Apps
+      summary: Check if app deployment is allowed on-chain
+      operationId: handle_app_is_allowed_api_v1_apps__app_id__is_allowed_post
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: App Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppIsAllowedRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppIsAllowedResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/cvms/is-allowed:
+    post:
+      tags:
+      - Apps
+      summary: Batch check on-chain deployment allowance for all CVMs under an app
+      operationId: handle_app_cvms_is_allowed_api_v1_apps__app_id__cvms_is_allowed_post
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: App Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppCvmsBatchIsAllowedResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/kms-info:
+    get:
+      tags:
+      - Apps
+      summary: Get app on-chain KMS info
+      description: 'Returns on-chain KMS metadata for an app: chain, KMS contract, app contract, deployer address, and deployer type detection (EOA, Safe multisig, legacy multisig, ERC-4337, or generic contract).'
+      operationId: get_app_kms_info_api_v1_apps__app_id__kms_info_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: KMS info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppKmsInfoResponse'
+        '401':
+          description: Not authenticated
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/pending-updates:
+    get:
+      tags:
+      - Apps
+      summary: Get pending compose updates
+      description: Returns provisioned compose file updates that have been signed on-chain but not yet applied to CVMs.
+      operationId: get_pending_updates_api_v1_apps__app_id__pending_updates_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      responses:
+        '200':
+          description: Pending updates list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingUpdatesResponse'
+        '401':
+          description: Not authenticated
+        '404':
+          description: App not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/pending-updates/{vm_uuid}/{compose_hash}/preview:
+    get:
+      tags:
+      - Apps
+      summary: Preview a pending compose update
+      description: Returns current and pending docker compose file and pre-launch script for diffing before applying an update.
+      operationId: get_pending_update_preview_api_v1_apps__app_id__pending_updates__vm_uuid___compose_hash__preview_get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Hex app identifier
+          title: App Id
+        description: Hex app identifier
+      - name: vm_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+          description: VM UUID
+          title: Vm Uuid
+        description: VM UUID
+      - name: compose_hash
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Compose hash of the pending update
+          title: Compose Hash
+        description: Compose hash of the pending update
+      responses:
+        '200':
+          description: Preview data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingUpdatePreview'
+        '401':
+          description: Not authenticated
+        '404':
+          description: App or pending update not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HostedCvm:
+      properties:
+        hosted:
+          $ref: '#/components/schemas/VmInfo'
+        name:
+          type: string
+          title: Name
+        managed_user:
+          anyOf:
+          - $ref: '#/components/schemas/ManagedUser'
+          - type: 'null'
+        node:
+          anyOf:
+          - $ref: '#/components/schemas/CvmNode'
+          - type: 'null'
+        listed:
+          type: boolean
+          title: Listed
+          default: false
+        status:
+          type: string
+          title: Status
+        in_progress:
+          type: boolean
+          title: In Progress
+          default: false
+        dapp_dashboard_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dapp Dashboard Url
+        syslog_endpoint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Syslog Endpoint
+        allow_upgrade:
+          type: boolean
+          title: Allow Upgrade
+          default: false
+        project_id:
+          anyOf:
+          - type: string
+            pattern: ^prj_.+
+            format: hashid
+            title: HashedId[projects]
+            description: A hashed identifier that maps to an internal database ID
+            examples:
+            - prj_0123abcd
+          - type: 'null'
+          title: Project Id
+        project_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Type
+        billing_period:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Billing Period
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/KMSInfo'
+          - type: 'null'
+        contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contract Address
+        deployer_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployer Address
+        vcpu:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Vcpu
+        memory:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Memory
+        disk_size:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Disk Size
+        gateway_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway Domain
+        public_urls:
+          items:
+            $ref: '#/components/schemas/CvmNetworkUrls'
+          type: array
+          title: Public Urls
+      type: object
+      required:
+      - hosted
+      - name
+      - status
+      - public_urls
+      title: HostedCvm
+    CVMResourceInfo:
+      properties:
+        instance_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Type
+        vcpu:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Vcpu
+        memory_in_gb:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Memory In Gb
+        disk_in_gb:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Disk In Gb
+        gpus:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Gpus
+        compute_billing_price:
+          anyOf:
+          - type: string
+            format: decimal
+            description: A monetary value with precise decimal arithmetic
+            examples:
+            - '19.99'
+            - '123.456000'
+          - type: 'null'
+          title: Compute Billing Price
+        billing_period:
+          anyOf:
+          - $ref: '#/components/schemas/BillingPeriod'
+          - type: 'null'
+      type: object
+      title: CVMResourceInfo
+    teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse:
+      properties:
+        id:
+          type: string
+          pattern: ^prj_.+
+          format: hashid
+          title: HashedId[projects]
+          description: A hashed identifier that maps to an internal database ID
+          examples:
+          - prj_0123abcd
+        name:
+          type: string
+          title: Name
+        app_id:
+          type: string
+          title: App Id
+        app_provision_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Provision Type
+        app_icon_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Icon Url
+        created_at:
+          type: string
+          title: Created At
+        kms_type:
+          type: string
+          title: Kms Type
+        profile:
+          anyOf:
+          - $ref: '#/components/schemas/ProfileGetResponse'
+          - type: 'null'
+        current_cvm:
+          anyOf:
+          - $ref: '#/components/schemas/teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo'
+          - type: 'null'
+        cvms:
+          items:
+            $ref: '#/components/schemas/teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo'
+          type: array
+          title: Cvms
+        cvm_count:
+          type: integer
+          title: Cvm Count
+          default: 0
+        team_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Team Slug
+        team_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Team Name
+      type: object
+      required:
+      - id
+      - name
+      - app_id
+      - created_at
+      - kms_type
+      title: DstackAppFullResponse
+    teehouse__api__routes__apps__v20251028__schemas__CvmBasicInfo:
+      properties:
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+        app_id:
+          type: string
+          title: App Id
+        name:
+          type: string
+          title: Name
+          default: ''
+        status:
+          type: string
+          title: Status
+        vcpu:
+          type: integer
+          title: Vcpu
+        memory:
+          type: integer
+          title: Memory
+        disk_size:
+          type: integer
+          title: Disk Size
+        teepod_id:
+          type: integer
+          title: Teepod Id
+        teepod_name:
+          type: string
+          title: Teepod Name
+        region_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region Identifier
+        kms_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Type
+        instance_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Type
+        listed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Listed
+        base_image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Image
+        kms_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Slug
+        kms_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Id
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        machine_info:
+          anyOf:
+          - $ref: '#/components/schemas/MachineInfo'
+          - type: 'null'
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+      type: object
+      required:
+      - vm_uuid
+      - app_id
+      - status
+      - vcpu
+      - memory
+      - disk_size
+      - teepod_id
+      - teepod_name
+      - region_identifier
+      - kms_type
+      - instance_type
+      title: CvmBasicInfo
+    DstackAppMinimalResponse:
+      properties:
+        id:
+          type: 'null'
+          title: Id
+        app_id:
+          type: string
+          title: App Id
+        name:
+          type: 'null'
+          title: Name
+        app_provision_type:
+          type: 'null'
+          title: App Provision Type
+        app_icon_url:
+          type: 'null'
+          title: App Icon Url
+        created_at:
+          type: 'null'
+          title: Created At
+        kms_type:
+          type: 'null'
+          title: Kms Type
+        profile:
+          type: 'null'
+          title: Profile
+        current_cvm:
+          type: 'null'
+          title: Current Cvm
+        cvms:
+          type: 'null'
+          title: Cvms
+        cvm_count:
+          type: 'null'
+          title: Cvm Count
+      type: object
+      required:
+      - app_id
+      title: DstackAppMinimalResponse
+    AppKmsInfoResponse:
+      properties:
+        is_onchain_kms:
+          type: boolean
+          title: Is Onchain Kms
+          default: false
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+        kms_contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Contract Address
+        app_contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Contract Address
+        deployer_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployer Address
+        deployer_type:
+          anyOf:
+          - type: string
+            enum:
+            - eoa
+            - safe
+            - legacy_multisig
+            - erc4337
+            - contract
+          - type: 'null'
+          title: Deployer Type
+        is_contract:
+          type: boolean
+          title: Is Contract
+          default: false
+        safe_app_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Safe App Url
+      type: object
+      title: AppKmsInfoResponse
+    AppRevisionDetailResponse:
+      properties:
+        revision_id:
+          type: string
+          title: Revision Id
+          description: Revision record identifier (hashid of snowflake_id)
+        app_id:
+          type: string
+          title: App Id
+          description: Hex app identifier
+        vm_uuid:
+          type: string
+          title: Vm Uuid
+          description: CVM UUID
+        compose_hash:
+          type: string
+          title: Compose Hash
+          description: SHA-256 hash of compose file
+        compose_file:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: string
+          - type: 'null'
+          title: Compose File
+          description: Docker compose content (dict or raw string)
+        encrypted_env:
+          type: string
+          title: Encrypted Env
+          description: Hex-encoded encrypted environment variables
+        user_config:
+          type: string
+          title: User Config
+          description: JSON user configuration string
+        created_at:
+          type: string
+          title: Created At
+          description: Revision timestamp (ISO 8601)
+        trace_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Trace Id
+          description: Request trace ID for debugging
+        operation_type:
+          type: string
+          title: Operation Type
+          description: 'Operation: deploy, update, restart, etc.'
+        triggered_by:
+          anyOf:
+          - $ref: '#/components/schemas/UserRef'
+          - type: 'null'
+          description: User who triggered the operation
+        cvm:
+          anyOf:
+          - $ref: '#/components/schemas/CvmRef'
+          - type: 'null'
+          description: CVM reference
+        workspace:
+          anyOf:
+          - $ref: '#/components/schemas/WorkspaceRef'
+          - type: 'null'
+          description: Workspace reference
+      type: object
+      required:
+      - revision_id
+      - app_id
+      - vm_uuid
+      - compose_hash
+      - compose_file
+      - encrypted_env
+      - user_config
+      - created_at
+      - trace_id
+      - operation_type
+      title: AppRevisionDetailResponse
+      description: Full revision detail with configuration data.
+    AppIsAllowedResponse:
+      properties:
+        app_contract_address:
+          type: string
+          title: App Contract Address
+        compose_hash:
+          type: string
+          title: Compose Hash
+        device_id:
+          type: string
+          title: Device Id
+        compose_hash_allowed:
+          type: boolean
+          title: Compose Hash Allowed
+        allow_any_device:
+          type: boolean
+          title: Allow Any Device
+        device_id_allowed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Device Id Allowed
+        is_allowed:
+          type: boolean
+          title: Is Allowed
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - app_contract_address
+      - compose_hash
+      - device_id
+      - compose_hash_allowed
+      - allow_any_device
+      - is_allowed
+      title: AppIsAllowedResponse
+    teehouse__api__routes__apps__v20260121__schemas__DstackAppListResponse:
+      properties:
+        dstack_apps:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse'
+            - $ref: '#/components/schemas/DstackAppMinimalResponse'
+          type: array
+          title: Dstack Apps
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total:
+          type: integer
+          title: Total
+        total_pages:
+          type: integer
+          title: Total Pages
+      type: object
+      required:
+      - dstack_apps
+      - page
+      - page_size
+      - total
+      - total_pages
+      title: DstackAppListResponse
+    VmInfo:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        status:
+          type: string
+          title: Status
+        uptime:
+          type: string
+          title: Uptime
+        app_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Url
+        app_id:
+          type: string
+          title: App Id
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        configuration:
+          anyOf:
+          - $ref: '#/components/schemas/VmConfiguration'
+          - type: 'null'
+        exited_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Exited At
+        boot_progress:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Progress
+        boot_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Error
+        shutdown_progress:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shutdown Progress
+        image_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Image Version
+        events:
+          items:
+            $ref: '#/components/schemas/GuestEvent'
+          type: array
+          title: Events
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - uptime
+      - app_id
+      title: VmInfo
+      description: Mapping from Teepod RPC's VmInfo.
+    GpuConfig:
+      properties:
+        gpus:
+          items:
+            $ref: '#/components/schemas/GpuSpec'
+          type: array
+          title: Gpus
+        attach_mode:
+          anyOf:
+          - type: string
+            enum:
+            - listed
+            - all
+          - type: string
+          title: Attach Mode
+          default: listed
+      type: object
+      required:
+      - gpus
+      title: GpuConfig
+    GuestEvent:
+      properties:
+        event:
+          type: string
+          title: Event
+        body:
+          type: string
+          title: Body
+        timestamp:
+          type: integer
+          title: Timestamp
+          default: 0
+      type: object
+      required:
+      - event
+      - body
+      title: GuestEvent
+      description: Structured lifecycle event emitted by the guest or runtime. Since VMM v0.5.7.
+    CvmIsAllowedItem:
+      properties:
+        cvm_id:
+          type: integer
+          title: Cvm Id
+        app_contract_address:
+          type: string
+          title: App Contract Address
+        compose_hash:
+          type: string
+          title: Compose Hash
+        device_id:
+          type: string
+          title: Device Id
+        compose_hash_allowed:
+          type: boolean
+          title: Compose Hash Allowed
+        allow_any_device:
+          type: boolean
+          title: Allow Any Device
+        device_id_allowed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Device Id Allowed
+        is_allowed:
+          type: boolean
+          title: Is Allowed
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - cvm_id
+      - app_contract_address
+      - compose_hash
+      - device_id
+      - compose_hash_allowed
+      - allow_any_device
+      - is_allowed
+      title: CvmIsAllowedItem
+    CvmNetworkUrls:
+      properties:
+        app:
+          type: string
+          title: App
+        instance:
+          type: string
+          title: Instance
+      type: object
+      required:
+      - app
+      - instance
+      title: CvmNetworkUrls
+      description: Model representing public URLs for a CVM port
+    KmsType:
+      type: string
+      enum:
+      - phala
+      - ethereum
+      - base
+      - legacy
+      title: KmsType
+    VmConfiguration:
+      properties:
+        name:
+          type: string
+          title: Name
+        image:
+          type: string
+          title: Image
+        compose_file:
+          anyOf:
+          - $ref: '#/components/schemas/AppComposeV2'
+          - type: 'null'
+        vcpu:
+          type: integer
+          title: Vcpu
+        memory:
+          type: integer
+          title: Memory
+        disk_size:
+          type: integer
+          title: Disk Size
+        ports:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PortMapping'
+            type: array
+          - type: 'null'
+          title: Ports
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+        user_config:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Config
+        hugepages:
+          type: boolean
+          title: Hugepages
+          default: false
+        pin_numa:
+          type: boolean
+          title: Pin Numa
+          default: false
+        gpus:
+          anyOf:
+          - $ref: '#/components/schemas/GpuConfig'
+          - type: 'null'
+          default:
+            gpus: []
+            attach_mode: listed
+        kms_urls:
+          items:
+            type: string
+          type: array
+          title: Kms Urls
+          default: []
+        gateway_urls:
+          items:
+            type: string
+          type: array
+          title: Gateway Urls
+          default: []
+      type: object
+      required:
+      - name
+      - image
+      - vcpu
+      - memory
+      - disk_size
+      title: VmConfiguration
+      description: Mapping from Teepod RPC's VmConfiguration.
+    AppRevisionResponse:
+      properties:
+        revision_id:
+          type: string
+          title: Revision Id
+          description: Revision record identifier (hashid of snowflake_id)
+        app_id:
+          type: string
+          title: App Id
+          description: Hex app identifier
+        vm_uuid:
+          type: string
+          title: Vm Uuid
+          description: CVM UUID
+        compose_hash:
+          type: string
+          title: Compose Hash
+          description: SHA-256 hash of compose file
+        created_at:
+          type: string
+          title: Created At
+          description: Revision timestamp (ISO 8601)
+        trace_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Trace Id
+          description: Request trace ID for debugging
+        operation_type:
+          type: string
+          title: Operation Type
+          description: 'Operation: deploy, update, restart, etc.'
+        triggered_by:
+          anyOf:
+          - $ref: '#/components/schemas/UserRef'
+          - type: 'null'
+          description: User who triggered the operation
+        cvm:
+          anyOf:
+          - $ref: '#/components/schemas/CvmRef'
+          - type: 'null'
+          description: CVM reference
+        workspace:
+          anyOf:
+          - $ref: '#/components/schemas/WorkspaceRef'
+          - type: 'null'
+          description: Workspace reference
+      type: object
+      required:
+      - revision_id
+      - app_id
+      - vm_uuid
+      - compose_hash
+      - created_at
+      - trace_id
+      - operation_type
+      title: AppRevisionResponse
+      description: App deployment revision summary.
+    PendingUpdateItem:
+      properties:
+        vm_uuid:
+          type: string
+          title: Vm Uuid
+        compose_hash:
+          type: string
+          title: Compose Hash
+        on_chain:
+          type: boolean
+          title: On Chain
+        instance_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Name
+      type: object
+      required:
+      - vm_uuid
+      - compose_hash
+      - on_chain
+      title: PendingUpdateItem
+    PendingUpdatePreview:
+      properties:
+        current_docker_compose:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Current Docker Compose
+        pending_docker_compose:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pending Docker Compose
+        current_pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Current Pre Launch Script
+        pending_pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pending Pre Launch Script
+      type: object
+      title: PendingUpdatePreview
+    teehouse__api__routes__apps__v20260121__schemas__DstackAppFullResponse:
+      properties:
+        id:
+          type: string
+          pattern: ^prj_.+
+          format: hashid
+          title: HashedId[projects]
+          description: A hashed identifier that maps to an internal database ID
+          examples:
+          - prj_0123abcd
+        name:
+          type: string
+          title: Name
+        app_id:
+          type: string
+          title: App Id
+        app_provision_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Provision Type
+        app_icon_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Icon Url
+        created_at:
+          type: string
+          title: Created At
+        kms_type:
+          type: string
+          title: Kms Type
+        profile:
+          anyOf:
+          - $ref: '#/components/schemas/ProfileGetResponse'
+          - type: 'null'
+        current_cvm:
+          anyOf:
+          - $ref: '#/components/schemas/teehouse__api__routes__cvms__v20260121__schemas__CVMInfo'
+          - type: 'null'
+        cvms:
+          items:
+            $ref: '#/components/schemas/teehouse__api__routes__cvms__v20260121__schemas__CVMInfo'
+          type: array
+          title: Cvms
+        cvm_count:
+          type: integer
+          title: Cvm Count
+          default: 0
+      type: object
+      required:
+      - id
+      - name
+      - app_id
+      - created_at
+      - kms_type
+      title: DstackAppFullResponse
+    WorkspaceRef:
+      properties:
+        object_type:
+          type: string
+          const: workspace
+          title: Object Type
+          description: Fixed value 'workspace'
+          default: workspace
+        id:
+          type: string
+          pattern: ^wks_.+
+          format: hashid
+          title: HashedId[teams]
+          description: Hashed workspace ID
+          examples:
+          - wks_0123abcd
+        name:
+          type: string
+          title: Name
+          description: Workspace display name
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+          description: URL-safe workspace identifier
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+          description: Workspace avatar URL from profile
+      type: object
+      required:
+      - id
+      - name
+      title: WorkspaceRef
+      description: Minimal workspace reference for embedding in responses.
+    CVMGatewayInfo:
+      properties:
+        base_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Domain
+        cname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cname
+      type: object
+      title: CVMGatewayInfo
+    CVMKmsInfo:
+      properties:
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+        dstack_kms_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dstack Kms Address
+        dstack_app_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dstack App Address
+        deployer_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployer Address
+        rpc_endpoint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rpc Endpoint
+        encrypted_env_pubkey:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env Pubkey
+      type: object
+      title: CVMKmsInfo
+    TcbEvaluationResponse:
+      properties:
+        app_id:
+          type: string
+          title: App Id
+        update:
+          type: string
+          const: early
+          title: Update
+          default: early
+        instances:
+          items:
+            $ref: '#/components/schemas/TcbEvaluationInstance'
+          type: array
+          title: Instances
+      type: object
+      required:
+      - app_id
+      - instances
+      title: TcbEvaluationResponse
+    CVMOSInfo:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+        is_dev:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Dev
+        os_image_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Os Image Hash
+      type: object
+      title: CVMOSInfo
+    CVMLogUrls:
+      properties:
+        serial:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Serial
+        stdout:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stdout
+        stderr:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stderr
+        container_log_base:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Container Log Base
+      type: object
+      title: CVMLogUrls
+    TeepodStatus:
+      type: string
+      enum:
+      - ONLINE
+      - OFFLINE
+      - MAINTENANCE
+      title: TeepodStatus
+    VM:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        status:
+          type: string
+          title: Status
+        teepod_id:
+          type: integer
+          title: Teepod Id
+        teepod:
+          anyOf:
+          - $ref: '#/components/schemas/TeepodMeta'
+          - type: 'null'
+        user_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: User Id
+        app_id:
+          type: string
+          title: App Id
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        app_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Url
+        base_image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Image
+        vcpu:
+          type: integer
+          title: Vcpu
+        memory:
+          type: integer
+          title: Memory
+        disk_size:
+          type: integer
+          title: Disk Size
+        manifest_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Manifest Version
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+        runner:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Runner
+        docker_compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose File
+        features:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Features
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        encrypted_env_pubkey:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env Pubkey
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - teepod_id
+      - app_id
+      - vcpu
+      - memory
+      - disk_size
+      - created_at
+      title: VM
+    teehouse__api__routes__apps__v20251028__schemas__DstackAppListResponse:
+      properties:
+        dstack_apps:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/teehouse__api__routes__apps__v20251028__schemas__DstackAppFullResponse'
+            - $ref: '#/components/schemas/DstackAppMinimalResponse'
+          type: array
+          title: Dstack Apps
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total:
+          type: integer
+          title: Total
+        total_pages:
+          type: integer
+          title: Total Pages
+      type: object
+      required:
+      - dstack_apps
+      - page
+      - page_size
+      - total
+      - total_pages
+      title: DstackAppListResponse
+    MachineInfo:
+      properties:
+        vcpu:
+          type: integer
+          title: Vcpu
+          description: Virtual CPU count
+        memory:
+          type: integer
+          title: Memory
+          description: Memory in MB
+        disk_size:
+          type: integer
+          title: Disk Size
+          description: Disk size in GB
+        gpu_count:
+          type: integer
+          title: Gpu Count
+          description: GPU count (0 if none)
+      type: object
+      required:
+      - vcpu
+      - memory
+      - disk_size
+      - gpu_count
+      title: MachineInfo
+      description: CVM hardware configuration.
+    KMSInfo:
+      properties:
+        id:
+          type: string
+          pattern: ^kms_.+
+          format: hashid
+          title: HashedId[kms]
+          description: Hashed KMS identifier (kms_xxxxx)
+          examples:
+          - kms_0123abcd
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+          description: Human-readable KMS name
+        url:
+          type: string
+          title: Url
+          description: KMS endpoint URL
+        version:
+          type: string
+          title: Version
+          description: KMS software version
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+          description: Blockchain chain ID if onchain
+        kms_contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Contract Address
+          description: Smart contract address if onchain
+        gateway_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway App Id
+          description: Gateway application ID
+      type: object
+      required:
+      - id
+      - url
+      - version
+      title: KMSInfo
+      description: KMS instance information.
+    PortMapping:
+      properties:
+        protocol:
+          type: string
+          title: Protocol
+        host_port:
+          type: integer
+          title: Host Port
+        vm_port:
+          type: integer
+          title: Vm Port
+        host_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Host Address
+      type: object
+      required:
+      - protocol
+      - host_port
+      - vm_port
+      title: PortMapping
+    teehouse__api__routes__cvms__v20260121__schemas__CVMInfo:
+      properties:
+        id:
+          type: string
+          pattern: ^cvm_.+
+          format: hashid
+          title: HashedId[cvms]
+          description: A hashed identifier that maps to an internal database ID
+          examples:
+          - cvm_0123abcd
+        name:
+          type: string
+          title: Name
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        resource:
+          $ref: '#/components/schemas/CVMResourceInfo'
+        node_info:
+          anyOf:
+          - $ref: '#/components/schemas/NodeRef'
+          - type: 'null'
+        os:
+          anyOf:
+          - $ref: '#/components/schemas/CVMOSInfo'
+          - type: 'null'
+        kms_type:
+          anyOf:
+          - $ref: '#/components/schemas/KmsType'
+          - type: 'null'
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/CVMKmsInfo'
+          - type: 'null'
+        status:
+          type: string
+          title: Status
+        in_progress:
+          type: boolean
+          title: In Progress
+          default: false
+        progress:
+          anyOf:
+          - $ref: '#/components/schemas/CVMProgressInfo'
+          - type: 'null'
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+        docker_compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose Hash
+        pre_launch_script_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script Hash
+        gateway:
+          $ref: '#/components/schemas/CVMGatewayInfo'
+        logs:
+          $ref: '#/components/schemas/CVMLogUrls'
+        services:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Services
+        endpoints:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CvmNetworkUrls'
+            type: array
+          - type: 'null'
+          title: Endpoints
+        public_logs:
+          type: boolean
+          title: Public Logs
+          default: false
+        public_sysinfo:
+          type: boolean
+          title: Public Sysinfo
+          default: false
+        public_tcbinfo:
+          type: boolean
+          title: Public Tcbinfo
+          default: true
+        gateway_enabled:
+          type: boolean
+          title: Gateway Enabled
+          default: false
+        secure_time:
+          type: boolean
+          title: Secure Time
+          default: false
+        storage_fs:
+          type: string
+          title: Storage Fs
+          default: zfs
+        workspace:
+          anyOf:
+          - $ref: '#/components/schemas/WorkspaceRef'
+          - type: 'null'
+        creator:
+          anyOf:
+          - $ref: '#/components/schemas/UserRef'
+          - type: 'null'
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        deleted_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Deleted At
+        listed:
+          type: boolean
+          title: Listed
+          default: false
+        project_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Type
+      type: object
+      required:
+      - id
+      - name
+      - resource
+      - status
+      - gateway
+      title: CVMInfo
+    NodeRef:
+      properties:
+        object_type:
+          type: string
+          const: node
+          title: Object Type
+          description: Fixed value 'node'
+          default: node
+        id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Id
+          description: Teepod numeric ID
+        node_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Node Id
+          description: Physical node numeric ID
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: Node display name
+        region:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region
+          description: Region identifier
+        device_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Id
+          description: Device ID
+        ppid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ppid
+          description: PPID
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/TeepodStatus'
+          - type: 'null'
+          description: Node status
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: Teepod version
+      type: object
+      title: NodeRef
+      description: Minimal node/teepod reference for embedding in responses.
+    ManagedUser:
+      properties:
+        id:
+          type: integer
+          title: Id
+        username:
+          type: string
+          title: Username
+      type: object
+      required:
+      - id
+      - username
+      title: ManagedUser
+    CreateAppInstanceRequest:
+      properties:
+        teepod_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Teepod Id
+          description: Target node ID (deprecated, use node_id)
+        node_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Node Id
+          description: Target node ID for the replica
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+          description: New encrypted env blob (hex)
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+          description: Explicit compose hash to replicate. Required when the source app has multiple live instances.
+        docker_compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose File
+          description: New Docker Compose YAML content
+        pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script
+          description: New pre-launch script content
+        token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token
+          description: Commit token returned by a prior prepare-only request. When set, this request commits the previously-prepared instance instead of preparing a new one.
+        transaction_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Transaction Hash
+          description: On-chain transaction hash proving compose-hash registration. Use 'already-registered' (or omit) when the hash was registered earlier.
+      type: object
+      title: CreateAppInstanceRequest
+      description: 'Request model for creating a new instance under an existing app.
+
+
+        Inherits node_id, encrypted_env, compose_hash and their validators from ReplicateRequest.'
+    DeviceAllowlistItem:
+      properties:
+        device_id:
+          type: string
+          title: Device Id
+        node_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Node Name
+        cvm_ids:
+          items:
+            type: integer
+          type: array
+          title: Cvm Ids
+          default: []
+        allowed_onchain:
+          type: boolean
+          title: Allowed Onchain
+          default: false
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - device_id
+      - status
+      title: DeviceAllowlistItem
+    GpuSpec:
+      properties:
+        slot:
+          type: string
+          title: Slot
+        product_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Product Id
+      type: object
+      required:
+      - slot
+      title: GpuSpec
+    FilterOptionsResponse:
+      properties:
+        statuses:
+          items:
+            type: string
+          type: array
+          title: Statuses
+          description: Distinct CVM status values
+        image_versions:
+          items:
+            type: string
+          type: array
+          title: Image Versions
+          description: Distinct OS image names
+        instance_types:
+          items:
+            type: string
+          type: array
+          title: Instance Types
+          description: Distinct instance type identifiers
+        kms_slugs:
+          items:
+            type: string
+          type: array
+          title: Kms Slugs
+          description: Distinct KMS slug values
+        kms_types:
+          items:
+            type: string
+          type: array
+          title: Kms Types
+          description: Distinct KMS type values
+        regions:
+          items:
+            type: string
+          type: array
+          title: Regions
+          description: Distinct region identifiers
+        nodes:
+          items:
+            type: string
+          type: array
+          title: Nodes
+          description: Distinct node names (union of teepod and node names)
+      type: object
+      required:
+      - statuses
+      - image_versions
+      - instance_types
+      - kms_slugs
+      - kms_types
+      - regions
+      - nodes
+      title: FilterOptionsResponse
+      description: Available filter values for app list queries.
+    ReplicateRequest:
+      properties:
+        teepod_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Teepod Id
+          description: Target node ID (deprecated, use node_id)
+        node_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Node Id
+          description: Target node ID for the replica
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+          description: New encrypted env blob (hex)
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+          description: Explicit compose hash to replicate. Required when the source app has multiple live instances.
+      type: object
+      title: ReplicateRequest
+      description: Request model for CVM replication.
+    CVMProgressInfo:
+      properties:
+        target:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Target
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        correlation_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Correlation Id
+      type: object
+      title: CVMProgressInfo
+    ProfileGetResponse:
+      properties:
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        custom_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Custom Domain
+      type: object
+      title: ProfileGetResponse
+      description: Response model for entity profile - only public display data.
+    MeteredUsageResponse:
+      properties:
+        instance_id:
+          type: string
+          title: Instance Id
+          description: CVM instance UUID
+        project_id:
+          type: integer
+          title: Project Id
+          description: Project database ID
+        team_id:
+          type: integer
+          title: Team Id
+          description: Team database ID
+        timestamp:
+          type: string
+          title: Timestamp
+          description: Record timestamp (ISO 8601)
+        event_type:
+          type: string
+          title: Event Type
+          description: Usage event type
+        cost:
+          type: number
+          title: Cost
+          description: Cost in USD
+        details:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Details
+          description: JSON usage details
+        usage_type:
+          type: string
+          title: Usage Type
+          description: 'Billing category: compute, storage, etc.'
+        billing_start:
+          type: string
+          title: Billing Start
+          description: Billing period start (date)
+        billing_end:
+          type: string
+          title: Billing End
+          description: Billing period end (date)
+        duration_minutes:
+          type: number
+          title: Duration Minutes
+          description: Usage duration in minutes
+        billing_key:
+          type: string
+          title: Billing Key
+          description: Unique billing record key
+        billing_hour:
+          type: string
+          title: Billing Hour
+          description: Billing hour bucket
+        billing_day:
+          type: string
+          title: Billing Day
+          description: Billing day bucket
+      type: object
+      required:
+      - instance_id
+      - project_id
+      - team_id
+      - timestamp
+      - event_type
+      - cost
+      - details
+      - usage_type
+      - billing_start
+      - billing_end
+      - duration_minutes
+      - billing_key
+      - billing_hour
+      - billing_day
+      title: MeteredUsageResponse
+      description: Single metered usage record.
+    TeepodMeta:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: TeepodMeta
+    DeviceAllowlistResponse:
+      properties:
+        is_onchain_kms:
+          type: boolean
+          title: Is Onchain Kms
+          default: false
+        allow_any_device:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Allow Any Device
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+        app_contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Contract Address
+        devices:
+          items:
+            $ref: '#/components/schemas/DeviceAllowlistItem'
+          type: array
+          title: Devices
+          default: []
+      type: object
+      title: DeviceAllowlistResponse
+    AppUsageResponse:
+      properties:
+        usage:
+          items:
+            $ref: '#/components/schemas/MeteredUsageResponse'
+          type: array
+          title: Usage
+          description: Usage records
+        total:
+          type: integer
+          title: Total
+          description: Number of records returned
+        total_cost:
+          type: number
+          title: Total Cost
+          description: Sum of costs in USD
+      type: object
+      required:
+      - usage
+      - total
+      - total_cost
+      title: AppUsageResponse
+      description: App usage response with cost summary.
+    AppIsAllowedRequest:
+      properties:
+        compose_hash:
+          type: string
+          title: Compose Hash
+          description: Compose hash to check (hex)
+        node_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Node Id
+          description: Node ID (resolves device_id from DB)
+        device_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Id
+          description: Device ID (hex, direct)
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+          description: Chain ID for RPC URL resolution. If omitted, resolved from DB via CVM/KMS records.
+      type: object
+      required:
+      - compose_hash
+      title: AppIsAllowedRequest
+    UserRef:
+      properties:
+        object_type:
+          type: string
+          const: user
+          title: Object Type
+          description: Fixed value 'user'
+          default: user
+        id:
+          anyOf:
+          - type: string
+            pattern: ^usr_.+
+            format: hashid
+            title: HashedId[users]
+            description: A hashed identifier that maps to an internal database ID
+            examples:
+            - usr_0123abcd
+          - type: 'null'
+          title: Id
+          description: Hashed user ID
+        username:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Username
+          description: Display username
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+          description: Gravatar or OAuth provider avatar URL
+      type: object
+      title: UserRef
+      description: Minimal user reference for embedding in responses.
+    AppCvmsBatchIsAllowedResponse:
+      properties:
+        is_onchain:
+          type: boolean
+          title: Is Onchain
+          description: Whether this app uses on-chain KMS
+        results:
+          items:
+            $ref: '#/components/schemas/CvmIsAllowedItem'
+          type: array
+          title: Results
+        total:
+          type: integer
+          title: Total
+          default: 0
+        allowed_count:
+          type: integer
+          title: Allowed Count
+          default: 0
+        denied_count:
+          type: integer
+          title: Denied Count
+          default: 0
+        error_count:
+          type: integer
+          title: Error Count
+          default: 0
+        skipped_cvm_ids:
+          items:
+            type: integer
+          type: array
+          title: Skipped Cvm Ids
+      type: object
+      required:
+      - is_onchain
+      title: AppCvmsBatchIsAllowedResponse
+    PendingUpdatesResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/PendingUpdateItem'
+          type: array
+          title: Items
+          default: []
+      type: object
+      title: PendingUpdatesResponse
+    CvmNode:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        region_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region Identifier
+      type: object
+      required:
+      - id
+      - name
+      title: CvmNode
+    AppComposeV2:
+      properties:
+        allowed_envs:
+          items:
+            type: string
+          type: array
+          title: Allowed Envs
+        bash_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bash Script
+        default_gateway_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Default Gateway Domain
+        docker_compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose File
+        init_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Init Script
+        kms_enabled:
+          type: boolean
+          title: Kms Enabled
+          default: true
+        local_key_provider_enabled:
+          type: boolean
+          title: Local Key Provider Enabled
+          default: false
+        manifest_version:
+          type: integer
+          title: Manifest Version
+          default: 2
+        name:
+          type: string
+          title: Name
+        no_instance_id:
+          type: boolean
+          title: No Instance Id
+          default: false
+        pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script
+        public_logs:
+          type: boolean
+          title: Public Logs
+          default: true
+        public_sysinfo:
+          type: boolean
+          title: Public Sysinfo
+          default: true
+        public_tcbinfo:
+          type: boolean
+          title: Public Tcbinfo
+          default: true
+        runner:
+          type: string
+          title: Runner
+          default: docker-compose
+        gateway_enabled:
+          type: boolean
+          title: Gateway Enabled
+          default: true
+        features:
+          items:
+            type: string
+          type: array
+          title: Features
+          default:
+          - kms
+          - tproxy-net
+        salt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Salt
+        secure_time:
+          type: boolean
+          title: Secure Time
+          default: false
+        storage_fs:
+          anyOf:
+          - type: string
+            const: ext4
+          - type: string
+            const: zfs
+          - type: 'null'
+          title: Storage Fs
+          default: zfs
+        tproxy_enabled:
+          type: boolean
+          title: Tproxy Enabled
+          default: true
+      type: object
+      required:
+      - name
+      title: AppComposeV2
+    BillingPeriod:
+      type: string
+      enum:
+      - skip
+      - hourly
+      - monthly
+      title: BillingPeriod
+    AppRevisionsResponse:
+      properties:
+        revisions:
+          items:
+            $ref: '#/components/schemas/AppRevisionResponse'
+          type: array
+          title: Revisions
+          description: Revision records
+        total:
+          type: integer
+          title: Total
+          description: Total revision count
+        page:
+          type: integer
+          title: Page
+          description: Current page number
+        page_size:
+          type: integer
+          title: Page Size
+          description: Items per page
+        total_pages:
+          type: integer
+          title: Total Pages
+          description: Total page count
+      type: object
+      required:
+      - revisions
+      - total
+      - page
+      - page_size
+      - total_pages
+      title: AppRevisionsResponse
+      description: Paginated revision list.
+    RedeployRevisionRequest:
+      properties:
+        vm_uuids:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Vm Uuids
+      type: object
+      title: RedeployRevisionRequest
+    CvmRef:
+      properties:
+        object_type:
+          type: string
+          const: cvm
+          title: Object Type
+          description: Fixed value 'cvm'
+          default: cvm
+        vm_uuid:
+          type: string
+          title: Vm Uuid
+          description: CVM instance UUID
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+          description: Deterministic app identifier from manifest
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: User-assigned CVM name
+      type: object
+      required:
+      - vm_uuid
+      title: CvmRef
+      description: Minimal CVM reference for embedding in responses.
+    TcbEvaluationInstance:
+      properties:
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+        image_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Image Version
+        ppid:
+          type: string
+          title: Ppid
+          default: ''
+        device_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Id
+        evaluation_update:
+          type: string
+          const: early
+          title: Evaluation Update
+          default: early
+        evaluation_ok:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Evaluation Ok
+        evaluation_status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Evaluation Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - vm_uuid
+      - name
+      - instance_id
+      - status
+      - image_version
+      title: TcbEvaluationInstance
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

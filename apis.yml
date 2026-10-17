@@ -93,21 +93,36 @@ common:
 - type: TermsOfService
   url: https://phala.com/terms
 apis:
-- aid: phala:phala-cloud-api
-  name: Phala Cloud API
-  description: 'REST API for Phala Cloud: provision and manage confidential VMs (CVMs), apps and revisions, attestations, KMS, workspaces, SSH keys and instance types. Published by Phala as an OpenAPI 3.1 document at docs.phala.com/openapi.json.'
+- aid: phala:phala-private-ai-api
+  name: Phala Private AI API
+  description: >-
+    OpenAI-compatible confidential inference API (chat completions, responses, Anthropic-format messages,
+    completions, embeddings, models) served from GPU TEEs, plus attestation report, signed receipt and
+    attested-session endpoints. Documented on docs.phala.com; no machine-readable contract is published.
+  humanURL: >-
+    https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/confidential-ai-api
+  baseURL: https://inference.phala.com/v1
+  tags:
+  - AI Inference
+  - LLM
+  - Confidential AI
+  properties:
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/confidential-ai/overview
+  - type: APIReference
+    url: >-
+      https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/chat-completions
+  image: https://phala.com/favicon.ico
+- aid: phala:phala-apps-api
+  name: Phala Network Apps API
+  description: App template management and CVM deployment from app blueprints
   humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
   baseURL: https://cloud-api.phala.com
   tags:
-  - Confidential Computing
-  - CVM
-  - Attestation
+  - Apps
   properties:
   - type: OpenAPI
-    url: openapi/phala-cloud-api-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://docs.phala.com/openapi.json
+    url: openapi/phala-apps-api-openapi.yml
   - type: Documentation
     url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
   - type: JSONSchema
@@ -122,22 +137,223 @@ apis:
     url: json-schema/phala-update-cvm-request-schema.json
   - type: JSONSchema
     url: json-schema/phala-provision-compose-file-update-request-schema.json
-  image: https://phala.com/favicon.ico
-- aid: phala:phala-private-ai-api
-  name: Phala Private AI API
-  description: OpenAI-compatible confidential inference API (chat completions, responses, Anthropic-format messages, completions, embeddings, models) served from GPU TEEs, plus attestation report, signed receipt and attested-session endpoints. Documented on docs.phala.com; no machine-readable contract is published.
-  humanURL: https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/confidential-ai-api
-  baseURL: https://inference.phala.com/v1
+- aid: phala:phala-apps-kms-info-api
+  name: Phala Network Apps Kms Info API
+  description: The apps-kms-info API from Phala Network — 1 operation(s) for apps-kms-info.
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
   tags:
-  - AI Inference
-  - LLM
-  - Confidential AI
+  - apps-kms-info
   properties:
+  - type: OpenAPI
+    url: openapi/phala-apps-kms-info-api-openapi.yml
   - type: Documentation
-    url: https://docs.phala.com/phala-cloud/confidential-ai/overview
-  - type: APIReference
-    url: https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/api-reference/chat-completions
-  image: https://phala.com/favicon.ico
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-apps-pending-updates-api
+  name: Phala Network Apps Pending Updates API
+  description: >-
+    The apps-pending-updates API from Phala Network — 2 operation(s) for apps-pending-updates.
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - apps-pending-updates
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-apps-pending-updates-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-attestations-api
+  name: Phala Network Attestations API
+  description: Remote attestation and TEE verification endpoints
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - Attestations
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-attestations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-cvms-api
+  name: Phala Network CVMs API
+  description: Confidential Virtual Machine (CVM) lifecycle management on Phala Network
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - CVMs
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-cvms-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-cvms-network-config-api
+  name: Phala Network Cvms Network Config API
+  description: The cvms-network-config API from Phala Network — 3 operation(s) for cvms-network-config.
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - cvms-network-config
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-cvms-network-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-instance-types-api
+  name: Phala Network Instance Types API
+  description: Available hardware configurations for CVM deployment
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - Instance Types
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-instance-types-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-kms-api
+  name: Phala Network KMS API
+  description: Key Management Service — key derivation, on-chain anchoring, and inspection
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - KMS
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-kms-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-ssh-keys-api
+  name: Phala Network SSH Keys API
+  description: SSH public key management for CVM access
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - SSH Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-ssh-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
+- aid: phala:phala-webhooks-api
+  name: Phala Network Webhooks API
+  description: Manage webhook endpoints and monitor delivery history
+  humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  baseURL: https://cloud-api.phala.com
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/phala-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-management-cvm-basic-info-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-cvminfo-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-dstack-app-request-v2-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-update-cvm-request-schema.json
+  - type: JSONSchema
+    url: json-schema/phala-provision-compose-file-update-request-schema.json
 x-enrichment:
   date: '2026-10-13'
   status: enriched

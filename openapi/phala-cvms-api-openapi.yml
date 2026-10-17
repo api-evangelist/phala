@@ -1,0 +1,5587 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud CVMs API
+  version: 0.1.0
+  description: Confidential Virtual Machine (CVM) lifecycle management on Phala Network
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: CVMs
+  description: Confidential Virtual Machine (CVM) lifecycle management on Phala Network
+paths:
+  /api/v1/cvms/provision/eliza:
+    post:
+      tags:
+      - CVMs
+      summary: Provision Eliza app
+      description: Validates Eliza configuration and caches it for 14 days. Returns compose_hash and KMS info for on-chain registration.
+      operationId: handle_provision_cvm_for_eliza_api_v1_cvms_provision_eliza_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionElizaRequest'
+        required: true
+      responses:
+        '200':
+          description: Provision data with compose_hash for creation
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid configuration
+        '401':
+          description: Authentication required
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/provision:
+    post:
+      tags:
+      - CVMs
+      summary: Provision DStack app
+      description: Validates Docker Compose configuration and caches it for 14 days. Returns compose_hash and KMS info for on-chain registration before creation.
+      operationId: handle_provision_cvm_api_v1_cvms_provision_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionDstackAppRequestV2'
+        required: true
+      responses:
+        '200':
+          description: Provision data with compose_hash for creation
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid Docker Compose configuration
+        '401':
+          description: Authentication required
+        '422':
+          description: Validation error
+  /api/v1/cvms/workload:
+    post:
+      tags:
+      - CVMs
+      summary: Create GPU workload CVM
+      description: Creates a CVM for GPU workloads. Node is auto-selected from available GPU nodes.
+      operationId: handle_create_cvm_for_workload_api_v1_cvms_workload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkloadTappRequest'
+        required: true
+      responses:
+        '200':
+          description: Created CVM record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '400':
+          description: Creation failed
+        '401':
+          description: Authentication required
+        '409':
+          description: CVM name already exists in workspace
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+  /api/v1/cvms:
+    post:
+      tags:
+      - CVMs
+      summary: Create CVM from provision
+      description: Creates a CVM using cached provision data from /cvms/provision. Requires compose_hash from the provision response.
+      operationId: handle_create_cvm_from_povision_api_v1_cvms_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTappRequest'
+      responses:
+        '200':
+          description: Created CVM record with teepod info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '400':
+          description: Invalid payload or provision data expired
+        '401':
+          description: Authentication required
+        '422':
+          description: Provision data not found
+    get:
+      tags:
+      - CVMs
+      summary: List CVMs
+      description: Returns CVMs in current workspace. Admins can filter by user_id or teepod_id.
+      operationId: handle_list_cvms_api_v1_cvms_get
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - const: '0'
+            type: string
+          - type: string
+            format: hashid
+            description: A hashed identifier that maps to an internal database ID
+            pattern: ^usr_.+
+            title: HashedId[users]
+            examples:
+            - usr_0123abcd
+          - type: 'null'
+          description: Filter by owner (admin only). Use '0' for unassigned.
+          title: User Id
+        description: Filter by owner (admin only). Use '0' for unassigned.
+      - name: teepod_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Filter by node ID (admin only)
+          title: Teepod Id
+        description: Filter by node ID (admin only)
+      responses:
+        '200':
+          description: List of CVM summaries
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/HostedCvm'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/teehouse__api__routes__cvms__v20260121__schemas__CVMInfo'
+                title: Response Handle List Cvms Api V1 Cvms Get
+        '401':
+          description: Authentication required
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/eliza:
+    post:
+      tags:
+      - CVMs
+      summary: Create Eliza from provision
+      description: Creates an Eliza CVM using cached provision data from /cvms/provision/eliza. Requires compose_hash from the provision response.
+      operationId: handle_create_eliza_from_provision_api_v1_cvms_eliza_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTappRequest'
+        required: true
+      responses:
+        '200':
+          description: Created Eliza CVM record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '400':
+          description: Invalid payload
+        '401':
+          description: Authentication required
+        '422':
+          description: Provision data not found or expired
+  /api/v1/cvms/{cvm_id}/compose_file:
+    get:
+      tags:
+      - CVMs
+      summary: Get raw compose file
+      description: Returns the complete compose file as JSON or raw text based on query param.
+      operationId: get_cvm_compose_file_api_v1_cvms__cvm_id__compose_file_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: raw
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Raw
+      responses:
+        '200':
+          description: Compose file content
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '500':
+          description: Failed to retrieve compose file
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - CVMs
+      summary: Trigger compose file update
+      description: Applies a provisioned compose file update. Requires compose_hash from provision endpoint. Restarts the CVM with new configuration.
+      operationId: trigger_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_trigger_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_patch'
+      responses:
+        '202':
+          description: Update initiated
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Provision not found or invalid CVM
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '503':
+          description: Node under maintenance
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - CVMs
+      summary: Submit compose file update
+      description: Submit complete compose file with hash verification. Use when you have pre-computed compose_hash and want to skip provision step.
+      operationId: submit_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComposeFileUpdateRequest'
+              description: Complete compose file with hash
+      responses:
+        '202':
+          description: Update initiated
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid CVM or hash mismatch
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Invalid Docker Compose syntax
+        '503':
+          description: Node under maintenance
+  /api/v1/cvms/{cvm_id}/compose_file/provision:
+    post:
+      tags:
+      - CVMs
+      summary: Provision compose file update
+      description: Validates new compose file and returns compose_hash for on-chain registration. Cache expires after 14 days.
+      operationId: provision_for_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_provision_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionComposeFileUpdateRequest'
+              description: Updated compose configuration
+      responses:
+        '200':
+          description: Provision response with compose_hash and KMS info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComposeFileProvisionResponse'
+        '400':
+          description: Empty Docker Compose file or invalid CVM
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Invalid Docker Compose syntax
+  /api/v1/cvms/{cvm_id}/replicas:
+    post:
+      tags:
+      - CVMs
+      summary: Replicate CVM
+      description: Create a replica of the CVM on a target node. If request body is omitted, it replicates to the source node and reuses existing env.
+      operationId: handle_replicate_cvm_api_v1_cvms__cvm_id__replicas_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: X-Prepare-Only
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Prepare-Only
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/ReplicateRequest'
+              - type: 'null'
+              title: Request
+      responses:
+        '200':
+          description: Replica CVM created
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid target node, image mismatch, or invalid encrypted_env
+        '401':
+          description: Not authenticated
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM or target node not found
+        '465':
+          description: KMS allowlist rejection (contract-owned KMS)
+        '500':
+          description: Replication failed
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/operations:
+    get:
+      tags:
+      - CVMs
+      summary: List CVM operations
+      description: Returns operation records grouped by correlation_id. Only includes events with correlation_id (new format since 2024-01). Error messages are sanitized for non-admin users.
+      operationId: get_cvm_operations_api_v1_cvms__cvm_id__operations_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Opaque cursor from previous response
+          title: Cursor
+        description: Opaque cursor from previous response
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          description: Page size
+          default: 50
+          title: Limit
+        description: Page size
+      - name: start_time
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Include operations started after this UTC time
+          title: Start Time
+        description: Include operations started after this UTC time
+      - name: end_time
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Include operations started before this UTC time
+          title: End Time
+        description: Include operations started before this UTC time
+      - name: operation_types
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: string
+          - type: 'null'
+          description: Filter by operation types (e.g. compose_update, power_on)
+          title: Operation Types
+        description: Filter by operation types (e.g. compose_update, power_on)
+      responses:
+        '200':
+          description: Paginated operation records
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCvmOperationsResponse'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/operations/cancel:
+    post:
+      tags:
+      - CVMs
+      summary: Cancel in-progress CVM operation
+      description: Cancel the current in-progress operation for a CVM. Revokes the Celery task and clears the operation lock.
+      operationId: cancel_cvm_operation_api_v1_cvms__cvm_id__operations_cancel_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Operation cancelled or no operation to cancel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelOperationRequest'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '409':
+          description: Cannot cancel this operation type
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/docker-compose.yml:
+    get:
+      tags:
+      - CVMs
+      summary: Get Docker Compose file
+      description: Returns the raw Docker Compose YAML content from the CVM configuration.
+      operationId: handle_get_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_yml_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Docker Compose YAML content
+          content:
+            application/json:
+              schema:
+                type: string
+                title: Response Handle Get Cvm Docker Compose Api V1 Cvms  Cvm Id  Docker Compose Yml Get
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/pre-launch-script:
+    get:
+      tags:
+      - CVMs
+      summary: Get pre-launch script
+      description: Returns the shell script that runs before containers start.
+      operationId: handle_get_cvm_prelaunch_script_api_v1_cvms__cvm_id__pre_launch_script_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Pre-launch shell script content
+          content:
+            application/json:
+              schema:
+                type: string
+                title: Response Handle Get Cvm Prelaunch Script Api V1 Cvms  Cvm Id  Pre Launch Script Get
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - CVMs
+      summary: Update pre-launch script
+      description: Replaces the pre-launch script and restarts the CVM. For contract-owned KMS, requires two-phase flow with on-chain hash registration.
+      operationId: update_cvm_pre_launch_script_api_v1_cvms__cvm_id__pre_launch_script_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: X-Compose-Hash
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Compose hash from Phase 1 response
+          title: X-Compose-Hash
+        description: Compose hash from Phase 1 response
+      - name: X-Transaction-Hash
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Transaction hash proving on-chain registration
+          title: X-Transaction-Hash
+        description: Transaction hash proving on-chain registration
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_update_cvm_pre_launch_script_api_v1_cvms__cvm_id__pre_launch_script_patch'
+      responses:
+        '202':
+          description: Update initiated, track via correlation_id
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid content type or empty body
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '409':
+          description: Another operation in progress
+        '465':
+          description: Compose hash registration required (Phase 1)
+        '466':
+          description: Compose hash invalid or expired
+        '467':
+          description: Transaction verification failed
+        '468':
+          description: Compose hash not allowed on-chain
+        '500':
+          description: KMS configuration or RPC error
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/available-os-images:
+    get:
+      tags:
+      - CVMs
+      summary: List available OS images
+      description: Returns OS images this CVM can upgrade to, filtered by node availability, KMS allowlist, dev/prod upgrade rules, and GPU compatibility.
+      operationId: get_available_os_images_api_v1_cvms__cvm_id__available_os_images_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: OS images grouped by version (newest first)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/teehouse__api__routes__cvms__patch_compose_file__AvailableOSImage'
+                title: Response Get Available Os Images Api V1 Cvms  Cvm Id  Available Os Images Get
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/os-image:
+    patch:
+      tags:
+      - CVMs
+      summary: Update OS image
+      description: Upgrades the CVM to a different OS image. Shuts down, updates, and restarts. Takes several minutes. Track progress via correlation_id.
+      operationId: update_cvm_os_image_api_v1_cvms__cvm_id__os_image_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_update_cvm_os_image_api_v1_cvms__cvm_id__os_image_patch'
+      responses:
+        '202':
+          description: Upgrade initiated, returns correlation_id
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: OS image not available for this CVM
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '409':
+          description: Another operation in progress
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/envs:
+    patch:
+      tags:
+      - CVMs
+      summary: Update environment variables
+      description: Updates encrypted environment variables. If env_keys changes for contract-owned KMS, requires two-phase flow with on-chain hash registration.
+      operationId: update_cvm_envs_api_v1_cvms__cvm_id__envs_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_update_cvm_envs_api_v1_cvms__cvm_id__envs_patch'
+      responses:
+        '202':
+          description: Update initiated, returns correlation_id and allowed_envs_changed flag
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '409':
+          description: Another operation in progress
+        '465':
+          description: Compose hash registration required (env_keys changed, Phase 1)
+        '466':
+          description: Compose hash invalid or expired
+        '467':
+          description: Transaction verification failed
+        '468':
+          description: Compose hash not allowed on-chain
+        '500':
+          description: KMS configuration or RPC error
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/docker-compose:
+    patch:
+      tags:
+      - CVMs
+      summary: Update Docker Compose file
+      description: Replaces the docker-compose.yml and restarts the CVM. For contract-owned KMS, requires two-phase flow with on-chain hash registration.
+      operationId: update_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: X-Compose-Hash
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Compose hash from Phase 1 response
+          title: X-Compose-Hash
+        description: Compose hash from Phase 1 response
+      - name: X-Transaction-Hash
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Transaction hash proving on-chain registration
+          title: X-Transaction-Hash
+        description: Transaction hash proving on-chain registration
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_update_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_patch'
+      responses:
+        '202':
+          description: Update initiated, track via correlation_id
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid content type or empty body
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '409':
+          description: Another operation in progress
+        '465':
+          description: Compose hash registration required (Phase 1)
+        '466':
+          description: Compose hash invalid or expired
+        '467':
+          description: Transaction verification failed
+        '468':
+          description: Compose hash not allowed on-chain
+        '500':
+          description: KMS configuration or RPC error
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/revisions/{revision_id}/redeploy:
+    post:
+      tags:
+      - CVMs
+      summary: Redeploy CVM from a specific revision
+      description: Switch/rollback a CVM to a specified app revision (compose_hash).
+      operationId: redeploy_cvm_revision_api_v1_cvms__cvm_id__revisions__revision_id__redeploy_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: revision_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Revision Id
+      - name: transaction_hash
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Optional transaction hash proving on-chain compose hash registration
+          title: Transaction Hash
+        description: Optional transaction hash proving on-chain compose hash registration
+      responses:
+        '202':
+          description: Activation initiated
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: CVM or revision not found
+        '409':
+          description: Another operation is in progress
+        '465':
+          description: Compose hash registration required (contract-owned KMS)
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/instance-ids:
+    patch:
+      tags:
+      - CVMs
+      summary: Batch refresh CVM instance IDs
+      description: Resolves and persists missing instance_id values. Admin can pass cross-workspace CVM IDs.
+      operationId: handle_batch_refresh_cvm_instance_ids_api_v1_cvms_instance_ids_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchInstanceIdRefreshRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchInstanceIdRefreshResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/paginated:
+    get:
+      tags:
+      - CVMs
+      summary: List CVMs (paginated)
+      description: Returns paginated CVMs in current workspace with total count.
+      operationId: handle_list_cvms_paginated_api_v1_cvms_paginated_get
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - const: '0'
+            type: string
+          - type: string
+            format: hashid
+            description: A hashed identifier that maps to an internal database ID
+            pattern: ^usr_.+
+            title: HashedId[users]
+            examples:
+            - usr_0123abcd
+          - type: 'null'
+          description: Filter by owner (admin only). Use '0' for unassigned.
+          title: User Id
+        description: Filter by owner (admin only). Use '0' for unassigned.
+      - name: teepod_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          description: Filter by node ID (admin only)
+          title: Teepod Id
+        description: Filter by node ID (admin only)
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          description: Page number (1-indexed)
+          default: 1
+          title: Page
+        description: Page number (1-indexed)
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Items per page (max 100)
+          default: 30
+          title: Page Size
+        description: Items per page (max 100)
+      responses:
+        '200':
+          description: Paginated CVM list with total count
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/PaginatedHostedCvms'
+                - $ref: '#/components/schemas/PaginatedCvmInfos'
+                title: Response Handle List Cvms Paginated Api V1 Cvms Paginated Get
+        '401':
+          description: Authentication required
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/instance-id:
+    patch:
+      tags:
+      - CVMs
+      summary: Refresh CVM instance ID
+      description: Resolve and persist instance_id for a CVM. Default behavior only backfills missing values.
+      operationId: handle_refresh_cvm_instance_id_api_v1_cvms__cvm_id__instance_id_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceIdRefreshRequest'
+              default:
+                overwrite: false
+                dry_run: false
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceIdRefreshResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}:
+    get:
+      tags:
+      - CVMs
+      summary: Get CVM details
+      description: Returns full CVM details including status, network info, and KMS configuration.
+      operationId: handle_get_cvm_api_v1_cvms__cvm_id__get
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: CVM details
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/teehouse__api__routes__cvms__management__CvmBasicInfo'
+                - $ref: '#/components/schemas/CVMInfoDetail'
+                title: Response Handle Get Cvm Api V1 Cvms  Cvm Id  Get
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - CVMs
+      summary: Delete CVM
+      description: Stops and permanently deletes CVM. Data is not recoverable.
+      operationId: handle_remove_cvm_api_v1_cvms__cvm_id__delete
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '204':
+          description: Deletion initiated
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - CVMs
+      summary: Update CVM
+      description: Unified PATCH endpoint for CVM updates. Only fields present in the request body are applied. Handles resource resize, compose configuration, visibility, environment, and OS image updates. For contract-owned KMS, compose-hash-affecting changes require two-phase flow with on-chain hash registration.
+      operationId: update_cvm_endpoint_api_v1_cvms__cvm_id__patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: X-Compose-Hash
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Compose hash from Phase 1 response (Phase 2 only)
+          title: X-Compose-Hash
+        description: Compose hash from Phase 1 response (Phase 2 only)
+      - name: X-Transaction-Hash
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Transaction hash proving on-chain registration (Phase 2 only)
+          title: X-Transaction-Hash
+        description: Transaction hash proving on-chain registration (Phase 2 only)
+      - name: X-Prepare-Only
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: When 'true', generate a commit token for multisig workflows instead of expecting immediate on-chain registration
+          title: X-Prepare-Only
+        description: When 'true', generate a commit token for multisig workflows instead of expecting immediate on-chain registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCvmRequest'
+      responses:
+        '202':
+          description: Update initiated, track via correlation_id
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid request or terms violation
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace or GPU rental managed
+        '404':
+          description: CVM not found
+        '409':
+          description: Another operation in progress
+        '465':
+          description: Compose hash registration required (Phase 1)
+        '466':
+          description: Compose hash invalid or expired
+        '467':
+          description: Transaction verification failed
+        '468':
+          description: Compose hash not allowed on-chain
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/stats:
+    get:
+      tags:
+      - CVMs
+      summary: Get CVM system stats
+      description: Returns live system metrics (CPU, memory, disk) from the running CVM.
+      operationId: handle_get_cvm_stats_api_v1_cvms__cvm_id__stats_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: System stats (may be partial if CVM offline)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CvmSystemInfo'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/attestation:
+    get:
+      tags:
+      - CVMs
+      summary: Get CVM attestation
+      description: Returns TEE attestation data including TCB info and app certificates.
+      operationId: handle_get_cvm_attestation_api_v1_cvms__cvm_id__attestation_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Attestation report (may have error if CVM offline)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CvmAttestation'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/network:
+    get:
+      tags:
+      - CVMs
+      summary: Get CVM network info
+      description: Returns network status including internal IP, handshake time, and public URLs.
+      operationId: handle_get_cvm_network_info_api_v1_cvms__cvm_id__network_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Network info (may have error if offline)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CvmNetwork'
+        '401':
+          description: Authentication required
+        '403':
+          description: Access denied
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/start:
+    post:
+      tags:
+      - CVMs
+      summary: Start CVM
+      description: Powers on a stopped CVM. GPU allocation happens during start.
+      operationId: handle_start_cvm_api_v1_cvms__cvm_id__start_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: CVM record with starting status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '400':
+          description: Insufficient balance
+        '409':
+          description: Another operation in progress
+        '500':
+          description: GPU allocation failed
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/shutdown:
+    post:
+      tags:
+      - CVMs
+      summary: Shutdown CVM
+      description: Gracefully shuts down CVM (SIGTERM then SIGKILL after timeout). Triggers billing.
+      operationId: handle_shutdown_cvm_api_v1_cvms__cvm_id__shutdown_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: CVM record with shutting_down status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM managed by on-demand GPU rental
+        '404':
+          description: CVM not found
+        '409':
+          description: Another operation in progress
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/stop:
+    post:
+      tags:
+      - CVMs
+      summary: Force stop CVM
+      description: Immediately stops CVM (like pulling power). Cancels any in-progress operation. Triggers billing.
+      operationId: handle_stop_cvm_api_v1_cvms__cvm_id__stop_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: CVM record with stopping status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM managed by on-demand GPU rental
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/restart:
+    post:
+      tags:
+      - CVMs
+      summary: Restart CVM
+      description: Stops and starts CVM. Use force=true to skip graceful shutdown.
+      operationId: handle_restart_cvm_api_v1_cvms__cvm_id__restart_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_handle_restart_cvm_api_v1_cvms__cvm_id__restart_post'
+      responses:
+        '200':
+          description: CVM record with restarting status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '400':
+          description: Insufficient balance
+        '409':
+          description: Another operation in progress
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/operation-status:
+    get:
+      tags:
+      - CVMs
+      summary: Get operation status
+      description: Returns current in-progress operation details including Celery task status.
+      operationId: get_operation_status_api_v1_cvms__cvm_id__operation_status_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Operation status (idle if none in progress)
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Authentication required
+        '403':
+          description: CVM not in workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/name:
+    patch:
+      tags:
+      - CVMs
+      summary: Handle Update Cvm Name
+      description: Update CVM name with RFC 1123 validation and availability check
+      operationId: handle_update_cvm_name_api_v1_cvms__cvm_id__name_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_handle_update_cvm_name_api_v1_cvms__cvm_id__name_patch'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/listed:
+    patch:
+      tags:
+      - CVMs
+      summary: Handle Update Cvm Listed
+      operationId: handle_update_cvm_listed_api_v1_cvms__cvm_id__listed_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_handle_update_cvm_listed_api_v1_cvms__cvm_id__listed_patch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/scheduled-delete:
+    patch:
+      tags:
+      - CVMs
+      summary: Handle Update Cvm Scheduled Delete
+      description: Update CVM scheduled delete time
+      operationId: handle_update_cvm_scheduled_delete_api_v1_cvms__cvm_id__scheduled_delete_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_handle_update_cvm_scheduled_delete_api_v1_cvms__cvm_id__scheduled_delete_patch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VM'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/batch-stop:
+    post:
+      tags:
+      - CVMs
+      summary: Batch stop CVMs
+      description: Force stop multiple CVMs at once. Non-admin users can only stop CVMs in their current workspace. Admin users can stop any CVM. Max 50 per request.
+      operationId: handle_batch_stop_cvms_api_v1_cvms_batch_stop_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchStopRequest'
+        required: true
+      responses:
+        '200':
+          description: Batch stop summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchStopResponse'
+        '401':
+          description: Authentication required
+        '400':
+          description: Invalid request (e.g. too many CVMs)
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/status/batch:
+    post:
+      tags:
+      - CVMs
+      summary: Handle Batch Cvm Status
+      description: 'Batch query CVM real-time status.
+
+
+        Groups by teepod and queries in parallel, returns status updates with
+
+        complete async operation information.'
+      operationId: handle_batch_cvm_status_api_v1_status_batch_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchStatusRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  $ref: '#/components/schemas/CvmStatus'
+                type: object
+                title: Response Handle Batch Cvm Status Api V1 Status Batch Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - OAuth2AuthorizationCodeBearer: []
+      - APIKeyHeader: []
+  /api/v1/cvms/{cvm_id}/state:
+    get:
+      tags:
+      - CVMs
+      summary: Handle Get Cvm State
+      description: 'Get CVM state. Supports two modes:
+
+
+        1. Immediate mode (no target): Returns current state immediately
+
+        2. SSE mode (with target): Streams state updates until status matches target or timeout
+
+
+        Example:
+
+        GET /cvms/{cvm_id}/state - Returns current state
+
+        GET /cvms/{cvm_id}/state?target=running - Streams until status becomes ''running''
+
+
+        SSE connection limit: 5 concurrent connections per user'
+      operationId: handle_get_cvm_state_api_v1_cvms__cvm_id__state_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: target
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Target status to wait for. If specified, returns SSE stream.
+          title: Target
+        description: Target status to wait for. If specified, returns SSE stream.
+      - name: interval
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 30
+          minimum: 5
+          description: Polling interval in seconds (5-30)
+          default: 5
+          title: Interval
+        description: Polling interval in seconds (5-30)
+      - name: timeout
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 600
+          minimum: 10
+          description: Maximum wait time in seconds (10-600)
+          default: 300
+          title: Timeout
+        description: Maximum wait time in seconds (10-600)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/network-config:
+    get:
+      tags:
+      - CVMs
+      summary: Get network configuration
+      description: Returns real-time KMS URLs, Gateway URLs, and port mappings from VMM.
+      operationId: handle_get_network_config_api_v1_cvms__cvm_id__network_config_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Network configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConfigResponse'
+        '404':
+          description: CVM not found
+        '500':
+          description: Failed to query VMM
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - CVMs
+      summary: Update KMS/Gateway URLs
+      description: Update KMS and/or Gateway URLs for this CVM. Requires VMM >= 0.5.7.
+      operationId: handle_update_network_config_api_v1_cvms__cvm_id__network_config_patch
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNetworkConfigRequest'
+      responses:
+        '200':
+          description: Updated network configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConfigResponse'
+        '400':
+          description: VMM too old or invalid request
+        '403':
+          description: Feature not enabled for this workspace
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/ports:
+    get:
+      tags:
+      - CVMs
+      summary: Get port mappings
+      description: Returns persisted port mappings for this CVM.
+      operationId: handle_get_port_mappings_api_v1_cvms__cvm_id__ports_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Port mappings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortMappingResponse'
+                title: Response Handle Get Port Mappings Api V1 Cvms  Cvm Id  Ports Get
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - CVMs
+      summary: Set port mappings
+      description: Bulk-replace all port mappings for this CVM. Writes to DB and applies to VMM.
+      operationId: handle_set_port_mappings_api_v1_cvms__cvm_id__ports_put
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePortMappingsRequest'
+      responses:
+        '200':
+          description: Updated port mappings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortMappingResponse'
+                title: Response Handle Set Port Mappings Api V1 Cvms  Cvm Id  Ports Put
+        '400':
+          description: Invalid request
+        '403':
+          description: Feature not enabled for this workspace
+        '409':
+          description: Port conflict during concurrent updates
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/firewall-status:
+    get:
+      tags:
+      - CVMs
+      summary: Get firewall availability for this CVM's node
+      description: Checks teescope capabilities.firewall on the node hosting this CVM.
+      operationId: handle_get_firewall_status_api_v1_cvms__cvm_id__firewall_status_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirewallStatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/commit-update:
+    get:
+      tags:
+      - CVMs
+      summary: Get commit token info (no auth required)
+      description: Read-only lookup of commit token metadata for the confirm-update page.
+      operationId: get_commit_update_info_api_v1_cvms__cvm_id__commit_update_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - CVMs
+      summary: Commit CVM update (token-based, no auth required)
+      description: Completes a two-phase CVM update using a one-time commit token. The token was generated during a prepare-only PATCH request. No workspace authentication is required — the commit token is the credential.
+      operationId: commit_cvm_update_api_v1_cvms__cvm_id__commit_update_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Commit token (alternative to body.token)
+          title: Token
+        description: Commit token (alternative to body.token)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitUpdateRequest'
+              default:
+                token: ''
+                compose_hash: ''
+                transaction_hash: ''
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/commit-replica:
+    post:
+      tags:
+      - CVMs
+      summary: Commit CVM replica (token-based, no auth required)
+      description: Completes a two-phase CVM replication using a one-time commit token. The token was generated during a prepare-only or hash-required replica request.
+      operationId: commit_cvm_replica_api_v1_cvms__cvm_id__commit_replica_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      - name: token
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Commit token (alternative to body.token)
+          title: Token
+        description: Commit token (alternative to body.token)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitUpdateRequest'
+              default:
+                token: ''
+                compose_hash: ''
+                transaction_hash: ''
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/customize-domain-diagnose:
+    post:
+      tags:
+      - CVMs
+      summary: Diagnose custom domain DNS
+      description: Verify DNS records for custom domain configuration. Checks CNAME pointing to CVM, TXT records for app verification, and CAA records.
+      operationId: diagnose_custom_domains_api_v1_cvms__cvm_id__customize_domain_diagnose_post
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiagnoseDomainsRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiagnosisResponse'
+        '400':
+          description: Invalid request or multiple CVMs with same name
+        '401':
+          description: Not authenticated
+        '403':
+          description: No access to this CVM
+        '404':
+          description: CVM not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/cvms/{cvm_id}/user_config:
+    get:
+      tags:
+      - CVMs
+      summary: Get CVM user config
+      description: Returns the user_config stored in Teepod for this CVM, including injected SSH keys.
+      operationId: get_cvm_user_config_api_v1_cvms__cvm_id__user_config_get
+      parameters:
+      - name: cvm_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Cvm Id
+      responses:
+        '200':
+          description: User config retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CvmUserConfig'
+        '400':
+          description: Invalid CVM identifier format, or multiple CVMs share the same name
+        '401':
+          description: Not authenticated
+        '404':
+          description: CVM not found or not accessible in this workspace
+        '502':
+          description: Teepod returned an error or invalid user_config JSON
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    FirewallStatusResponse:
+      properties:
+        available:
+          type: boolean
+          title: Available
+          description: Whether firewall/port-mapping is available
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+          description: Why it is unavailable
+      type: object
+      required:
+      - available
+      title: FirewallStatusResponse
+      description: Firewall availability for the node hosting a CVM.
+    CvmAttestation:
+      properties:
+        is_online:
+          type: boolean
+          title: Is Online
+        is_public:
+          type: boolean
+          title: Is Public
+          default: true
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        app_certificates:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Certificate'
+            type: array
+          - type: 'null'
+          title: App Certificates
+        tcb_info:
+          anyOf:
+          - $ref: '#/components/schemas/TcbInfo'
+          - type: 'null'
+        compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose File
+      type: object
+      required:
+      - is_online
+      title: CvmAttestation
+      description: Model representing CVM attestation information
+    HostedCvm:
+      properties:
+        hosted:
+          $ref: '#/components/schemas/VmInfo'
+        name:
+          type: string
+          title: Name
+        managed_user:
+          anyOf:
+          - $ref: '#/components/schemas/ManagedUser'
+          - type: 'null'
+        node:
+          anyOf:
+          - $ref: '#/components/schemas/CvmNode'
+          - type: 'null'
+        listed:
+          type: boolean
+          title: Listed
+          default: false
+        status:
+          type: string
+          title: Status
+        in_progress:
+          type: boolean
+          title: In Progress
+          default: false
+        dapp_dashboard_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dapp Dashboard Url
+        syslog_endpoint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Syslog Endpoint
+        allow_upgrade:
+          type: boolean
+          title: Allow Upgrade
+          default: false
+        project_id:
+          anyOf:
+          - type: string
+            pattern: ^prj_.+
+            format: hashid
+            title: HashedId[projects]
+            description: A hashed identifier that maps to an internal database ID
+            examples:
+            - prj_0123abcd
+          - type: 'null'
+          title: Project Id
+        project_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Type
+        billing_period:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Billing Period
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/KMSInfo'
+          - type: 'null'
+        contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contract Address
+        deployer_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployer Address
+        vcpu:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Vcpu
+        memory:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Memory
+        disk_size:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Disk Size
+        gateway_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway Domain
+        public_urls:
+          items:
+            $ref: '#/components/schemas/CvmNetworkUrls'
+          type: array
+          title: Public Urls
+      type: object
+      required:
+      - hosted
+      - name
+      - status
+      - public_urls
+      title: HostedCvm
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_handle_update_cvm_listed_api_v1_cvms__cvm_id__listed_patch:
+      properties:
+        listed:
+          type: boolean
+          title: Listed
+      type: object
+      required:
+      - listed
+      title: Body_handle_update_cvm_listed_api_v1_cvms__cvm_id__listed_patch
+    VmInfo:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        status:
+          type: string
+          title: Status
+        uptime:
+          type: string
+          title: Uptime
+        app_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Url
+        app_id:
+          type: string
+          title: App Id
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        configuration:
+          anyOf:
+          - $ref: '#/components/schemas/VmConfiguration'
+          - type: 'null'
+        exited_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Exited At
+        boot_progress:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Progress
+        boot_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Error
+        shutdown_progress:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shutdown Progress
+        image_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Image Version
+        events:
+          items:
+            $ref: '#/components/schemas/GuestEvent'
+          type: array
+          title: Events
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - uptime
+      - app_id
+      title: VmInfo
+      description: Mapping from Teepod RPC's VmInfo.
+    GuestEvent:
+      properties:
+        event:
+          type: string
+          title: Event
+        body:
+          type: string
+          title: Body
+        timestamp:
+          type: integer
+          title: Timestamp
+          default: 0
+      type: object
+      required:
+      - event
+      - body
+      title: GuestEvent
+      description: Structured lifecycle event emitted by the guest or runtime. Since VMM v0.5.7.
+    InstanceIdRefreshResult:
+      properties:
+        cvm_id:
+          type: integer
+          title: Cvm Id
+        identifier:
+          type: string
+          title: Identifier
+        status:
+          type: string
+          enum:
+          - updated
+          - unchanged
+          - skipped
+          - conflict
+          - error
+          title: Status
+        old_instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Old Instance Id
+        new_instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: New Instance Id
+        source:
+          type: string
+          enum:
+          - teepod_state
+          - teepod_info
+          - gateway
+          - none
+          title: Source
+          default: none
+        verified_with_gateway:
+          type: boolean
+          title: Verified With Gateway
+          default: false
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - cvm_id
+      - identifier
+      - status
+      title: InstanceIdRefreshResult
+    BatchInstanceIdRefreshRequest:
+      properties:
+        cvm_ids:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Cvm Ids
+          description: Optional CVM identifiers. Admin can pass cross-workspace IDs.
+        running_only:
+          type: boolean
+          title: Running Only
+          description: Only process CVMs with status=running
+          default: true
+        missing_only:
+          type: boolean
+          title: Missing Only
+          description: Only process CVMs with missing instance_id
+          default: true
+        overwrite:
+          type: boolean
+          title: Overwrite
+          description: Overwrite existing instance_id when different
+          default: false
+        limit:
+          type: integer
+          maximum: 500.0
+          minimum: 1.0
+          title: Limit
+          description: Max CVMs to process in one request
+          default: 100
+        dry_run:
+          type: boolean
+          title: Dry Run
+          description: Preview changes without persisting
+          default: false
+      type: object
+      title: BatchInstanceIdRefreshRequest
+    DomainCheckRequest:
+      properties:
+        domain:
+          type: string
+          title: Domain
+          description: Domain name to diagnose (e.g., app.example.com)
+        port:
+          type: integer
+          title: Port
+          description: Port number the domain routes to
+      type: object
+      required:
+      - domain
+      - port
+      title: DomainCheckRequest
+      description: Single domain check entry.
+    DnsRecordResult:
+      properties:
+        record_type:
+          type: string
+          title: Record Type
+          description: 'Record type: CNAME or TXT'
+        query_name:
+          type: string
+          title: Query Name
+          description: Domain name queried
+        expected_value:
+          type: string
+          title: Expected Value
+          description: Expected record value
+        actual_value:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Actual Value
+          description: Actual value found, null if missing
+        is_valid:
+          type: boolean
+          title: Is Valid
+          description: True if actual matches expected
+        is_deprecated:
+          type: boolean
+          title: Is Deprecated
+          description: True if this record format is deprecated
+          default: false
+        warning_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Warning Message
+          description: Deprecation or migration warning
+      type: object
+      required:
+      - record_type
+      - query_name
+      - expected_value
+      - is_valid
+      title: DnsRecordResult
+      description: DNS record check result.
+    WorkspaceRef:
+      properties:
+        object_type:
+          type: string
+          const: workspace
+          title: Object Type
+          description: Fixed value 'workspace'
+          default: workspace
+        id:
+          type: string
+          pattern: ^wks_.+
+          format: hashid
+          title: HashedId[teams]
+          description: Hashed workspace ID
+          examples:
+          - wks_0123abcd
+        name:
+          type: string
+          title: Name
+          description: Workspace display name
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+          description: URL-safe workspace identifier
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+          description: Workspace avatar URL from profile
+      type: object
+      required:
+      - id
+      - name
+      title: WorkspaceRef
+      description: Minimal workspace reference for embedding in responses.
+    CVMGatewayInfo:
+      properties:
+        base_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Domain
+        cname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cname
+      type: object
+      title: CVMGatewayInfo
+    CvmOperationResponse:
+      properties:
+        correlation_id:
+          type: string
+          title: Correlation Id
+          description: Unique ID linking all events in this operation
+        operation_type:
+          type: string
+          title: Operation Type
+          description: 'Type: compose_update, power_on, resize, etc.'
+        target_state:
+          type: string
+          title: Target State
+          description: Expected CVM state after completion
+        triggered_by:
+          type: integer
+          title: Triggered By
+          description: User ID who initiated the operation
+        triggered_by_username:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Triggered By Username
+          description: Username if available
+        triggered_by_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Triggered By Email
+          description: Email if available
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+          description: UTC timestamp of first event
+        completed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Completed At
+          description: UTC timestamp of last event
+        duration_ms:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Duration Ms
+          description: Total duration from start to completion
+        status:
+          type: string
+          title: Status
+          description: 'Current status: completed, in_progress, or failed'
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+          description: Failure reason (sanitized for non-admins)
+        sub_operations:
+          items:
+            type: string
+          type: array
+          title: Sub Operations
+          description: Ordered list of sub-operation types
+        events:
+          items:
+            $ref: '#/components/schemas/OperationEventDetail'
+          type: array
+          title: Events
+          description: Chronological event timeline
+        instance_name:
+          type: string
+          title: Instance Name
+          description: CVM name at operation time
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+          description: Hash identifying compose configuration
+      type: object
+      required:
+      - correlation_id
+      - operation_type
+      - target_state
+      - triggered_by
+      - started_at
+      - status
+      - sub_operations
+      - events
+      - instance_name
+      title: CvmOperationResponse
+      description: Aggregated operation record grouped by correlation_id.
+    CancelOperationRequest:
+      properties:
+        cancelled:
+          type: boolean
+          title: Cancelled
+          description: Whether an operation was actually cancelled
+        correlation_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Correlation Id
+          description: Correlation ID of the cancelled op
+      type: object
+      required:
+      - cancelled
+      title: CancelOperationRequest
+      description: Response for cancel operation.
+    DiagnoseDomainsRequest:
+      properties:
+        domains:
+          items:
+            $ref: '#/components/schemas/DomainCheckRequest'
+          type: array
+          title: Domains
+          description: List of domain and port pairs to check
+      type: object
+      required:
+      - domains
+      title: DiagnoseDomainsRequest
+      description: Request for diagnosing custom domain DNS configuration.
+    Body_handle_update_cvm_scheduled_delete_api_v1_cvms__cvm_id__scheduled_delete_patch:
+      properties:
+        scheduled_delete_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Scheduled Delete At
+      type: object
+      title: Body_handle_update_cvm_scheduled_delete_api_v1_cvms__cvm_id__scheduled_delete_patch
+    CVMLogUrls:
+      properties:
+        serial:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Serial
+        stdout:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stdout
+        stderr:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stderr
+        container_log_base:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Container Log Base
+      type: object
+      title: CVMLogUrls
+    teehouse__api__routes__cvms__patch_compose_file__AvailableOSImage:
+      properties:
+        version:
+          anyOf:
+          - prefixItems:
+            - type: integer
+            - type: integer
+            - type: integer
+            - type: integer
+            type: array
+            maxItems: 4
+            minItems: 4
+          - prefixItems:
+            - type: integer
+            - type: integer
+            - type: integer
+            type: array
+            maxItems: 3
+            minItems: 3
+          title: Version
+          description: Semantic version as tuple (major, minor, patch[, build])
+        prod:
+          anyOf:
+          - $ref: '#/components/schemas/OSImageVariant'
+          - type: 'null'
+          description: Production build (stable)
+        dev:
+          anyOf:
+          - $ref: '#/components/schemas/OSImageVariant'
+          - type: 'null'
+          description: Development build (testing)
+      type: object
+      required:
+      - version
+      title: AvailableOSImage
+      description: OS image version with production and development variants.
+    InstanceIdRefreshRequest:
+      properties:
+        overwrite:
+          type: boolean
+          title: Overwrite
+          description: Overwrite existing instance_id when different
+          default: false
+        dry_run:
+          type: boolean
+          title: Dry Run
+          description: Preview changes without persisting
+          default: false
+      type: object
+      title: InstanceIdRefreshRequest
+    Body_trigger_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_patch:
+      properties:
+        compose_hash:
+          type: string
+          title: Compose Hash
+          description: Hash from provision response
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+          description: New encrypted env blob (hex)
+        env_keys:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Env Keys
+          description: Allowed env var names
+        update_env_vars:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Update Env Vars
+          description: Update allowed_envs list
+          default: false
+      type: object
+      required:
+      - compose_hash
+      title: Body_trigger_cvm_compose_file_update_api_v1_cvms__cvm_id__compose_file_patch
+    GpuSpec:
+      properties:
+        slot:
+          type: string
+          title: Slot
+        product_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Product Id
+      type: object
+      required:
+      - slot
+      title: GpuSpec
+    PortMappingResponse:
+      properties:
+        id:
+          type: string
+          pattern: ^pm_.+
+          format: hashid
+          title: HashedId[cvm_port_mappings]
+          description: A hashed identifier that maps to an internal database ID
+          examples:
+          - pm_0123abcd
+        host_port:
+          type: integer
+          title: Host Port
+        vm_port:
+          type: integer
+          title: Vm Port
+        protocol:
+          type: string
+          title: Protocol
+        host_address:
+          type: string
+          title: Host Address
+      type: object
+      required:
+      - id
+      - host_port
+      - vm_port
+      - protocol
+      - host_address
+      title: PortMappingResponse
+      description: Port mapping with server-assigned ID.
+    CvmStatus:
+      properties:
+        vm_uuid:
+          type: string
+          title: Vm Uuid
+        status:
+          type: string
+          title: Status
+        uptime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Uptime
+        in_progress:
+          type: boolean
+          title: In Progress
+          default: false
+        boot_progress:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Progress
+        boot_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Error
+        shutdown_progress:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shutdown Progress
+        events:
+          items:
+            $ref: '#/components/schemas/GuestEvent'
+          type: array
+          title: Events
+        operation_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operation Type
+        operation_started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Operation Started At
+        correlation_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Correlation Id
+      type: object
+      required:
+      - vm_uuid
+      - status
+      title: CvmStatus
+      description: 'CVM status information for API response.
+
+
+        This schema is used for both internal status determination and API responses.
+
+        Contains current state, progress information, and async operation tracking.'
+    PortMappingEntry:
+      properties:
+        vm_port:
+          type: integer
+          maximum: 65535.0
+          minimum: 1.0
+          title: Vm Port
+        protocol:
+          type: string
+          pattern: ^(tcp|udp)$
+          title: Protocol
+          default: tcp
+      type: object
+      required:
+      - vm_port
+      title: PortMappingEntry
+      description: Single requested port mapping rule.
+    Body_update_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_patch:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: File
+          description: Docker Compose YAML file to upload
+      type: object
+      title: Body_update_cvm_docker_compose_api_v1_cvms__cvm_id__docker_compose_patch
+    Body_update_cvm_envs_api_v1_cvms__cvm_id__envs_patch:
+      properties:
+        encrypted_env:
+          type: string
+          title: Encrypted Env
+          description: Encrypted env blob as hex string
+        env_keys:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Env Keys
+          description: Allowed env var names. Changes trigger verification for contract-owned KMS.
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+          description: Hash from Phase 1 response (Phase 2 only)
+        transaction_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Transaction Hash
+          description: Transaction hash proving on-chain registration (Phase 2 only)
+      type: object
+      required:
+      - encrypted_env
+      title: Body_update_cvm_envs_api_v1_cvms__cvm_id__envs_patch
+    TeepodMeta:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: TeepodMeta
+    CaaCheckResult:
+      properties:
+        caa_records:
+          items:
+            type: string
+          type: array
+          title: Caa Records
+          description: Raw CAA DNS records found
+        accounturi:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accounturi
+          description: Account URI extracted from CAA record
+        acme_fetches:
+          items:
+            $ref: '#/components/schemas/AcmeFetchResult'
+          type: array
+          title: Acme Fetches
+          description: ACME endpoint query attempts
+        expected_uri:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Expected Uri
+          description: Expected URI from ACME account
+        is_match:
+          type: boolean
+          title: Is Match
+          description: True if CAA accounturi matches ACME account
+        info_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Info Message
+          description: Additional context or guidance
+      type: object
+      required:
+      - caa_records
+      - acme_fetches
+      - is_match
+      title: CaaCheckResult
+      description: CAA record check result (informational, not required for validation).
+    UpdateNetworkConfigRequest:
+      properties:
+        kms_urls:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Kms Urls
+        gateway_urls:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Gateway Urls
+        restart:
+          type: boolean
+          title: Restart
+          description: Restart the CVM after applying changes to reload configuration.
+          default: false
+      type: object
+      title: UpdateNetworkConfigRequest
+      description: Partial update for KMS/Gateway URLs. Only set fields are applied.
+    AppComposeV2:
+      properties:
+        allowed_envs:
+          items:
+            type: string
+          type: array
+          title: Allowed Envs
+        bash_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bash Script
+        default_gateway_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Default Gateway Domain
+        docker_compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose File
+        init_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Init Script
+        kms_enabled:
+          type: boolean
+          title: Kms Enabled
+          default: true
+        local_key_provider_enabled:
+          type: boolean
+          title: Local Key Provider Enabled
+          default: false
+        manifest_version:
+          type: integer
+          title: Manifest Version
+          default: 2
+        name:
+          type: string
+          title: Name
+        no_instance_id:
+          type: boolean
+          title: No Instance Id
+          default: false
+        pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script
+        public_logs:
+          type: boolean
+          title: Public Logs
+          default: true
+        public_sysinfo:
+          type: boolean
+          title: Public Sysinfo
+          default: true
+        public_tcbinfo:
+          type: boolean
+          title: Public Tcbinfo
+          default: true
+        runner:
+          type: string
+          title: Runner
+          default: docker-compose
+        gateway_enabled:
+          type: boolean
+          title: Gateway Enabled
+          default: true
+        features:
+          items:
+            type: string
+          type: array
+          title: Features
+          default:
+          - kms
+          - tproxy-net
+        salt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Salt
+        secure_time:
+          type: boolean
+          title: Secure Time
+          default: false
+        storage_fs:
+          anyOf:
+          - type: string
+            const: ext4
+          - type: string
+            const: zfs
+          - type: 'null'
+          title: Storage Fs
+          default: zfs
+        tproxy_enabled:
+          type: boolean
+          title: Tproxy Enabled
+          default: true
+      type: object
+      required:
+      - name
+      title: AppComposeV2
+    NetworkConfigResponse:
+      properties:
+        kms_urls:
+          items:
+            type: string
+          type: array
+          title: Kms Urls
+        gateway_urls:
+          items:
+            type: string
+          type: array
+          title: Gateway Urls
+        ports:
+          items:
+            $ref: '#/components/schemas/NetworkConfigPortMappingEntry'
+          type: array
+          title: Ports
+      type: object
+      title: NetworkConfigResponse
+      description: Real-time network configuration from VMM.
+    teehouse__api__routes__cvms__management__CvmBasicInfo:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Internal CVM database ID
+        teepod_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Teepod Id
+          description: Node ID (admin only)
+        teepod:
+          anyOf:
+          - $ref: '#/components/schemas/CvmNode'
+          - type: 'null'
+          description: Node metadata
+        name:
+          type: string
+          title: Name
+          description: RFC 1123 compliant CVM name
+        status:
+          type: string
+          title: Status
+          description: 'Current status: running, stopped, starting, etc.'
+        in_progress:
+          type: boolean
+          title: In Progress
+          description: True if an operation is currently executing
+          default: false
+        app_id:
+          type: string
+          title: App Id
+          description: Unique application identifier
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+          description: VM instance UUID on the node
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+          description: Public instance identifier
+        vcpu:
+          type: integer
+          title: Vcpu
+          description: Allocated vCPU count
+        memory:
+          type: integer
+          title: Memory
+          description: Allocated memory in MB
+        disk_size:
+          type: integer
+          title: Disk Size
+          description: Allocated disk size in GB
+        base_image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Image
+          description: OS image name
+        encrypted_env_pubkey:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env Pubkey
+          description: Public key for encrypting env vars
+        listed:
+          type: boolean
+          title: Listed
+          description: True if publicly listed
+          default: false
+        project_id:
+          anyOf:
+          - type: string
+            format: hashid
+            description: A hashed identifier that maps to an internal database ID
+            examples:
+            - 0123abcd
+          - type: 'null'
+          title: Project Id
+          description: Associated project ID
+        project_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Type
+          description: Project provision type
+        instance_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Type
+          description: Instance type identifier
+        public_sysinfo:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Public Sysinfo
+          description: Expose system info publicly
+        public_logs:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Public Logs
+          description: Expose logs publicly
+        dapp_dashboard_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dapp Dashboard Url
+          description: DApp dashboard URL if applicable
+        syslog_endpoint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Syslog Endpoint
+          description: Syslog streaming endpoint
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/KMSInfo'
+          - type: 'null'
+          description: KMS configuration
+        contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contract Address
+          description: On-chain contract address
+        deployer_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployer Address
+          description: Deployer wallet address
+        scheduled_delete_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Scheduled Delete At
+          description: Auto-delete timestamp (UTC)
+        public_urls:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CvmNetworkUrls'
+            type: array
+          - type: 'null'
+          title: Public Urls
+          description: Exposed service URLs
+        gateway_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway Domain
+          description: Gateway base domain
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - app_id
+      - vcpu
+      - memory
+      - disk_size
+      title: CvmBasicInfo
+      description: Detailed CVM information returned by GET /cvms/{cvm_id}.
+    AcmeFetchResult:
+      properties:
+        url:
+          type: string
+          title: Url
+          description: ACME endpoint URL queried
+        http_ok:
+          type: boolean
+          title: Http Ok
+          description: True if HTTP 200 response received
+        uri:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Uri
+          description: Account URI from response body
+        status_code:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Status Code
+          description: HTTP status code returned
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+          description: Error message if request failed
+      type: object
+      required:
+      - url
+      - http_ok
+      title: AcmeFetchResult
+      description: Result of an ACME account fetch attempt.
+    ProvisionElizaRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the tapp.
+        characterfile:
+          type: string
+          title: Characterfile
+          description: The characterfile to use for the a16z/eliza.
+        env_keys:
+          items:
+            type: string
+          type: array
+          title: Env Keys
+          description: The environment variables to use for the a16z/eliza.
+        teepod_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Teepod Id
+          description: The Teepod ID to use for the a16z/eliza. If not provided, it will auto select an available one.
+        image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Image
+          description: The image to use for the a16z/eliza. If not provided, it will use the latest image.
+        kms_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Id
+          description: The KMS ID to use.
+      type: object
+      required:
+      - name
+      - characterfile
+      - env_keys
+      title: ProvisionElizaRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CvmSystemInfo:
+      properties:
+        is_online:
+          type: boolean
+          title: Is Online
+        is_public:
+          type: boolean
+          title: Is Public
+          default: true
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        sysinfo:
+          anyOf:
+          - $ref: '#/components/schemas/SystemInfo'
+          - type: 'null'
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+        in_progress:
+          type: boolean
+          title: In Progress
+          default: false
+        boot_progress:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Progress
+        boot_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Boot Error
+      type: object
+      required:
+      - is_online
+      title: CvmSystemInfo
+    CvmUserConfig:
+      properties:
+        hostname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hostname
+          description: CVM hostname
+        ssh_authorized_keys:
+          items:
+            type: string
+          type: array
+          title: Ssh Authorized Keys
+          description: SSH public keys injected at launch
+        default_gateway_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Default Gateway Domain
+          description: Default gateway domain
+      type: object
+      title: CvmUserConfig
+    CreateTappRequest:
+      properties:
+        app_id:
+          type: string
+          title: App Id
+          description: The calculated app ID from compose file.
+        compose_hash:
+          type: string
+          title: Compose Hash
+          description: The compose hash of the app compose file.
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+          description: The encrypted environment variables.
+        kms_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Id
+          description: The KMS ID.
+        contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contract Address
+          description: The contract address.
+        deployer_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployer Address
+          description: The deployer address.
+        env_keys:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Env Keys
+          description: The environment variables to use for the app.
+      type: object
+      required:
+      - app_id
+      - compose_hash
+      title: CreateTappRequest
+    TcbInfo:
+      properties:
+        mrtd:
+          type: string
+          title: Mrtd
+        rootfs_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rootfs Hash
+        rtmr0:
+          type: string
+          title: Rtmr0
+        rtmr1:
+          type: string
+          title: Rtmr1
+        rtmr2:
+          type: string
+          title: Rtmr2
+        rtmr3:
+          type: string
+          title: Rtmr3
+        event_log:
+          items:
+            $ref: '#/components/schemas/EventLog'
+          type: array
+          title: Event Log
+        app_compose:
+          type: string
+          title: App Compose
+      type: object
+      required:
+      - mrtd
+      - rtmr0
+      - rtmr1
+      - rtmr2
+      - rtmr3
+      - event_log
+      - app_compose
+      title: TcbInfo
+    BatchStopErrorEntry:
+      properties:
+        cvm_id:
+          type: string
+          title: Cvm Id
+          description: Hashed CVM ID
+        error:
+          type: string
+          title: Error
+          description: Error message
+      type: object
+      required:
+      - cvm_id
+      - error
+      title: BatchStopErrorEntry
+      description: Error detail for a single CVM in batch stop.
+    OSImageVariant:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Human-readable image name (e.g. dstack-0.5.5)
+        slug:
+          type: string
+          title: Slug
+          description: Unique identifier for API calls (e.g. dstack-0.5.5-e18f5407)
+        os_image_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Os Image Hash
+          description: SHA256 hash of the OS image
+        is_current:
+          type: boolean
+          title: Is Current
+          description: True if this is the currently running image
+          default: false
+      type: object
+      required:
+      - name
+      - slug
+      title: OSImageVariant
+      description: Single OS image variant (production or development build).
+    KMSInfo:
+      properties:
+        id:
+          type: string
+          pattern: ^kms_.+
+          format: hashid
+          title: HashedId[kms]
+          description: Hashed KMS identifier (kms_xxxxx)
+          examples:
+          - kms_0123abcd
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+          description: Human-readable KMS name
+        url:
+          type: string
+          title: Url
+          description: KMS endpoint URL
+        version:
+          type: string
+          title: Version
+          description: KMS software version
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+          description: Blockchain chain ID if onchain
+        kms_contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Contract Address
+          description: Smart contract address if onchain
+        gateway_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway App Id
+          description: Gateway application ID
+      type: object
+      required:
+      - id
+      - url
+      - version
+      title: KMSInfo
+      description: KMS instance information.
+    VM:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        status:
+          type: string
+          title: Status
+        teepod_id:
+          type: integer
+          title: Teepod Id
+        teepod:
+          anyOf:
+          - $ref: '#/components/schemas/TeepodMeta'
+          - type: 'null'
+        user_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: User Id
+        app_id:
+          type: string
+          title: App Id
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        app_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Url
+        base_image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Base Image
+        vcpu:
+          type: integer
+          title: Vcpu
+        memory:
+          type: integer
+          title: Memory
+        disk_size:
+          type: integer
+          title: Disk Size
+        manifest_version:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Manifest Version
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+        runner:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Runner
+        docker_compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose File
+        features:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Features
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        encrypted_env_pubkey:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env Pubkey
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - teepod_id
+      - app_id
+      - vcpu
+      - memory
+      - disk_size
+      - created_at
+      title: VM
+    teehouse__api__routes__cvms__v20260121__schemas__CVMInfo:
+      properties:
+        id:
+          type: string
+          pattern: ^cvm_.+
+          format: hashid
+          title: HashedId[cvms]
+          description: A hashed identifier that maps to an internal database ID
+          examples:
+          - cvm_0123abcd
+        name:
+          type: string
+          title: Name
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        resource:
+          $ref: '#/components/schemas/CVMResourceInfo'
+        node_info:
+          anyOf:
+          - $ref: '#/components/schemas/NodeRef'
+          - type: 'null'
+        os:
+          anyOf:
+          - $ref: '#/components/schemas/CVMOSInfo'
+          - type: 'null'
+        kms_type:
+          anyOf:
+          - $ref: '#/components/schemas/KmsType'
+          - type: 'null'
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/CVMKmsInfo'
+          - type: 'null'
+        status:
+          type: string
+          title: Status
+        in_progress:
+          type: boolean
+          title: In Progress
+          default: false
+        progress:
+          anyOf:
+          - $ref: '#/components/schemas/CVMProgressInfo'
+          - type: 'null'
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+        docker_compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose Hash
+        pre_launch_script_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script Hash
+        gateway:
+          $ref: '#/components/schemas/CVMGatewayInfo'
+        logs:
+          $ref: '#/components/schemas/CVMLogUrls'
+        services:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Services
+        endpoints:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CvmNetworkUrls'
+            type: array
+          - type: 'null'
+          title: Endpoints
+        public_logs:
+          type: boolean
+          title: Public Logs
+          default: false
+        public_sysinfo:
+          type: boolean
+          title: Public Sysinfo
+          default: false
+        public_tcbinfo:
+          type: boolean
+          title: Public Tcbinfo
+          default: true
+        gateway_enabled:
+          type: boolean
+          title: Gateway Enabled
+          default: false
+        secure_time:
+          type: boolean
+          title: Secure Time
+          default: false
+        storage_fs:
+          type: string
+          title: Storage Fs
+          default: zfs
+        workspace:
+          anyOf:
+          - $ref: '#/components/schemas/WorkspaceRef'
+          - type: 'null'
+        creator:
+          anyOf:
+          - $ref: '#/components/schemas/UserRef'
+          - type: 'null'
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        deleted_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Deleted At
+        listed:
+          type: boolean
+          title: Listed
+          default: false
+        project_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Type
+      type: object
+      required:
+      - id
+      - name
+      - resource
+      - status
+      - gateway
+      title: CVMInfo
+    PaginatedCvmOperationsResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/CvmOperationResponse'
+          type: array
+          title: Items
+          description: Operations ordered by started_at DESC
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+          description: Opaque cursor for next page, null if last page
+        total:
+          type: integer
+          title: Total
+          description: Approximate total count (not exact for performance)
+      type: object
+      required:
+      - items
+      - total
+      title: PaginatedCvmOperationsResponse
+      description: Cursor-paginated list of CVM operations.
+    ComposeFileProvisionResponse:
+      properties:
+        app_id:
+          type: string
+          title: App Id
+        device_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Id
+        compose_hash:
+          type: string
+          title: Compose Hash
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/KMSInfo'
+          - type: 'null'
+        compose_hash_registered:
+          type: boolean
+          title: Compose Hash Registered
+          default: false
+      type: object
+      required:
+      - app_id
+      - compose_hash
+      title: ComposeFileProvisionResponse
+      description: API response model for compose file provision
+    CVMInfoDetail:
+      properties:
+        id:
+          type: string
+          pattern: ^cvm_.+
+          format: hashid
+          title: HashedId[cvms]
+          description: A hashed identifier that maps to an internal database ID
+          examples:
+          - cvm_0123abcd
+        name:
+          type: string
+          title: Name
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+        vm_uuid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vm Uuid
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        resource:
+          $ref: '#/components/schemas/CVMResourceInfo'
+        node_info:
+          anyOf:
+          - $ref: '#/components/schemas/NodeRef'
+          - type: 'null'
+        os:
+          anyOf:
+          - $ref: '#/components/schemas/CVMOSInfo'
+          - type: 'null'
+        kms_type:
+          anyOf:
+          - $ref: '#/components/schemas/KmsType'
+          - type: 'null'
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/CVMKmsInfo'
+          - type: 'null'
+        status:
+          type: string
+          title: Status
+        in_progress:
+          type: boolean
+          title: In Progress
+          default: false
+        progress:
+          anyOf:
+          - $ref: '#/components/schemas/CVMProgressInfo'
+          - type: 'null'
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+        docker_compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose Hash
+        pre_launch_script_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script Hash
+        gateway:
+          $ref: '#/components/schemas/CVMGatewayInfo'
+        logs:
+          $ref: '#/components/schemas/CVMLogUrls'
+        services:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Services
+        endpoints:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CvmNetworkUrls'
+            type: array
+          - type: 'null'
+          title: Endpoints
+        public_logs:
+          type: boolean
+          title: Public Logs
+          default: false
+        public_sysinfo:
+          type: boolean
+          title: Public Sysinfo
+          default: false
+        public_tcbinfo:
+          type: boolean
+          title: Public Tcbinfo
+          default: true
+        gateway_enabled:
+          type: boolean
+          title: Gateway Enabled
+          default: false
+        secure_time:
+          type: boolean
+          title: Secure Time
+          default: false
+        storage_fs:
+          type: string
+          title: Storage Fs
+          default: zfs
+        workspace:
+          anyOf:
+          - $ref: '#/components/schemas/WorkspaceRef'
+          - type: 'null'
+        creator:
+          anyOf:
+          - $ref: '#/components/schemas/UserRef'
+          - type: 'null'
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        deleted_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Deleted At
+        listed:
+          type: boolean
+          title: Listed
+          default: false
+        project_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Type
+        compose_file:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: string
+          - type: 'null'
+          title: Compose File
+      type: object
+      required:
+      - id
+      - name
+      - resource
+      - status
+      - gateway
+      title: CVMInfoDetail
+    CertificateSubject:
+      properties:
+        common_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Common Name
+          description: Certificate subject common name
+        organization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization
+          description: Organization name
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+          description: Country code
+        state:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: State
+          description: State or province
+        locality:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Locality
+          description: Locality name
+      type: object
+      title: CertificateSubject
+    SystemInfo:
+      properties:
+        os_name:
+          type: string
+          title: Os Name
+        os_version:
+          type: string
+          title: Os Version
+        kernel_version:
+          type: string
+          title: Kernel Version
+        cpu_model:
+          type: string
+          title: Cpu Model
+        num_cpus:
+          type: integer
+          title: Num Cpus
+        total_memory:
+          type: integer
+          title: Total Memory
+        available_memory:
+          type: integer
+          title: Available Memory
+        used_memory:
+          type: integer
+          title: Used Memory
+        free_memory:
+          type: integer
+          title: Free Memory
+        total_swap:
+          type: integer
+          title: Total Swap
+        used_swap:
+          type: integer
+          title: Used Swap
+        free_swap:
+          type: integer
+          title: Free Swap
+        uptime:
+          type: integer
+          title: Uptime
+        loadavg_one:
+          type: integer
+          title: Loadavg One
+        loadavg_five:
+          type: integer
+          title: Loadavg Five
+        loadavg_fifteen:
+          type: integer
+          title: Loadavg Fifteen
+        disks:
+          items:
+            $ref: '#/components/schemas/DiskInfo'
+          type: array
+          title: Disks
+      type: object
+      required:
+      - os_name
+      - os_version
+      - kernel_version
+      - cpu_model
+      - num_cpus
+      - total_memory
+      - available_memory
+      - used_memory
+      - free_memory
+      - total_swap
+      - used_swap
+      - free_swap
+      - uptime
+      - loadavg_one
+      - loadavg_five
+      - loadavg_fifteen
+      - disks
+      title: SystemInfo
+    CvmNode:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        region_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region Identifier
+      type: object
+      required:
+      - id
+      - name
+      title: CvmNode
+    EventLog:
+      properties:
+        imr:
+          type: integer
+          title: Imr
+        event_type:
+          type: integer
+          title: Event Type
+        digest:
+          type: string
+          title: Digest
+        event:
+          type: string
+          title: Event
+        event_payload:
+          type: string
+          title: Event Payload
+      type: object
+      required:
+      - imr
+      - event_type
+      - digest
+      - event
+      - event_payload
+      title: EventLog
+    BillingPeriod:
+      type: string
+      enum:
+      - skip
+      - hourly
+      - monthly
+      title: BillingPeriod
+    CvmNetwork:
+      properties:
+        is_online:
+          type: boolean
+          title: Is Online
+        is_public:
+          type: boolean
+          title: Is Public
+          default: true
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        internal_ip:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Internal Ip
+        latest_handshake:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Latest Handshake
+        public_urls:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/CvmNetworkUrls'
+            type: array
+          - type: 'null'
+          title: Public Urls
+      type: object
+      required:
+      - is_online
+      title: CvmNetwork
+      description: Model representing CVM network information
+    CvmNetworkUrls:
+      properties:
+        app:
+          type: string
+          title: App
+        instance:
+          type: string
+          title: Instance
+      type: object
+      required:
+      - app
+      - instance
+      title: CvmNetworkUrls
+      description: Model representing public URLs for a CVM port
+    Body_update_cvm_os_image_api_v1_cvms__cvm_id__os_image_patch:
+      properties:
+        os_image_name:
+          type: string
+          title: Os Image Name
+          description: Image name or slug from available-os-images
+      type: object
+      required:
+      - os_image_name
+      title: Body_update_cvm_os_image_api_v1_cvms__cvm_id__os_image_patch
+    KmsType:
+      type: string
+      enum:
+      - phala
+      - ethereum
+      - base
+      - legacy
+      title: KmsType
+    CommitUpdateRequest:
+      properties:
+        token:
+          type: string
+          title: Token
+          description: Commit token (can also be passed as ?token= query param)
+          default: ''
+        compose_hash:
+          type: string
+          title: Compose Hash
+          description: Compose hash from Phase 1. If omitted, auto-read from commit token.
+          default: ''
+        transaction_hash:
+          type: string
+          title: Transaction Hash
+          description: Transaction hash proving on-chain registration. Leave empty or use 'already-registered' if the hash was already registered on-chain.
+          default: ''
+      type: object
+      title: CommitUpdateRequest
+    BatchInstanceIdRefreshResponse:
+      properties:
+        total:
+          type: integer
+          title: Total
+        scanned:
+          type: integer
+          title: Scanned
+        updated:
+          type: integer
+          title: Updated
+        unchanged:
+          type: integer
+          title: Unchanged
+        skipped:
+          type: integer
+          title: Skipped
+        conflicts:
+          type: integer
+          title: Conflicts
+        errors:
+          type: integer
+          title: Errors
+        items:
+          items:
+            $ref: '#/components/schemas/InstanceIdRefreshResult'
+          type: array
+          title: Items
+      type: object
+      required:
+      - total
+      - scanned
+      - updated
+      - unchanged
+      - skipped
+      - conflicts
+      - errors
+      - items
+      title: BatchInstanceIdRefreshResponse
+    VmConfiguration:
+      properties:
+        name:
+          type: string
+          title: Name
+        image:
+          type: string
+          title: Image
+        compose_file:
+          anyOf:
+          - $ref: '#/components/schemas/AppComposeV2'
+          - type: 'null'
+        vcpu:
+          type: integer
+          title: Vcpu
+        memory:
+          type: integer
+          title: Memory
+        disk_size:
+          type: integer
+          title: Disk Size
+        ports:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PortMapping'
+            type: array
+          - type: 'null'
+          title: Ports
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+        user_config:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Config
+        hugepages:
+          type: boolean
+          title: Hugepages
+          default: false
+        pin_numa:
+          type: boolean
+          title: Pin Numa
+          default: false
+        gpus:
+          anyOf:
+          - $ref: '#/components/schemas/GpuConfig'
+          - type: 'null'
+          default:
+            gpus: []
+            attach_mode: listed
+        kms_urls:
+          items:
+            type: string
+          type: array
+          title: Kms Urls
+          default: []
+        gateway_urls:
+          items:
+            type: string
+          type: array
+          title: Gateway Urls
+          default: []
+      type: object
+      required:
+      - name
+      - image
+      - vcpu
+      - memory
+      - disk_size
+      title: VmConfiguration
+      description: Mapping from Teepod RPC's VmConfiguration.
+    TeepodStatus:
+      type: string
+      enum:
+      - ONLINE
+      - OFFLINE
+      - MAINTENANCE
+      title: TeepodStatus
+    NodeRef:
+      properties:
+        object_type:
+          type: string
+          const: node
+          title: Object Type
+          description: Fixed value 'node'
+          default: node
+        id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Id
+          description: Teepod numeric ID
+        node_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Node Id
+          description: Physical node numeric ID
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: Node display name
+        region:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region
+          description: Region identifier
+        device_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Id
+          description: Device ID
+        ppid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ppid
+          description: PPID
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/TeepodStatus'
+          - type: 'null'
+          description: Node status
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: Teepod version
+      type: object
+      title: NodeRef
+      description: Minimal node/teepod reference for embedding in responses.
+    ManagedUser:
+      properties:
+        id:
+          type: integer
+          title: Id
+        username:
+          type: string
+          title: Username
+      type: object
+      required:
+      - id
+      - username
+      title: ManagedUser
+    NetworkConfigPortMappingEntry:
+      properties:
+        host_port:
+          type: integer
+          maximum: 65535.0
+          minimum: 1.0
+          title: Host Port
+        vm_port:
+          type: integer
+          maximum: 65535.0
+          minimum: 1.0
+          title: Vm Port
+        protocol:
+          type: string
+          pattern: ^(tcp|udp)$
+          title: Protocol
+          default: tcp
+        host_address:
+          type: string
+          title: Host Address
+          default: ''
+      type: object
+      required:
+      - host_port
+      - vm_port
+      title: NetworkConfigPortMappingEntry
+      description: Single port mapping rule returned from VMM network config.
+    Body_handle_restart_cvm_api_v1_cvms__cvm_id__restart_post:
+      properties:
+        force:
+          type: boolean
+          title: Force
+          description: Skip graceful shutdown
+          default: false
+      type: object
+      title: Body_handle_restart_cvm_api_v1_cvms__cvm_id__restart_post
+    ProvisionComposeFileUpdateRequest:
+      properties:
+        allowed_envs:
+          items:
+            type: string
+          type: array
+          title: Allowed Envs
+        bash_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bash Script
+        default_gateway_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Default Gateway Domain
+        docker_compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose File
+        init_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Init Script
+        kms_enabled:
+          type: boolean
+          title: Kms Enabled
+          default: true
+        local_key_provider_enabled:
+          type: boolean
+          title: Local Key Provider Enabled
+          default: false
+        manifest_version:
+          type: integer
+          title: Manifest Version
+          default: 2
+        name:
+          type: string
+          title: Name
+        no_instance_id:
+          type: boolean
+          title: No Instance Id
+          default: false
+        pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script
+        public_logs:
+          type: boolean
+          title: Public Logs
+          default: true
+        public_sysinfo:
+          type: boolean
+          title: Public Sysinfo
+          default: true
+        public_tcbinfo:
+          type: boolean
+          title: Public Tcbinfo
+          default: true
+        runner:
+          type: string
+          title: Runner
+          default: docker-compose
+        gateway_enabled:
+          type: boolean
+          title: Gateway Enabled
+          default: true
+        features:
+          items:
+            type: string
+          type: array
+          title: Features
+          default:
+          - kms
+          - tproxy-net
+        salt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Salt
+        secure_time:
+          type: boolean
+          title: Secure Time
+          default: false
+        storage_fs:
+          anyOf:
+          - type: string
+            const: ext4
+          - type: string
+            const: zfs
+          - type: 'null'
+          title: Storage Fs
+          default: zfs
+        tproxy_enabled:
+          type: boolean
+          title: Tproxy Enabled
+          default: true
+        update_env_vars:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Update Env Vars
+          description: Whether to also update allowed_envs
+          default: false
+      type: object
+      required:
+      - name
+      title: ProvisionComposeFileUpdateRequest
+      description: Request model for provisioning compose file updates.
+    Body_handle_update_cvm_name_api_v1_cvms__cvm_id__name_patch:
+      properties:
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - name
+      title: Body_handle_update_cvm_name_api_v1_cvms__cvm_id__name_patch
+    OperationEventDetail:
+      properties:
+        event_type:
+          type: string
+          title: Event Type
+          description: Event type identifier (e.g. instance.power_on.start)
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: UTC timestamp when event occurred
+        state:
+          type: string
+          title: State
+          description: CVM state at event time (e.g. running, stopped)
+      type: object
+      required:
+      - event_type
+      - timestamp
+      - state
+      title: OperationEventDetail
+      description: Single atomic event within an operation.
+    DomainDiagnosisResult:
+      properties:
+        domain:
+          type: string
+          title: Domain
+          description: Domain name checked
+        port:
+          type: integer
+          title: Port
+          description: Port number checked
+        records:
+          items:
+            $ref: '#/components/schemas/DnsRecordResult'
+          type: array
+          title: Records
+          description: DNS record check results
+        is_valid:
+          type: boolean
+          title: Is Valid
+          description: True if all required records (CNAME, TXT) are correct
+        caa_check:
+          anyOf:
+          - $ref: '#/components/schemas/CaaCheckResult'
+          - type: 'null'
+          description: CAA record check (informational only)
+      type: object
+      required:
+      - domain
+      - port
+      - records
+      - is_valid
+      title: DomainDiagnosisResult
+      description: Diagnosis result for a single domain.
+    ProvisionDstackAppRequestV2:
+      properties:
+        compose_file:
+          $ref: '#/components/schemas/AppComposeV2'
+        name:
+          type: string
+          title: Name
+          description: 'CVM name (used as hostname): 5-63 chars, must start with letter, can contain letters/numbers/hyphens'
+        instance_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Type
+        vcpu:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Vcpu
+        memory:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Memory
+        disk_size:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Disk Size
+        image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Image
+        prefer_dev:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Prefer Dev
+          description: Prefer dev OS image (True) or non-dev OS image (False). When None, auto-selects based on image name or defaults to dev.
+        teepod_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Teepod Id
+        region:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Region
+        listed:
+          type: boolean
+          title: Listed
+          default: true
+        kms_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Id
+        kms:
+          anyOf:
+          - $ref: '#/components/schemas/KmsType'
+          - type: 'null'
+          default: phala
+        nonce:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Nonce
+          description: 'Optional nonce for deterministic app_id generation. When provided, app_id must also be provided. System will verify: app_id == get_create_address(team_wallet, nonce)'
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+          description: Optional app_id for manual specification. Required when nonce is provided. Only works with PHALA KMS.
+        env_keys:
+          items:
+            type: string
+          type: array
+          title: Env Keys
+        ports:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PortMapping'
+            type: array
+          - type: 'null'
+          title: Ports
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+        user_config:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Config
+        hugepages:
+          type: boolean
+          title: Hugepages
+          default: false
+        pin_numa:
+          type: boolean
+          title: Pin Numa
+          default: false
+        gpus:
+          anyOf:
+          - $ref: '#/components/schemas/GpuConfig'
+          - type: 'null'
+        kms_urls:
+          items:
+            type: string
+          type: array
+          title: Kms Urls
+        gateway_urls:
+          items:
+            type: string
+          type: array
+          title: Gateway Urls
+        experimental_vpc_server_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Experimental Vpc Server App Id
+      type: object
+      required:
+      - compose_file
+      - name
+      title: ProvisionDstackAppRequestV2
+      description: 'Request for provisioning a DStack app with automatic resource matching.
+
+
+        Most fields are optional and will be automatically determined by the resource
+
+        matching logic in preflight_dstack_app. Only compose_file and name are required.'
+    CVMResourceInfo:
+      properties:
+        instance_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Type
+        vcpu:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Vcpu
+        memory_in_gb:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Memory In Gb
+        disk_in_gb:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Disk In Gb
+        gpus:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Gpus
+        compute_billing_price:
+          anyOf:
+          - type: string
+            format: decimal
+            description: A monetary value with precise decimal arithmetic
+            examples:
+            - '19.99'
+            - '123.456000'
+          - type: 'null'
+          title: Compute Billing Price
+        billing_period:
+          anyOf:
+          - $ref: '#/components/schemas/BillingPeriod'
+          - type: 'null'
+      type: object
+      title: CVMResourceInfo
+    BatchStopResponse:
+      properties:
+        total:
+          type: integer
+          title: Total
+          description: Total CVMs requested
+        stopped:
+          type: integer
+          title: Stopped
+          description: CVMs successfully scheduled for stop
+        skipped:
+          type: integer
+          title: Skipped
+          description: CVMs skipped (in_progress, no vm_uuid, GPU rental managed)
+        errors:
+          items:
+            $ref: '#/components/schemas/BatchStopErrorEntry'
+          type: array
+          title: Errors
+          description: CVMs that failed to stop
+      type: object
+      required:
+      - total
+      - stopped
+      - skipped
+      title: BatchStopResponse
+      description: Summary of batch stop operation.
+    GpuConfig:
+      properties:
+        gpus:
+          items:
+            $ref: '#/components/schemas/GpuSpec'
+          type: array
+          title: Gpus
+        attach_mode:
+          anyOf:
+          - type: string
+            enum:
+            - listed
+            - all
+          - type: string
+          title: Attach Mode
+          default: listed
+      type: object
+      required:
+      - gpus
+      title: GpuConfig
+    BatchStopRequest:
+      properties:
+        cvm_ids:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          title: Cvm Ids
+          description: List of CVM hash IDs to stop
+      type: object
+      required:
+      - cvm_ids
+      title: BatchStopRequest
+      description: Request to batch stop multiple CVMs.
+    PaginatedHostedCvms:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/HostedCvm'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        pages:
+          type: integer
+          title: Pages
+      type: object
+      required:
+      - items
+      - total
+      - page
+      - page_size
+      - pages
+      title: PaginatedHostedCvms
+      description: Paginated response for CVM list endpoints
+    Certificate:
+      properties:
+        subject:
+          $ref: '#/components/schemas/CertificateSubject'
+        issuer:
+          $ref: '#/components/schemas/CertificateIssuer'
+        serial_number:
+          type: string
+          title: Serial Number
+        not_before:
+          type: string
+          format: date-time
+          title: Not Before
+        not_after:
+          type: string
+          format: date-time
+          title: Not After
+        version:
+          type: string
+          title: Version
+        fingerprint:
+          type: string
+          title: Fingerprint
+        signature_algorithm:
+          type: string
+          title: Signature Algorithm
+        sans:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Sans
+        is_ca:
+          type: boolean
+          title: Is Ca
+          default: false
+        position_in_chain:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position In Chain
+        quote:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Quote
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+        cert_usage:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cert Usage
+      type: object
+      required:
+      - subject
+      - issuer
+      - serial_number
+      - not_before
+      - not_after
+      - version
+      - fingerprint
+      - signature_algorithm
+      title: Certificate
+    CVMKmsInfo:
+      properties:
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+        dstack_kms_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dstack Kms Address
+        dstack_app_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dstack App Address
+        deployer_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deployer Address
+        rpc_endpoint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rpc Endpoint
+        encrypted_env_pubkey:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env Pubkey
+      type: object
+      title: CVMKmsInfo
+    CVMOSInfo:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+        is_dev:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Dev
+        os_image_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Os Image Hash
+      type: object
+      title: CVMOSInfo
+    BatchStatusRequest:
+      properties:
+        vm_uuids:
+          items:
+            type: string
+          type: array
+          title: Vm Uuids
+      type: object
+      required:
+      - vm_uuids
+      title: BatchStatusRequest
+    PortMapping:
+      properties:
+        protocol:
+          type: string
+          title: Protocol
+        host_port:
+          type: integer
+          title: Host Port
+        vm_port:
+          type: integer
+          title: Vm Port
+        host_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Host Address
+      type: object
+      required:
+      - protocol
+      - host_port
+      - vm_port
+      title: PortMapping
+    UpdateCvmRequest:
+      properties:
+        docker_compose_file:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Docker Compose File
+          description: Docker Compose YAML content
+        pre_launch_script:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pre Launch Script
+          description: Shell script executed before containers start
+        allowed_envs:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Envs
+          description: Allowed environment variable names (env_keys)
+        public_logs:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Public Logs
+          description: Expose container logs publicly
+        public_sysinfo:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Public Sysinfo
+          description: Expose system info publicly
+        public_tcbinfo:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Public Tcbinfo
+          description: Expose TCB attestation info publicly
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+          description: Encrypted environment variables as hex string
+        user_config:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Config
+          description: User configuration string
+        gpus:
+          anyOf:
+          - $ref: '#/components/schemas/GpuConfig'
+          - type: 'null'
+          description: GPU configuration
+        vcpu:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Vcpu
+          description: Number of vCPUs
+        memory:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Memory
+          description: Memory in MB
+        disk_size:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Disk Size
+          description: Disk size in MB
+        image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Image
+          description: OS image name or slug from available-os-images
+        shutdown_timeout:
+          anyOf:
+          - type: integer
+            maximum: 1200.0
+            minimum: 10.0
+          - type: 'null'
+          title: Shutdown Timeout
+          description: Timeout in seconds for graceful shutdown. null means no timeout.
+        allow_force_stop:
+          type: boolean
+          title: Allow Force Stop
+          description: When true, falls back to hard stop if graceful shutdown times out. Use for zombie CVMs that are unresponsive to shutdown signals.
+          default: false
+      type: object
+      title: UpdateCvmRequest
+      description: PATCH request body — all fields optional, only set fields are applied.
+    PaginatedCvmInfos:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/teehouse__api__routes__cvms__v20260121__schemas__CVMInfo'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        pages:
+          type: integer
+          title: Pages
+      type: object
+      required:
+      - items
+      - total
+      - page
+      - page_size
+      - pages
+      title: PaginatedCvmInfos
+    DiagnosisResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/DomainDiagnosisResult'
+          type: array
+          title: Results
+          description: Diagnosis results in request order
+      type: object
+      required:
+      - results
+      title: DiagnosisResponse
+      description: Response containing diagnosis results for all requested domains.
+    ReplicateRequest:
+      properties:
+        teepod_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Teepod Id
+          description: Target node ID (deprecated, use node_id)
+        node_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Node Id
+          description: Target node ID for the replica
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+          description: New encrypted env blob (hex)
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+          description: Explicit compose hash to replicate. Required when the source app has multiple live instances.
+      type: object
+      title: ReplicateRequest
+      description: Request model for CVM replication.
+    CVMProgressInfo:
+      properties:
+        target:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Target
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        correlation_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Correlation Id
+      type: object
+      title: CVMProgressInfo
+    DiskInfo:
+      properties:
+        name:
+          type: string
+          title: Name
+        mount_point:
+          type: string
+          title: Mount Point
+        total_size:
+          type: integer
+          title: Total Size
+        free_size:
+          type: integer
+          title: Free Size
+      type: object
+      required:
+      - name
+      - mount_point
+      - total_size
+      - free_size
+      title: DiskInfo
+    ComposeFileUpdateRequest:
+      properties:
+        compose_file:
+          $ref: '#/components/schemas/AppComposeV2'
+        compose_hash:
+          type: string
+          title: Compose Hash
+        encrypted_env:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encrypted Env
+        env_keys:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Env Keys
+      type: object
+      required:
+      - compose_file
+      - compose_hash
+      title: ComposeFileUpdateRequest
+      description: API request model for updating CVM compose files
+    UpdatePortMappingsRequest:
+      properties:
+        ports:
+          items:
+            $ref: '#/components/schemas/PortMappingEntry'
+          type: array
+          title: Ports
+      type: object
+      required:
+      - ports
+      title: UpdatePortMappingsRequest
+      description: Bulk-replace all port mappings for a CVM.
+    UserRef:
+      properties:
+        object_type:
+          type: string
+          const: user
+          title: Object Type
+          description: Fixed value 'user'
+          default: user
+        id:
+          anyOf:
+          - type: string
+            pattern: ^usr_.+
+            format: hashid
+            title: HashedId[users]
+            description: A hashed identifier that maps to an internal database ID
+            examples:
+            - usr_0123abcd
+          - type: 'null'
+          title: Id
+          description: Hashed user ID
+        username:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Username
+          description: Display username
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+          description: Gravatar or OAuth provider avatar URL
+      type: object
+      title: UserRef
+      description: Minimal user reference for embedding in responses.
+    CreateWorkloadTappRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the tapp.
+        instance_type:
+          type: string
+          title: Instance Type
+          description: The instance_type of the tapp.
+        model_id:
+          type: string
+          title: Model Id
+          description: The model_id of the tapp.
+        scheduled_delete_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Scheduled Delete At
+          description: The scheduled delete time of the tapp.
+      type: object
+      required:
+      - name
+      - instance_type
+      - model_id
+      title: CreateWorkloadTappRequest
+    CertificateIssuer:
+      properties:
+        common_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Common Name
+          description: Issuer common name
+        organization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Organization
+          description: Issuer organization
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+          description: Issuer country code
+      type: object
+      title: CertificateIssuer
+    Body_update_cvm_pre_launch_script_api_v1_cvms__cvm_id__pre_launch_script_patch:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: File
+          description: Shell script file to upload
+      type: object
+      title: Body_update_cvm_pre_launch_script_api_v1_cvms__cvm_id__pre_launch_script_patch
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

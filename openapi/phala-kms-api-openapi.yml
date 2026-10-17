@@ -1,0 +1,747 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud KMS API
+  version: 0.1.0
+  description: Key Management Service — key derivation, on-chain anchoring, and inspection
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: KMS
+  description: Key Management Service — key derivation, on-chain anchoring, and inspection
+paths:
+  /api/v1/kms:
+    get:
+      tags:
+      - KMS
+      summary: List KMS instances
+      description: Query available KMS instances with pagination. Filter by onchain status to find instances with blockchain integration.
+      operationId: list_kms_api_v1_kms_get
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          description: Page number (1-indexed)
+          default: 1
+          title: Page
+        description: Page number (1-indexed)
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: Items per page (1-100)
+          default: 20
+          title: Page Size
+        description: Items per page (1-100)
+      - name: is_onchain
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: 'Filter: true=onchain only, false=offchain only, omit=all'
+          title: Is Onchain
+        description: 'Filter: true=onchain only, false=offchain only, omit=all'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KmsListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/kms/{kms_id}:
+    get:
+      tags:
+      - KMS
+      summary: Get KMS details
+      description: Retrieve KMS instance details by hashed ID or slug.
+      operationId: get_kms_info_api_v1_kms__kms_id__get
+      parameters:
+      - name: kms_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: KMS ID (hashed) or slug
+          title: Kms Id
+        description: KMS ID (hashed) or slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KMSInfo'
+        '404':
+          description: KMS not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/kms/{kms_id}/pubkey/{app_id}:
+    get:
+      tags:
+      - KMS
+      summary: Get app encryption pubkey
+      description: Retrieve the public key for encrypting environment variables before deployment.
+      operationId: get_app_env_encrypt_pubkey_api_v1_kms__kms_id__pubkey__app_id__get
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: 40-character hex string, with or without 0x prefix
+          title: App Id
+        description: 40-character hex string, with or without 0x prefix
+      - name: kms_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: KMS ID (hashed) or slug
+          title: Kms Id
+        description: KMS ID (hashed) or slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: Invalid app ID format
+        '404':
+          description: KMS not found
+        '500':
+          description: KMS connection or internal error
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/kms/phala/next_app_id:
+    get:
+      tags:
+      - KMS
+      summary: Predict next app IDs
+      description: Predict the next N app IDs that will be assigned to the team's wallet. Maximum 20 predictions allowed.
+      operationId: get_next_app_id_api_v1_kms_phala_next_app_id_get
+      parameters:
+      - name: counts
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 20
+          minimum: 1
+          description: Number of app IDs to predict (1-20)
+          default: 1
+          title: Counts
+        description: Number of app IDs to predict (1-20)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Not authenticated
+        '403':
+          description: No workspace access
+        '404':
+          description: Workspace not found
+        '500':
+          description: Team has no wallet or prediction failed
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/kms/{kms_id}/info:
+    get:
+      tags:
+      - KMS
+      summary: Inspect KMS instance
+      description: Real-time inspection of a KMS instance. Queries KMS RPC, guest agent, associated Teepod VMMs, and on-chain contract data with cross-validation.
+      operationId: inspect_kms_api_v1_kms__kms_id__info_get
+      parameters:
+      - name: kms_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Kms Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KmsInspectResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/kms/on-chain/{chain}:
+    get:
+      tags:
+      - KMS
+      summary: Get on-chain KMS details by chain
+      description: Returns KMS contracts on the specified chain with device and OS image whitelist status.
+      operationId: get_kms_onchain_detail_api_v1_kms_on_chain__chain__get
+      parameters:
+      - name: chain
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Chain
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnChainKmsResponse'
+        '400':
+          description: Unsupported chain name
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    BootstrapInfoOut:
+      properties:
+        k256_pubkey:
+          type: string
+          title: K256 Pubkey
+          description: K256 public key hex
+        ca_pubkey:
+          type: string
+          title: Ca Pubkey
+          description: CA public key hex
+        quote_length:
+          type: integer
+          title: Quote Length
+          description: Quote byte length
+        eventlog_length:
+          type: integer
+          title: Eventlog Length
+          description: Eventlog byte length
+      type: object
+      required:
+      - k256_pubkey
+      - ca_pubkey
+      - quote_length
+      - eventlog_length
+      title: BootstrapInfoOut
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    OnChainOsImageOut:
+      properties:
+        name:
+          type: string
+          title: Name
+        version:
+          type: string
+          title: Version
+        os_image_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Os Image Hash
+        on_chain_allowed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: On Chain Allowed
+          description: null if no hash or check failed
+      type: object
+      required:
+      - name
+      - version
+      title: OnChainOsImageOut
+    OnChainKmsResponse:
+      properties:
+        chain_name:
+          type: string
+          title: Chain Name
+        chain_id:
+          type: integer
+          title: Chain Id
+        contracts:
+          items:
+            $ref: '#/components/schemas/OnChainKmsContractOut'
+          type: array
+          title: Contracts
+      type: object
+      required:
+      - chain_name
+      - chain_id
+      - contracts
+      title: OnChainKmsResponse
+    KmsListResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/KMSInfo'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        pages:
+          type: integer
+          title: Pages
+      type: object
+      required:
+      - items
+      - total
+      - page
+      - page_size
+      - pages
+      title: KmsListResponse
+      description: Paginated KMS list response.
+    OnChainInfo:
+      properties:
+        kms_info:
+          anyOf:
+          - $ref: '#/components/schemas/OnChainKmsInfo'
+          - type: 'null'
+        gateway_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway App Id
+        owner:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner
+        verification:
+          $ref: '#/components/schemas/OnChainVerification'
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      title: OnChainInfo
+    OnChainVerification:
+      properties:
+        k256_pubkey_match:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: K256 Pubkey Match
+          description: RPC vs chain k256_pubkey
+        ca_pubkey_match:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Ca Pubkey Match
+          description: RPC vs chain ca_pubkey
+        gateway_app_id_match:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Gateway App Id Match
+          description: RPC vs chain gateway_app_id
+        device_id_allowed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Device Id Allowed
+          description: Guest agent device_id in whitelist
+        os_image_allowed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Os Image Allowed
+          description: Guest agent os_image_hash in whitelist
+        mr_aggregated_allowed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Mr Aggregated Allowed
+          description: Guest agent mr_aggregated in whitelist
+      type: object
+      title: OnChainVerification
+    TeepodImageInfo:
+      properties:
+        name:
+          type: string
+          title: Name
+        version:
+          type: string
+          title: Version
+        is_dev:
+          type: boolean
+          title: Is Dev
+      type: object
+      required:
+      - name
+      - version
+      - is_dev
+      title: TeepodImageInfo
+    KmsInspectResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+        endpoint:
+          type: string
+          title: Endpoint
+        kms_type:
+          type: string
+          title: Kms Type
+        db_version:
+          type: string
+          title: Db Version
+        rpc:
+          anyOf:
+          - $ref: '#/components/schemas/KmsRpcInfo'
+          - type: 'null'
+        rpc_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Rpc Error
+        guest_agent:
+          anyOf:
+          - $ref: '#/components/schemas/GuestAgentInfo'
+          - type: 'null'
+        guest_agent_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Guest Agent Error
+        teepods:
+          items:
+            $ref: '#/components/schemas/TeepodInfo'
+          type: array
+          title: Teepods
+        on_chain:
+          anyOf:
+          - $ref: '#/components/schemas/OnChainInfo'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - slug
+      - endpoint
+      - kms_type
+      - db_version
+      title: KmsInspectResponse
+    KMSInfo:
+      properties:
+        id:
+          type: string
+          pattern: ^kms_.+
+          format: hashid
+          title: HashedId[kms]
+          description: Hashed KMS identifier (kms_xxxxx)
+          examples:
+          - kms_0123abcd
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+          description: Human-readable KMS name
+        url:
+          type: string
+          title: Url
+          description: KMS endpoint URL
+        version:
+          type: string
+          title: Version
+          description: KMS software version
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+          description: Blockchain chain ID if onchain
+        kms_contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Contract Address
+          description: Smart contract address if onchain
+        gateway_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway App Id
+          description: Gateway application ID
+      type: object
+      required:
+      - id
+      - url
+      - version
+      title: KMSInfo
+      description: KMS instance information.
+    OnChainKmsContractOut:
+      properties:
+        contract_address:
+          type: string
+          title: Contract Address
+        chain_id:
+          type: integer
+          title: Chain Id
+        chain_name:
+          type: string
+          title: Chain Name
+        devices:
+          items:
+            $ref: '#/components/schemas/OnChainDeviceOut'
+          type: array
+          title: Devices
+        os_images:
+          items:
+            $ref: '#/components/schemas/OnChainOsImageOut'
+          type: array
+          title: Os Images
+      type: object
+      required:
+      - contract_address
+      - chain_id
+      - chain_name
+      - devices
+      - os_images
+      title: OnChainKmsContractOut
+    OnChainDeviceOut:
+      properties:
+        device_id:
+          type: string
+          title: Device Id
+        node_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Node Name
+          description: Physical node name if available
+        on_chain_allowed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: On Chain Allowed
+          description: null if check failed
+      type: object
+      required:
+      - device_id
+      title: OnChainDeviceOut
+    TeepodInfo:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        teepod_version_db:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Teepod Version Db
+        teepod_version_real:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Teepod Version Real
+        kms_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Url
+          description: KMS URL configured in VMM
+        kms_urls:
+          items:
+            type: string
+          type: array
+          title: Kms Urls
+        available_os_images:
+          items:
+            $ref: '#/components/schemas/TeepodImageInfo'
+          type: array
+          title: Available Os Images
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - id
+      - name
+      title: TeepodInfo
+    KmsRpcInfo:
+      properties:
+        version:
+          type: string
+          title: Version
+          description: Real-time version from x-app-version header
+        is_dev:
+          type: boolean
+          title: Is Dev
+        chain_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Chain Id
+        kms_contract_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Kms Contract Address
+        gateway_app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Gateway App Id
+        bootstrap_info:
+          $ref: '#/components/schemas/BootstrapInfoOut'
+        version_synced:
+          type: boolean
+          title: Version Synced
+          description: Whether DB version matches real version
+      type: object
+      required:
+      - version
+      - is_dev
+      - bootstrap_info
+      - version_synced
+      title: KmsRpcInfo
+    OnChainKmsInfo:
+      properties:
+        k256_pubkey:
+          type: string
+          title: K256 Pubkey
+        ca_pubkey:
+          type: string
+          title: Ca Pubkey
+        quote_length:
+          type: integer
+          title: Quote Length
+        eventlog_length:
+          type: integer
+          title: Eventlog Length
+      type: object
+      required:
+      - k256_pubkey
+      - ca_pubkey
+      - quote_length
+      - eventlog_length
+      title: OnChainKmsInfo
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GuestAgentInfo:
+      properties:
+        device_id:
+          type: string
+          title: Device Id
+        mr_aggregated:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Mr Aggregated
+        os_image_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Os Image Hash
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+        app_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: App Id
+        mr_key_provider:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Mr Key Provider
+        compose_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compose Hash
+      type: object
+      required:
+      - device_id
+      title: GuestAgentInfo
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

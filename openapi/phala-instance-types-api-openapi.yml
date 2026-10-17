@@ -1,0 +1,215 @@
+openapi: 3.2.0
+info:
+  title: Phala Cloud Instance Types API
+  version: 0.1.0
+  description: Available hardware configurations for CVM deployment
+servers:
+- url: https://cloud-api.phala.com
+tags:
+- name: Instance Types
+  description: Available hardware configurations for CVM deployment
+paths:
+  /api/v1/instance-types:
+    get:
+      tags:
+      - Instance Types
+      summary: List instance type families
+      description: Public endpoint. Returns all families with their public instance types grouped.
+      operationId: list_all_families_api_v1_instance_types_get
+      responses:
+        '200':
+          description: Families with instance types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllFamiliesResponse'
+        '500':
+          description: Database error
+  /api/v1/instance-types/{family}:
+    get:
+      tags:
+      - Instance Types
+      summary: List family instance types
+      description: Public endpoint. Returns all public instance types for a specific family.
+      operationId: list_family_instance_types_api_v1_instance_types__family__get
+      parameters:
+      - name: family
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Family name (cpu, gpu)
+          title: Family
+        description: Family name (cpu, gpu)
+      responses:
+        '200':
+          description: Instance types for family
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyInstanceTypesResponse'
+        '404':
+          description: Family not found or empty
+        '500':
+          description: Database error
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FamilyInstanceTypesResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/InstanceTypePublic'
+          type: array
+          title: Items
+          description: Instance types
+        total:
+          type: integer
+          title: Total
+          description: Total count
+        family:
+          type: string
+          title: Family
+          description: Family name
+      type: object
+      required:
+      - items
+      - total
+      - family
+      title: FamilyInstanceTypesResponse
+      description: Instance types for one family.
+    InstanceTypePublic:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Instance type identifier
+        name:
+          type: string
+          title: Name
+          description: Display name
+        description:
+          type: string
+          title: Description
+          description: Type description
+        vcpu:
+          type: integer
+          title: Vcpu
+          description: Virtual CPU count
+        memory_mb:
+          type: integer
+          title: Memory Mb
+          description: Memory in megabytes
+        hourly_rate:
+          type: string
+          title: Hourly Rate
+          description: USD per hour as decimal string
+        requires_gpu:
+          type: boolean
+          title: Requires Gpu
+          description: Whether GPU is required
+        default_disk_size_gb:
+          type: integer
+          title: Default Disk Size Gb
+          description: Default disk size in GB
+          default: 20
+        family:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Family
+          description: Family category (cpu, gpu)
+      type: object
+      required:
+      - id
+      - name
+      - description
+      - vcpu
+      - memory_mb
+      - hourly_rate
+      - requires_gpu
+      title: InstanceTypePublic
+      description: Public instance type specification.
+    AllFamiliesResponse:
+      properties:
+        result:
+          items:
+            $ref: '#/components/schemas/FamilyGroup'
+          type: array
+          title: Result
+          description: List of family groups
+      type: object
+      required:
+      - result
+      title: AllFamiliesResponse
+      description: All instance type families with their types.
+    FamilyGroup:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Family name
+        items:
+          items:
+            $ref: '#/components/schemas/InstanceTypePublic'
+          type: array
+          title: Items
+          description: Instance types in family
+        total:
+          type: integer
+          title: Total
+          description: Count of types in family
+      type: object
+      required:
+      - name
+      - items
+      - total
+      title: FamilyGroup
+      description: Instance types grouped by family.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    OAuth2AuthorizationCodeBearer:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: ''
+          tokenUrl: token
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
