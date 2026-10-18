@@ -13,6 +13,14 @@ tags:
 - Company
 - Confidential Computing
 - Trusted Execution Environments
+- Inference
+- Cloud Infrastructure
+- Attestation
+- LLM Router
+tags_raw:
+- Company
+- Confidential Computing
+- Trusted Execution Environments
 - AI Inference
 - Cloud Infrastructure
 - Attestation
@@ -103,6 +111,10 @@ apis:
     https://docs.phala.com/phala-cloud/confidential-ai/confidential-model/confidential-ai-api
   baseURL: https://inference.phala.com/v1
   tags:
+  - Inference
+  - LLM
+  - Confidential AI
+  tags_raw:
   - AI Inference
   - LLM
   - Confidential AI
@@ -119,6 +131,8 @@ apis:
   humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
   baseURL: https://cloud-api.phala.com
   tags:
+  - Application
+  tags_raw:
   - Apps
   properties:
   - type: OpenAPI
@@ -192,6 +206,8 @@ apis:
   humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
   baseURL: https://cloud-api.phala.com
   tags:
+  - Attestation
+  tags_raw:
   - Attestations
   properties:
   - type: OpenAPI
@@ -336,6 +352,8 @@ apis:
   humanURL: https://docs.phala.com/phala-cloud/phala-cloud-api/overview
   baseURL: https://cloud-api.phala.com
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
