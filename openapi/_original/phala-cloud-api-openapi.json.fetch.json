@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.phala.com/openapi.json",
+ "requested_url": "https://docs.phala.com/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 1185681,
+ "sha256": "86b9fbb541f9ffee9c43128b0d02756ab6f7eb8d20df113d44b937a7f0d0e710",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
