@@ -20,6 +20,7 @@ checked:
 - https://rubygems.org/api/v1
 - https://zapier.com/apps/phala-network/integrations
 - https://zapier.com/apps/phala/integrations
+- terraform/integrations/terraform-integration-edges.yml
 summary: null
 marketplace_apps: []
 edges:
@@ -53,4 +54,21 @@ edges:
     detected: '2026-10-18'
   detected_by: sweep-official-sdks.py
   first_seen: '2026-10-18'
+- partner_name: Terraform (terraform-registry)
+  partner: terraform
+  partner_match: mirror
+  mirror_match: register
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: terraform-registry
+  evidence: https://registry.terraform.io/providers/Phala-Network/phala
+  mirror_of: terraform/integrations/terraform-integration-edges.yml
+  apps:
+  - Phala-Network/phala
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
 templates: []
