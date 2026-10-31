@@ -64,5 +64,149 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Phala Network is a company surfaced via the API Evangelist harvest backlog (source: market-gap:ai-model-routing) and added to the network as a stub for full-pipeline profiling.
-- https://phala.network
+Phala Network (Phala Cloud) runs confidential computing infrastructure built on Trusted Execution Environments (Intel TDX, NVIDIA GPU TEE) and the open-source dstack framework. Developers deploy Docker workloads as confidential VMs (CVMs) through the Phala Cloud API, CLI and SDKs, verify them with remote attestation and on-chain KMS, and call attested Private AI models through an OpenAI-compatible inference API at inference.phala.com.
+
+**Areas:** Company · Confidential Computing · Trusted Execution Environments · Inference · Cloud Infrastructure · Attestation · LLM Router
+
+## Phala Network on APIs.io
+
+Everything profiled for Phala Network is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/phala/](https://apis.io/providers/phala/)** — or go straight to one of the APIs or properties below.
+
+### APIs (11)
+
+- [Phala Private AI API](https://apis.io/apis/phala/phala-private-ai-api/) — OpenAI-compatible confidential inference API (chat completions, responses, Anthropic-format messages, completions, embeddings, models) served from GPU TEEs,…
+- [Phala Network Apps API](https://apis.io/apis/phala/phala-apps-api/) — App template management and CVM deployment from app blueprints
+- [Phala Network Apps Kms Info API](https://apis.io/apis/phala/phala-apps-kms-info-api/) — The apps-kms-info API from Phala Network — 1 operation(s) for apps-kms-info.
+- [Phala Network Apps Pending Updates API](https://apis.io/apis/phala/phala-apps-pending-updates-api/) — The apps-pending-updates API from Phala Network — 2 operation(s) for apps-pending-updates.
+- [Phala Network Attestations API](https://apis.io/apis/phala/phala-attestations-api/) — Remote attestation and TEE verification endpoints
+- [Phala Network CVMs API](https://apis.io/apis/phala/phala-cvms-api/) — Confidential Virtual Machine (CVM) lifecycle management on Phala Network
+- [Phala Network Cvms Network Config API](https://apis.io/apis/phala/phala-cvms-network-config-api/) — The cvms-network-config API from Phala Network — 3 operation(s) for cvms-network-config.
+- [Phala Network Instance Types API](https://apis.io/apis/phala/phala-instance-types-api/) — Available hardware configurations for CVM deployment
+- [Phala Network KMS API](https://apis.io/apis/phala/phala-kms-api/) — Key Management Service — key derivation, on-chain anchoring, and inspection
+- [Phala Network SSH Keys API](https://apis.io/apis/phala/phala-ssh-keys-api/) — SSH public key management for CVM access
+- [Phala Network Webhooks API](https://apis.io/apis/phala/phala-webhooks-api/) — Manage webhook endpoints and monitor delivery history
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [phala-mcp.yml](https://apis.io/servers/phala/phala-mcp-yml/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Phala Agentic Access](https://apis.io/agentic-access/phala/phala-agentic-access/)
+
+#### JSON Schema (6)
+
+The data models the API reads and writes.
+
+- [CVMInfoDetail](https://apis.io/schemas/phala/phala-cvminfo-detail/)
+- [ProvisionComposeFileUpdateRequest](https://apis.io/schemas/phala/phala-provision-compose-file-update-request/)
+- [ProvisionDstackAppRequestV2](https://apis.io/schemas/phala/phala-provision-dstack-app-request-v2/)
+- [CvmBasicInfo](https://apis.io/schemas/phala/phala-teehouse-api-routes-cvms-management-cvm-basic-info/)
+- [CVMInfo](https://apis.io/schemas/phala/phala-teehouse-api-routes-cvms-v20260121-schemas-cvminfo/)
+- [UpdateCvmRequest](https://apis.io/schemas/phala/phala-update-cvm-request/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Phala Context](https://apis.io/jsonld/phala/phala-context/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Phala Network API Rules](https://apis.io/rules/phala/phala-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Phala Authentication](https://apis.io/security/phala/phala-authentication/)
+- [Phala Domain Security](https://apis.io/security/phala/phala-domain-security/)
+- [Phala Trust Center](https://apis.io/security/phala/phala-trust-center/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Phala Scopes](https://apis.io/scopes/phala/phala-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://phala.com)
+- [Documentation](https://docs.phala.com/)
+- [Getting started](https://docs.phala.com/phala-cloud/getting-started/attestation)
+- [API reference](https://docs.phala.com/phala-cloud/phala-cloud-api/overview)
+- [Pricing](https://phala.com/pricing)
+- [Sign up](https://cloud.phala.com/register)
+- [Blog](https://phala.com/blog)
+- [Security](https://phala.com/learn/tags/Security)
+- [Compliance](https://phala.com/trust)
+- [Terms of service](https://phala.com/terms)
+- [Privacy policy](https://phala.com/privacy)
+- [GitHub](https://github.com/Phala-Network)
+
+## API Evangelist rating
+
+**Kin Score 55.3** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 61.9 |
+| Contract governance | 22.0 |
+| Operational transparency | 15.8 |
+| Developer ergonomics | 59.5 |
+| Access clarity | 60.5 |
+
+**Agent readiness 30.2** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 36.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/phala/](https://apis.io/providers/phala/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Phala Network: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/phala/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
